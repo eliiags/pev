@@ -73,7 +73,7 @@ public class Controlador implements ActionListener {
 				
 			
 			for (int i = 0; i < num_generaciones; i++) {
-				generaciones[i]= i+1;
+				generaciones[i]= i;
 			}
 			
 			media_fitness  = AG.getMediaFitness();
@@ -81,13 +81,13 @@ public class Controlador implements ActionListener {
 			mejor = AG.getMejorFitness();
 			
 
-			for (int i = 0; i < num_generaciones; i++) {
-				System.out.println("Media fitness: " + media_fitness[i]);
-				System.out.println("Mejor fitness: " + mejor[i]);
-				System.out.println("Mejor absoluto: " + mejor_absoluto[i]);
-				System.out.println("-----------------------------------------------");
-			}
-			
+//			for (int i = 0; i < num_generaciones; i++) {
+//				System.out.println("Media fitness: " + media_fitness[i]);
+//				System.out.println("Mejor fitness: " + mejor[i]);
+//				System.out.println("Mejor absoluto: " + mejor_absoluto[i]);
+//				System.out.println("-----------------------------------------------");
+//			}
+//			
 			
 			this.vista.actualizarGrafica(generaciones, media_fitness, mejor, mejor_absoluto);
 			this.vista.actualizarInformacion(AG.getElMejorAbsoluto());

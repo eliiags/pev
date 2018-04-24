@@ -1,6 +1,6 @@
 package pev.modelo;
 
-public abstract class Cromosoma {
+public abstract class Cromosoma implements Comparable<Cromosoma>{
 
 	protected Gen[] genes;
 	protected int[] longitud_gen;
@@ -75,6 +75,7 @@ public abstract class Cromosoma {
 	}
 	
 	public double getAptitud() {
+		this.funcionFitness();
 		return this.aptitud;
 	}
 	
@@ -182,7 +183,16 @@ public abstract class Cromosoma {
 	
 	/***********************************************************************/
 
-	
+	@Override
+    public int compareTo(Cromosoma crm) {
+        if (this.aptitud < crm.getAptitud()) {
+            return -1;
+        }
+        if (this.aptitud > crm.getAptitud()) {
+            return 1;
+        }
+        return 0;
+    }
 	
 	
 		

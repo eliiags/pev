@@ -11,11 +11,11 @@ import pev.modelo.cruce.Cruce;
 import pev.modelo.cruce.CruceMonoPunto;
 import pev.modelo.mutacion.Mutacion;
 import pev.modelo.mutacion.MutacionBitBit;
-import pev.modelo.seleccion.EstocasticoSeleccion;
-import pev.modelo.seleccion.RuletaSeleccion;
+import pev.modelo.seleccion.SeleccionEstocastico;
+import pev.modelo.seleccion.SeleccionRuleta;
 import pev.modelo.seleccion.Seleccion;
-import pev.modelo.seleccion.TorneoDeterministicoSeleccion;
-import pev.modelo.seleccion.TruncamientoSeleccion;
+import pev.modelo.seleccion.SeleccionTorneoDeterministico;
+import pev.modelo.seleccion.SeleccionTruncamiento;
 
 
 public class AlgoritmoGenetico{
@@ -64,12 +64,12 @@ public class AlgoritmoGenetico{
 	
 	/**
 	 * 
-	 * @param tam_poblacion Tamaño de la poblacion
+	 * @param tam_poblacion Tamanno de la poblacion
 	 * @param tolerancia Tolerancia
 	 * @param prob_cruce Probabilidad de cruce
-	 * @param prob_mutacion Probabilidad de mutación
+	 * @param prob_mutacion Probabilidad de mutacion
 	 * @param tipo_funcion Tipo de funcion (Cromosoma)
-	 * @param num_generaciones Número de generaciones
+	 * @param num_generaciones Numero de generaciones
 	 * @param porcentaje_elite Porcentaje de elite
 	 * @param genes Numero de genes (Para funcion 5)
 	 */
@@ -96,7 +96,7 @@ public class AlgoritmoGenetico{
 			this.porcentaje_elite = porcentaje_elite;
 			this.genes		  	  = genes;
 	
-			this.opcion_seleccion = 3/*opcion_seleccion*/;
+			this.opcion_seleccion = opcion_seleccion;
 			
 			// Creamos el array de poblacion
 			this.poblacion = new Cromosoma[this.tam_poblacion];
@@ -108,12 +108,9 @@ public class AlgoritmoGenetico{
 			this.cont_generaciones = 0;
 			
 			
-			if (this.porcentaje_elite == 0.0) {
-				sinElitismo();;
-			}
-			else {
-				elitismo();
-			}
+			boolean elite = this.porcentaje_elite == 0.0 ? false : true;
+			
+			ejecuta(elite);
 		}
 
 	
@@ -207,18 +204,18 @@ public class AlgoritmoGenetico{
 				if (this.poblacion[i].getAptitud() > this.el_mejor.getAptitud()) {
 					this.pos_mejor = i;
 					this.el_mejor = this.poblacion[i].hacerCopia();
-					if(this.el_mejor_absoluto.getAptitud() < this.el_mejor.getAptitud()) {
-						this.el_mejor_absoluto = this.poblacion[i].hacerCopia();
-					}
+				}
+				if(this.el_mejor.getAptitud() > this.el_mejor_absoluto.getAptitud()) {
+					this.el_mejor_absoluto = this.el_mejor.hacerCopia();
 				}
 			}
 			else{
 				if (this.poblacion[i].getAptitud() < this.el_mejor.getAptitud()) {
 					this.pos_mejor = i;
 					this.el_mejor = this.poblacion[i].hacerCopia();
-					if(this.el_mejor_absoluto.getAptitud() > this.el_mejor.getAptitud()) {
-						this.el_mejor_absoluto = this.poblacion[i].hacerCopia();
-					}
+				}	
+				if (this.el_mejor.getAptitud() < this.el_mejor_absoluto.getAptitud()) {
+					this.el_mejor_absoluto = this.el_mejor.hacerCopia();
 				}
 			}
 
@@ -233,13 +230,7 @@ public class AlgoritmoGenetico{
 		if (cont_generaciones < this.num_generaciones) {
 			this.media_fitness[cont_generaciones] = this.total_fitness / this.tam_poblacion;
 			this.mejor_fitness[cont_generaciones] = this.el_mejor.getAptitud();
-			
-			if (this.porcentaje_elite == 0.0) {
-				this.mejor_absoluto[cont_generaciones] = this.el_mejor_absoluto.getAptitud();	
-			}
-			else {
-				this.mejor_absoluto[cont_generaciones] = this.elite[0].getAptitud();
-			}
+			this.mejor_absoluto[cont_generaciones] = this.el_mejor_absoluto.getAptitud();	
 			
 			this.cont_generaciones++;
 		}
@@ -266,29 +257,30 @@ public class AlgoritmoGenetico{
 		
 		Seleccion seleccion;
 		
+		
 		switch (this.opcion_seleccion) {
 		case 0:
-			seleccion = new RuletaSeleccion();
+			seleccion = new SeleccionEstocastico();
 			seleccion.seleccionar(this.poblacion);
 			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		case 1:
-			seleccion = new TorneoDeterministicoSeleccion();
+			seleccion = new SeleccionRuleta();
 			seleccion.seleccionar(this.poblacion);
 			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		case 2:
-			seleccion = new EstocasticoSeleccion();
+			seleccion = new SeleccionTorneoDeterministico();
 			seleccion.seleccionar(this.poblacion);
 			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		case 3:
-			seleccion = new TruncamientoSeleccion(0.5);
+			seleccion = new SeleccionTruncamiento(0.5);
 			seleccion.seleccionar(this.poblacion);
 			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		default:
-			System.out.println("Introduzca tipo de selección");
+			System.out.println("Introduzca tipo de seleccion");
 			break;
 		}
 	}
@@ -309,49 +301,36 @@ public class AlgoritmoGenetico{
 
 
 	
-	public void sinElitismo() {
-    	
-		inicializaPoblacion();
-		evaluarPoblacion();
-		actualizarValoresGrafica();
-		// pinta();
+	public void ejecuta (boolean elite) {
+
+		int tam_elite = 0;
 		
-		for (int i = 0; i < this.num_generaciones; i++) {
-			seleccion();
-			cruce();
-			mutacion();
-			evaluarPoblacion();
-			actualizarValoresGrafica();
+		if (elite) {
+			// Extraemos los mejores individuos de la población (hacemos una copia)
+			tam_elite = calcularTamElite();
 		}
 		
-		// pinta();
-	
-	}
-
-	
-	
-	public void elitismo() {
-		
-		
-		int tam_elite = calcularTamElite();
-		this.elite = new Cromosoma[tam_elite];
-		
 		inicializaPoblacion();
 		evaluarPoblacion();
 		// pinta();
 		
-		for(int i = 0; i < this.num_generaciones; i++){
+		for (int i = 0; i < this.num_generaciones; i++){
 			
-			// Extraemos los mejores individuos de la población (hacemos una copia)
-			this.elite = separarMejores(tam_elite);
+			if (elite) {
+				this.elite = new Cromosoma[tam_elite];
+				this.elite = separarMejores(tam_elite);
+			}
 			
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
 			seleccion();
 			cruce();
 			mutacion();
 			
-			//Volvemos a integrar a la élite
-			incluirMejores();
+			if (elite) {
+				//Volvemos a integrar a la élite
+				incluirMejores();
+			}
+			
 			evaluarPoblacion();
 			actualizarValoresGrafica();
 		}
@@ -432,7 +411,6 @@ public class AlgoritmoGenetico{
 		}
 		// Para las funciones donde se tenga que minimizar el valor
 		else {
-			
 			for (int i = 0; i < this.elite.length; i++) {
 				for (int j = 0; j < this.poblacion.length; j++) {
 					if (aptitudes[aptitudes.length - 1 - i] == this.poblacion[j].getAptitud()) {

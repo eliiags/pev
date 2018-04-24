@@ -50,6 +50,8 @@ public class Funcion4 extends Cromosoma{
 	@Override
 	public void funcionFitness() {
 		
+		this.aptitud = 0.0;
+		
 		int SUM = 5;
 		double paso1 = 0.0,
 			   paso2 = 0.0;

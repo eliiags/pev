@@ -5,8 +5,8 @@ import pev.vista.Vista;
 
 /**
  * 
- * @author Elianni Agüero
- * @author Manuel Martín
+ * @author Elianni Aguero
+ * @author Manuel Martin
  */
 public class Main{
 	

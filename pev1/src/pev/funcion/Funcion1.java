@@ -46,6 +46,7 @@ public class Funcion1 extends Cromosoma {
 
 	@Override
 	public void funcionFitness() {
+		this.aptitud = 0.0;
 		double paso1 = 20 * (Math.pow(Math.E, -0.2 * Math.abs(this.fenotipo[0])));
 		double paso2 = Math.pow(Math.E, Math.cos(2 * Math.PI * this.fenotipo[0]));
 		this.aptitud = 20 + Math.E - paso1 - paso2;

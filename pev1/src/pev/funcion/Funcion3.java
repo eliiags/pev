@@ -49,6 +49,7 @@ public class Funcion3 extends Cromosoma {
 	
 	@Override
 	public void funcionFitness() {
+		this.aptitud = 0.0;	
 		this.aptitud = 21.5 + 
 						this.fenotipo[0] * Math.sin(4 * Math.PI * this.fenotipo[0]) + 
 						this.fenotipo[1] * Math.sin(20 * Math.PI * this.fenotipo[1]);

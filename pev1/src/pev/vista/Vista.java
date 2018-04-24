@@ -70,13 +70,13 @@ public class Vista extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         LabelFuncion.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        LabelFuncion.setText("Función");
+        LabelFuncion.setText("Funcion");
 
-        ComboBoxFuncion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Función 1", "Función 2", "Función 3", "Función 4", "Función 5" }));
+        ComboBoxFuncion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Funcion 1", "Funcion 2", "Funcion 3", "Funcion 4", "Funcion 5" }));
 
         ComboBoxNumFun.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
 
-        LabelPoblacion.setText("Población");
+        LabelPoblacion.setText("Poblacion");
         
         TextFieldPoblacion.setText("100");
         
@@ -88,7 +88,7 @@ public class Vista extends javax.swing.JFrame {
         
         TextFieldCruces.setText("0.6");
 
-        LabelMutacion.setText("Mutación");
+        LabelMutacion.setText("Mutacion");
         
         TextFieldMutacion.setText("0.05");
 
@@ -100,17 +100,17 @@ public class Vista extends javax.swing.JFrame {
         
         TextFieldElitismo.setText("0.0");
 
-        LabelOpcionSeleccion.setText("Selección");
+        LabelOpcionSeleccion.setText("Seleccion");
 
-        ComboBoxOpcionSeleccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ruleta", "Torneo", "Estocástica" }));
+        ComboBoxOpcionSeleccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estocastico", "Ruleta", "Torneo Deterministico", "Trucamiento" }));
 
         LabelOpcionCruce.setText("Cruce");
 
         ComboBoxOpcionCruce.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MonoPunto" }));
 
-        LabelOpcionMutacion.setText("Mutación");
+        LabelOpcionMutacion.setText("Mutacion");
 
-        ComboBoxOpcionMutacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Básica" }));
+        ComboBoxOpcionMutacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Basica" }));
 
         ButtonIniciar.setText("Iniciar");
 
@@ -289,7 +289,7 @@ public class Vista extends javax.swing.JFrame {
                 .addComponent(PanelInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        Menu.setText("PROGRAMACIÓN EVOLUTIVA");
+        Menu.setText("PROGRAMACION EVOLUTIVA");
         jMenuBar1.add(Menu);
 
         setJMenuBar(jMenuBar1);

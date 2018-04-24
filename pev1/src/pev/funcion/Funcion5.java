@@ -49,7 +49,9 @@ public class Funcion5 extends Cromosoma{
 	@Override
 	public void funcionFitness() {
 		
-		for (int i = 1; i < fenotipo.length+1; i++) {
+		this.aptitud = 0.0;
+		
+		for (int i = 1; i < fenotipo.length + 1; i++) {
 			this.aptitud += Math.sin(this.fenotipo[i-1]) * 
 					Math.pow(Math.sin(((i + 1) * Math.pow(this.fenotipo[i-1], 2)) / Math.PI), 20);
 		}

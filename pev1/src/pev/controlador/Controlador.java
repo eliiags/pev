@@ -21,36 +21,37 @@ public class Controlador implements ActionListener {
 		
 		// Hacemos las conversiones
 		int tipo_funcion;
-        	int genes;
-		int tam_poblacion;
-		int num_generaciones;
-		double prob_cruce;
-		double prob_mutacion;
-		double tolerancia;
-		double porcentaje_elite; 
-		int opcion_seleccion;
-		int opcion_cruce;
-		int opcion_mutacion;
+        int genes;
+        int tam_poblacion;
+        int num_generaciones;
+        double prob_cruce;
+        double prob_mutacion;
+        double tolerancia;
+        double porcentaje_elite; 
+        int opcion_seleccion;
+        int opcion_cruce;
+        int opcion_mutacion;
 		
-
+		
+		
 		if (comando == "INICIAR") {
 			
 			// Borramos los datos de las graficas
 			this.vista.borraDatosGrafica();
-
-
+			
+			
 			// Obtenemos los valores
 			tipo_funcion = this.vista.getComboBoxFuncion().getSelectedIndex() + 1; 
 			genes = this.vista.getComboBoxNumFun().getSelectedIndex() + 1;
-			tam_poblacion = Integer.parseInt(this.vista.getTextFieldPoblacion().getText());
-			num_generaciones = Integer.parseInt(this.vista.getTextFieldGeneraciones().getText()); 
-			prob_cruce = Double.parseDouble(this.vista.getTextFieldCruces().getText());
-			prob_mutacion = Double.parseDouble(this.vista.getTextFieldMutacion().getText());
-			tolerancia = Double.parseDouble(this.vista.getTextFieldTolerancia().getText());
-			porcentaje_elite = Double.parseDouble(this.vista.getTextFieldElitismo().getText());
-			opcion_seleccion = this.vista.getComboBoxOpcionSeleccion().getSelectedIndex();
-			opcion_cruce = this.vista.getComboBoxOpcionCruce().getSelectedIndex();
-			opcion_mutacion = this.vista.getComboBoxOpcionMutacion().getSelectedIndex();
+            tam_poblacion = Integer.parseInt(this.vista.getTextFieldPoblacion().getText());
+            num_generaciones = Integer.parseInt(this.vista.getTextFieldGeneraciones().getText()); 
+            prob_cruce = Double.parseDouble(this.vista.getTextFieldCruces().getText());
+            prob_mutacion = Double.parseDouble(this.vista.getTextFieldMutacion().getText());
+            tolerancia = Double.parseDouble(this.vista.getTextFieldTolerancia().getText());
+            porcentaje_elite = Double.parseDouble(this.vista.getTextFieldElitismo().getText());
+            opcion_seleccion = this.vista.getComboBoxOpcionSeleccion().getSelectedIndex();
+            opcion_cruce = this.vista.getComboBoxOpcionCruce().getSelectedIndex();
+            opcion_mutacion = this.vista.getComboBoxOpcionMutacion().getSelectedIndex();
 			
 			
 			// Creamos el algoritmo genetico

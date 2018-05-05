@@ -6,4 +6,5 @@ public interface Nodo {
 
 	public void inicializar(int profundidad);
 	
+	public String toString();
 }

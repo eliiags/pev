@@ -2,6 +2,7 @@ package modelo;
 
 public class Terminal implements Nodo {
 
+	
 	@Override
 	public double getValor(double valor) {
 		return valor;
@@ -11,5 +12,11 @@ public class Terminal implements Nodo {
 	public void inicializar(int profundidad) {
 		
 	}
-
+	
+	public String toString() {
+		return "A";
+	}
+	
+	
+	
 }

@@ -1,13 +1,18 @@
 package modelo;
 
+import java.util.Random;
+
 public class FuncionBinaria implements Funcion {
 	
+	private static final String[] operadores = { "+", "-", "*", "/" };
+
+	private String operacion;
+
 	private Nodo izquierda,
 				 derecha;
 
-	private String operacion;
 	
-	private static final String[] operadores = { "+", "-", "*", "/" };
+	
 	
 	@Override
 	public double getValor(double valor) {
@@ -20,16 +25,16 @@ public class FuncionBinaria implements Funcion {
 		
 		switch (operacion) {
 		case "+":
-			resultado = izquierda.getValor(valor) + derecha.getValor(valor);
+			resultado = this.izquierda.getValor(valor) + this.derecha.getValor(valor);
 			break;
 		case "-":
-			resultado = izquierda.getValor(valor) - derecha.getValor(valor);
+			resultado = this.izquierda.getValor(valor) - this.derecha.getValor(valor);
 			break;
 		case "*":
-			resultado = izquierda.getValor(valor) * derecha.getValor(valor);
+			resultado = this.izquierda.getValor(valor) * this.derecha.getValor(valor);
 			break;
 		case "/":
-			resultado = izquierda.getValor(valor) / derecha.getValor(valor);
+			resultado = this.izquierda.getValor(valor) / this.derecha.getValor(valor);
 			break;
 		default:
 			break;
@@ -42,7 +47,9 @@ public class FuncionBinaria implements Funcion {
 	@Override
 	public void inicializar(int profundidad) {
 		
-		int i = (int) (Math.random() * operadores.length);
+//		int i = (int) (Math.random() * operadores.length);
+		Random random = new Random();
+		int i = random.nextInt(operadores.length);
 		this.operacion = operadores[i];
 		
 		if (profundidad == 1) {
@@ -52,7 +59,8 @@ public class FuncionBinaria implements Funcion {
 		}
 		
 		
-		i = (int) (Math.random() * 3);
+//		i = (int) (Math.random() * 3);
+		i = random.nextInt(3);
 		
 		switch (i) {
 		case 0:
@@ -60,18 +68,19 @@ public class FuncionBinaria implements Funcion {
 			break;
 		case 1:
 			this.izquierda = new FuncionUnaria();
-			izquierda.inicializar(profundidad - 1);
+			this.izquierda.inicializar(profundidad - 1);
 			break;
 		case 2:
 			this.izquierda = new FuncionBinaria();
-			izquierda.inicializar(profundidad - 1);
+			this.izquierda.inicializar(profundidad - 1);
 			break;
 		default:
 			break;
 		}
 		
 		
-		i = (int) (Math.random() * 3);
+//		i = (int) (Math.random() * 3);
+		i = random.nextInt(3);
 		
 		switch (i) {
 		case 0:
@@ -79,16 +88,28 @@ public class FuncionBinaria implements Funcion {
 			break;
 		case 1:
 			this.derecha = new FuncionUnaria();
-			derecha.inicializar(profundidad - 1);
+			this.derecha.inicializar(profundidad - 1);
 			break;
 		case 2:
 			this.derecha = new FuncionBinaria();
-			derecha.inicializar(profundidad - 1);
+			this.derecha.inicializar(profundidad - 1);
 			break;
 		default:
 			break;
 		}
 		
+	}
+	
+	
+	
+	
+	public String toString() {
+		
+		String cad = "";
+		
+		cad = this.operacion + " (" + this.izquierda.toString() + " " + this.derecha.toString() + ")";
+		
+		return cad;
 		
 	}
 	

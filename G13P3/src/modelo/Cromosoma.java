@@ -1,7 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Random;
 
 public class Cromosoma {
 	
@@ -13,14 +13,28 @@ public class Cromosoma {
 	
 	
 	public Cromosoma(int profundidad) {
-		this.profundidad = profundidad; 
+		this.profundidad = profundidad;
+		this.aptitud 	 = 0.0;
 	}
+	
+
+	
+	
+	/************************** GET & SET ***********************/
+	
+	public double getAptitud() {
+		return this.aptitud;
+	}
+	
+	/************************************************************/
 	
 	
 	
 	public void inicializarCromosoma() {
 		
-		int i = (int) (Math.random() * 3);
+//		int i = (int) (Math.random() * 3);
+		Random random = new Random();
+		int i = random.nextInt(2);
 		
 		switch (i) {
 		case 0:
@@ -37,6 +51,7 @@ public class Cromosoma {
 
 	}
 	
+	
 	public void calcularFitness(ArrayList<Double> entrada, ArrayList<Double> salida) {
 		
 		this.aptitud = 0.0;
@@ -47,6 +62,11 @@ public class Cromosoma {
 			this.aptitud += Math.abs(valor - salida.get(i));
 		}
 		
+	}
+	
+	
+	public String toString() {
+		return raiz.toString();
 	}
 	
 }

@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.Random;
+
 public class FuncionUnaria implements Funcion {
 
 	private Nodo hijo;
@@ -21,10 +23,10 @@ public class FuncionUnaria implements Funcion {
 		
 		switch (operacion) {
 		case "sqrt":
-			resultado = Math.sqrt(hijo.getValor(valor));
+			resultado = Math.sqrt(this.hijo.getValor(valor));
 			break;
 		case "log":
-			resultado = Math.log(hijo.getValor(valor));
+			resultado = Math.log(this.hijo.getValor(valor));
 			break;
 		default:
 			break;
@@ -37,7 +39,9 @@ public class FuncionUnaria implements Funcion {
 	@Override
 	public void inicializar(int profundidad) {
 		
-		int i = (int) (Math.random() * operadores.length);
+//		int i = (int) (Math.random() * operadores.length);
+		Random random = new Random();
+		int i = random.nextInt(operadores.length);
 		this.operacion = operadores[i];
 		
 		if (profundidad == 1) {
@@ -46,7 +50,8 @@ public class FuncionUnaria implements Funcion {
 		}
 		
 		
-		i = (int) (Math.random() * 3);
+//		i = (int) (Math.random() * 3);
+		i = random.nextInt(3);
 		
 		switch (i) {
 		case 0:
@@ -54,11 +59,11 @@ public class FuncionUnaria implements Funcion {
 			break;
 		case 1:
 			this.hijo = new FuncionUnaria();
-			hijo.inicializar(profundidad - 1);
+			this.hijo.inicializar(profundidad - 1);
 			break;
 		case 2:
 			this.hijo = new FuncionBinaria();
-			hijo.inicializar(profundidad - 1);
+			this.hijo.inicializar(profundidad - 1);
 			break;
 		default:
 			break;
@@ -67,5 +72,13 @@ public class FuncionUnaria implements Funcion {
 	}
 	
 	
+	public String toString() {
+		
+		String cad = "";
+		
+		cad = this.operacion + " (" + this.hijo.toString() + ")";
+		
+		return cad;
+	}
 	
 }

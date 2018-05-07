@@ -4,42 +4,18 @@ import java.util.Random;
 
 public class FuncionUnaria implements Funcion {
 
+	private static final String[] operadores = { "sqrt", "log" };
+
 	private Nodo hijo;
 	
 	private String operacion;
-	
-	private static final String[] operadores = { "sqrt", "log" };
-	
+
 	
 	
-	@Override
-	public double getValor(double valor) {
-		return getResultado(valor);
-	}
-	
-	private double getResultado(double valor) {
-		
-		double resultado = 0.0;
-		
-		switch (operacion) {
-		case "sqrt":
-			resultado = Math.sqrt(this.hijo.getValor(valor));
-			break;
-		case "log":
-			resultado = Math.log(this.hijo.getValor(valor));
-			break;
-		default:
-			break;
-		}
-		
-		return resultado;
-	}
-	
-	
+
 	@Override
 	public void inicializar(int profundidad) {
 		
-//		int i = (int) (Math.random() * operadores.length);
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
 		this.operacion = operadores[i];
@@ -50,7 +26,6 @@ public class FuncionUnaria implements Funcion {
 		}
 		
 		
-//		i = (int) (Math.random() * 3);
 		i = random.nextInt(3);
 		
 		switch (i) {
@@ -72,13 +47,39 @@ public class FuncionUnaria implements Funcion {
 	}
 	
 	
-	public String toString() {
-		
-		String cad = "";
-		
-		cad = this.operacion + " (" + this.hijo.toString() + ")";
-		
-		return cad;
+	
+	@Override
+	public double getValor(double valor) {
+		return getResultado(valor);
 	}
+	
+	
+	private double getResultado(double valor) {
+		
+		Double resultado = 0.0;
+		
+		switch (operacion) {
+		case "sqrt":
+			resultado = Math.sqrt(this.hijo.getValor(valor));
+			break;
+		case "log":
+			resultado = Math.log(this.hijo.getValor(valor));
+			break;
+		default:
+			break;
+		}
+		
+		return resultado;
+	}
+	
+		
+	public String toString() {
+		return this.operacion + " (" + this.hijo.toString() + ")";
+	}
+
+
+
+
+
 	
 }

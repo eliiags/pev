@@ -2,6 +2,5 @@ package modelo;
 
 public interface Funcion extends Nodo {
 
-	public String toString();
-	
+	public String toString();	
 }

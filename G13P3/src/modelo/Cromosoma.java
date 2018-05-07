@@ -1,7 +1,8 @@
 package modelo;
 
-import java.util.ArrayList;
 import java.util.Random;
+
+import modelo.algoritmo.Datos;
 
 public class Cromosoma {
 	
@@ -9,12 +10,20 @@ public class Cromosoma {
 	
 	private int profundidad;
 	
-	private double aptitud;
+	private Double aptitud;
 	
+	private double relativa;
 	
+	private double acumulada;
+	
+	private boolean modificado;
+	
+
+
+
+
 	public Cromosoma(int profundidad) {
 		this.profundidad = profundidad;
-		this.aptitud 	 = 0.0;
 	}
 	
 
@@ -22,8 +31,40 @@ public class Cromosoma {
 	
 	/************************** GET & SET ***********************/
 	
-	public double getAptitud() {
+	/**
+	 * Si el cromosoma se ha modificado, 
+	 * vuelve a calcular el fitness y lo devuelve
+	 * @return fitness del individuo
+	 */
+	public Double getAptitud() {
+		
+		if (this.modificado) {
+			calcularFitness();
+		}
+		
+		if (this.aptitud.isNaN() || this.aptitud.isInfinite()) {
+			this.aptitud = 1.0E10;
+		}
+		
 		return this.aptitud;
+	}
+	
+	public double getRelativa() {
+		return this.relativa;
+	}
+	
+	public double getAcumulada() {
+		return this.acumulada;
+	}
+	
+	
+	/**
+	 * Si el individuo ha sido modificado, 
+	 * se actualiza el atributo.
+	 * @param modificado
+	 */
+	public void setModificado(boolean modificado) {
+		this.modificado = modificado;
 	}
 	
 	/************************************************************/
@@ -32,7 +73,6 @@ public class Cromosoma {
 	
 	public void inicializarCromosoma() {
 		
-//		int i = (int) (Math.random() * 3);
 		Random random = new Random();
 		int i = random.nextInt(2);
 		
@@ -48,21 +88,36 @@ public class Cromosoma {
 		default:
 			break;
 		}
-
+		
+		// Calculamos el fitness
+		calcularFitness();
+		this.modificado = false;
+		
 	}
 	
 	
-	public void calcularFitness(ArrayList<Double> entrada, ArrayList<Double> salida) {
+	private void calcularFitness() {
 		
-		this.aptitud = 0.0;
 		double valor;
-		
-		for (int i = 0; i < entrada.size(); i++) {
-			valor = this.raiz.getValor(entrada.get(i));
-			this.aptitud += Math.abs(valor - salida.get(i));
+		this.aptitud = 0.0;
+
+		for (int i = 0; i < Datos.getEntrada().size(); i++) {
+			valor = this.raiz.getValor(Datos.getEntrada().get(i));
+			this.aptitud += Math.abs(valor - Datos.getSalida().get(i));
 		}
-		
+
+		this.modificado = false;
+			
 	}
+	
+
+	public void evaluarCromosoma(double total_fitness, double relativa) {
+		this.relativa  = this.aptitud / total_fitness;
+		this.acumulada = this.relativa + relativa;
+	}
+
+	
+
 	
 	
 	public String toString() {

@@ -12,42 +12,11 @@ public class FuncionBinaria implements Funcion {
 				 derecha;
 
 	
-	
-	
-	@Override
-	public double getValor(double valor) {
-		return getResultado(valor);
-	}
-	
-	private double getResultado(double valor) {
-		
-		double resultado = 0.0;
-		
-		switch (operacion) {
-		case "+":
-			resultado = this.izquierda.getValor(valor) + this.derecha.getValor(valor);
-			break;
-		case "-":
-			resultado = this.izquierda.getValor(valor) - this.derecha.getValor(valor);
-			break;
-		case "*":
-			resultado = this.izquierda.getValor(valor) * this.derecha.getValor(valor);
-			break;
-		case "/":
-			resultado = this.izquierda.getValor(valor) / this.derecha.getValor(valor);
-			break;
-		default:
-			break;
-		}
-		
-		return resultado;
-	}
 
 	
 	@Override
 	public void inicializar(int profundidad) {
 		
-//		int i = (int) (Math.random() * operadores.length);
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
 		this.operacion = operadores[i];
@@ -59,7 +28,6 @@ public class FuncionBinaria implements Funcion {
 		}
 		
 		
-//		i = (int) (Math.random() * 3);
 		i = random.nextInt(3);
 		
 		switch (i) {
@@ -79,7 +47,6 @@ public class FuncionBinaria implements Funcion {
 		}
 		
 		
-//		i = (int) (Math.random() * 3);
 		i = random.nextInt(3);
 		
 		switch (i) {
@@ -100,18 +67,45 @@ public class FuncionBinaria implements Funcion {
 		
 	}
 	
+
 	
+	@Override
+	public double getValor(double valor) {
+		return getResultado(valor);
+	}
+	
+	
+	private double getResultado(double valor) {
+		
+		double resultado = 0.0;
+		
+		switch (operacion) {
+		case "+":
+			resultado = (this.izquierda.getValor(valor) + this.derecha.getValor(valor));
+			break;
+		case "-":
+			resultado = (this.izquierda.getValor(valor) - this.derecha.getValor(valor));
+			break;
+		case "*":
+			resultado = (this.izquierda.getValor(valor) * this.derecha.getValor(valor));
+			break;
+		case "/":
+			resultado = (this.izquierda.getValor(valor) / this.derecha.getValor(valor));
+			break;
+		default:
+			break;
+		}
+		
+		return resultado;
+	}
+
 	
 	
 	public String toString() {
-		
-		String cad = "";
-		
-		cad = this.operacion + " (" + this.izquierda.toString() + " " + this.derecha.toString() + ")";
-		
-		return cad;
-		
+		return this.operacion + " (" + this.izquierda.toString() + " " + this.derecha.toString() + ")";
 	}
-	
+
+
+
 	
 }

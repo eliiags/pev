@@ -72,14 +72,50 @@ public class FuncionUnaria implements Funcion {
 		return resultado;
 	}
 	
+
+	@Override
+	public Nodo encuentraNodo(int aleatorio) {
 		
+		if (aleatorio == 0) {
+			return this;
+		}
+
+		return this.hijo.encuentraNodo(aleatorio - 1);
+		
+	}	
+		
+
+	
+	@Override
+	public int numNodos() {
+		return 1 + this.hijo.numNodos();
+	}
+	
+	
+	@Override
+	public void muta(int numNodo) {
+
+		if (numNodo == -1) {
+			return;
+		}
+		
+		if (numNodo == 0) {
+			if (this.operacion == operadores[0]) {
+				this.operacion = operadores[1];
+			}
+			else {
+				this.operacion = operadores[0];
+			}
+			return;
+		}
+
+		this.hijo.muta(numNodo - 1);
+
+	}
+
+	
 	public String toString() {
 		return this.operacion + " (" + this.hijo.toString() + ")";
 	}
-
-
-
-
-
 	
 }

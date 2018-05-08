@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class FuncionBinaria implements Funcion {
@@ -101,11 +102,67 @@ public class FuncionBinaria implements Funcion {
 
 	
 	
+	@Override
+	public Nodo encuentraNodo(int aleatorio) {
+		
+		if (aleatorio == 0) {
+			return this;
+		}
+		else {
+			Nodo izq = this.izquierda.encuentraNodo(aleatorio - 1);
+			if (izq != null) {
+				return izq;
+			}
+
+			Nodo der = this.derecha.encuentraNodo(aleatorio - this.izquierda.numNodos() - 1);
+			if (der != null) {
+				return der;
+			}
+		}
+		
+		return null;
+	}
+
+	
+	@Override
+	public int numNodos() {
+		return 1 + this.izquierda.numNodos() + this.derecha.numNodos();
+	}
+	
+	
+	
+	
+	@Override
+	public void muta(int numNodo) {
+		
+		Random random = new Random();
+		
+		if (numNodo == -1) {
+			return;
+		}
+
+		if (numNodo == 0) {
+			
+			ArrayList<String> aleatorios = new ArrayList<String>();
+			
+			for (int j = 0; j < operadores.length; j++) {
+				aleatorios.add(operadores[j]);
+			}
+			
+			aleatorios.remove(this.operacion);
+			this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
+			
+			return;
+		}
+		
+		this.izquierda.muta(numNodo - 1);
+		this.derecha.muta(numNodo - this.izquierda.numNodos() - 1);
+		
+	}
+	
 	public String toString() {
 		return this.operacion + " (" + this.izquierda.toString() + " " + this.derecha.toString() + ")";
 	}
-
-
 
 	
 }

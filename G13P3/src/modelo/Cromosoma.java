@@ -116,8 +116,18 @@ public class Cromosoma {
 		this.acumulada = this.relativa + relativa;
 	}
 
+	public Nodo encuentraNodo(int aleatorio) {
+		return raiz.encuentraNodo(aleatorio);
+	}
 	
+	public int numNodos() {
+		return this.raiz.numNodos();
+	}
 
+	public void muta(int numNodo) {
+		this.raiz.muta(numNodo);
+		this.modificado = true;
+	}
 	
 	
 	public String toString() {

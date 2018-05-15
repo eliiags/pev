@@ -61,9 +61,7 @@ public class Funcion1 extends Cromosoma {
 
 	
 	public int bin2dec() {
-		
 		return Integer.parseInt(this.toString(), 2);
-
 	}
 
 

@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Terminal implements Nodo {
 
-	private String nodo;
+	private String terminal;
 	
 	private int num_terminales;
 	
@@ -26,7 +26,7 @@ public class Terminal implements Nodo {
 		Random random = new Random();
 		i = random.nextInt(terminales.size());
 			
-		this.nodo = terminales.get(i) + "";
+		this.terminal = terminales.get(i) + "";
 		
 	}
 	
@@ -71,8 +71,8 @@ public class Terminal implements Nodo {
 				terminales.add((char) (i + 65));
 			}
 			
-			terminales.remove(new Character(this.nodo.charAt(0)));
-			this.nodo = terminales.get(random.nextInt(terminales.size())) + "";
+			terminales.remove(new Character(this.terminal.charAt(0)));
+			this.terminal = terminales.get(random.nextInt(terminales.size())) + "";
 			
 		}
 		
@@ -80,14 +80,15 @@ public class Terminal implements Nodo {
 
 	
 	public String toString() {
-		return this.nodo;
+		return this.terminal;
 	}
 
 
 	@Override
 	public Nodo hacerCopia() {
-		Nodo nodo = new Terminal();
-		nodo = this;
+		Terminal nodo = new Terminal();
+		nodo.terminal = this.terminal;
+		nodo.num_terminales = this.num_terminales;
 		return nodo; 
 	}
 

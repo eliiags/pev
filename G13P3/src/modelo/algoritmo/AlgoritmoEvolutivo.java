@@ -2,7 +2,6 @@ package modelo.algoritmo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import modelo.Cromosoma;
 import modelo.mutacion.Mutacion;
@@ -30,8 +29,6 @@ public class AlgoritmoEvolutivo {
 					  mejor_absoluto;
 	
 	
-	private Cromosoma[] elite;
-
 	private boolean elitismo;
 	
 	private double porcentaje_elite;
@@ -53,7 +50,7 @@ public class AlgoritmoEvolutivo {
 		this.tam_poblacion = 3;
 		this.num_generaciones = 2;
 		this.cont_generaciones = 0;
-		seleccion(5);
+		seleccion(0);
 		mutacion();
 		this.prob_mutacion = 1.0;
 		this.elitismo = true;
@@ -70,6 +67,8 @@ public class AlgoritmoEvolutivo {
 			// Extraemos los mejores individuos de la población (hacemos una copia)
 			tam_elite = calcularTamElite();
 		}
+
+		Cromosoma[] elite = new Cromosoma[tam_elite];
 		
 		crearPoblacion();
 		evaluarPoblacion();
@@ -84,8 +83,7 @@ public class AlgoritmoEvolutivo {
 		for (int i = 0; i < this.num_generaciones; i++){
 			
 			if (elitismo) {
-				this.elite = new Cromosoma[tam_elite];
-				this.elite = separarMejores(tam_elite);
+				elite = separarMejores(tam_elite);
 			}
 			
 			System.out.println("");
@@ -117,7 +115,7 @@ public class AlgoritmoEvolutivo {
 
 			if (elitismo) {
 				//Volvemos a integrar a la élite
-				incluirMejores();
+				incluirMejores(elite);
 			}
 			
 			System.out.println("");
@@ -274,7 +272,7 @@ public class AlgoritmoEvolutivo {
 	}
 	
 	
-	private void incluirMejores() {
+	private void incluirMejores(Cromosoma[] elite) {
 
 		// Buscamos los peores
 		double[] aptitudes = new double[this.tam_poblacion];
@@ -287,10 +285,10 @@ public class AlgoritmoEvolutivo {
 		// Ordenador de mayor a menor
 		Arrays.sort(aptitudes);
 
-		for (int i = 0; i < this.elite.length; i++) {
+		for (int i = 0; i < elite.length; i++) {
 			for (int j = 0; j < this.poblacion.size(); j++) {
 				if (aptitudes[aptitudes.length - 1 - i] == this.poblacion.get(j).getAptitud()) {
-					this.poblacion.set(j, this.elite[i].hacerCopia());
+					this.poblacion.set(j, elite[i].hacerCopia());
 				}
 			}
 		}

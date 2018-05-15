@@ -57,7 +57,7 @@ public class SeleccionRestos implements Seleccion{
 		
 		ArrayList<Cromosoma> p = new ArrayList<Cromosoma>();
 		
-		for (int k = poblacion.size(); k < poblacion.size(); k++) {
+		for (int k = nueva_poblacion.size(); k < poblacion.size(); k++) {
 			p.add(poblacion.get(k).hacerCopia());
 		}
 		

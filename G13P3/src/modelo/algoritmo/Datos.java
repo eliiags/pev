@@ -15,12 +15,12 @@ public class Datos {
 		entrada.add(9.53);
 		entrada.add(19.1);
 		
-		salida.add(0.610);
-		salida.add(1.000);
-		salida.add(1.873);
-		salida.add(11.857);
-		salida.add(29.41);
-		salida.add(83.47);
+		salida.add(0.610940258);
+		salida.add(1.000000000);
+		salida.add(1.873981857);
+		salida.add(11.85782442);
+		salida.add(29.41977527);
+		salida.add(83.47377432);
 	}
 	
 	public static ArrayList<Double> getEntrada(){

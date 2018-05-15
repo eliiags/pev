@@ -23,6 +23,9 @@ public class AlgoritmoEvolutivo {
 				num_generaciones,
 				cont_generaciones;
 	
+	private int profundidad,
+				num_terminales;
+	
 	private double total_fitness;
 	
 	private Cromosoma mejor_cromosoma,
@@ -47,12 +50,14 @@ public class AlgoritmoEvolutivo {
 	public AlgoritmoEvolutivo() {
 		
 		this.poblacion = new ArrayList<Cromosoma>();
-		this.tam_poblacion = 3;
-		this.num_generaciones = 2;
+		this.tam_poblacion = 500;
+		this.num_generaciones = 500;
 		this.cont_generaciones = 0;
-		seleccion(0);
+		this.profundidad = 5;
+		this.num_terminales = 10;
+		seleccion(1);
 		mutacion();
-		this.prob_mutacion = 1.0;
+		this.prob_mutacion = 0.6;
 		this.elitismo = true;
 		this.porcentaje_elite = 0.5;
 		
@@ -64,7 +69,6 @@ public class AlgoritmoEvolutivo {
 		int tam_elite = 0;
 		
 		if (elitismo) {
-			// Extraemos los mejores individuos de la población (hacemos una copia)
 			tam_elite = calcularTamElite();
 		}
 
@@ -72,13 +76,12 @@ public class AlgoritmoEvolutivo {
 		
 		crearPoblacion();
 		evaluarPoblacion();
-//		pinta();
-		
-		System.out.println("Poblacion inicial: ");
-		for (Cromosoma crm: poblacion) {
-			System.out.println(crm.toString());
-			System.out.println("Fitness: " + crm.getAptitud());
-		}
+
+//		System.out.println("Poblacion inicial: ");
+//		for (Cromosoma crm: poblacion) {
+//			System.out.println(crm.toString());
+//			System.out.println("Fitness: " + crm.getAptitud());
+//		}
 		
 		for (int i = 0; i < this.num_generaciones; i++){
 			
@@ -86,31 +89,31 @@ public class AlgoritmoEvolutivo {
 				elite = separarMejores(tam_elite);
 			}
 			
-			System.out.println("");
-			System.out.println("Elite: ");
-			for (Cromosoma crm: elite) {
-				System.out.println(crm.toString());
-				System.out.println("Fitness: " + crm.getAptitud());
-			}
-			
+//			System.out.println("");
+//			System.out.println("Elite: ");
+//			for (Cromosoma crm: elite) {
+//				System.out.println(crm.toString());
+//				System.out.println("Fitness: " + crm.getAptitud());
+//			}
+
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
 			poblacion = seleccion.seleccionar(poblacion);
 			
-			System.out.println("");
-			System.out.println("Seleccion: ");
-			for (Cromosoma crm: poblacion) {
-				System.out.println(crm.toString());
-				System.out.println("Fitness: " + crm.getAptitud());
-			}
+//			System.out.println("");
+//			System.out.println("Seleccion: ");
+//			for (Cromosoma crm: poblacion) {
+//				System.out.println(crm.toString());
+//				System.out.println("Fitness: " + crm.getAptitud());
+//			}
 			
 			this.mutacion.muta(poblacion, this.prob_mutacion);
 			
-			System.out.println("");
-			System.out.println("Mutacion: ");
-			for (Cromosoma crm: poblacion) {
-				System.out.println(crm.toString());
-				System.out.println("Fitness: " + crm.getAptitud());
-			}
+//			System.out.println("");
+//			System.out.println("Mutacion: ");
+//			for (Cromosoma crm: poblacion) {
+//				System.out.println(crm.toString());
+//				System.out.println("Fitness: " + crm.getAptitud());
+//			}
 			
 
 			if (elitismo) {
@@ -118,31 +121,33 @@ public class AlgoritmoEvolutivo {
 				incluirMejores(elite);
 			}
 			
-			System.out.println("");
-			System.out.println("Elite incorporada: ");
-			for (Cromosoma crm: poblacion) {
-				System.out.println(crm.toString());
-				System.out.println("Fitness: " + crm.getAptitud());
-			}
+//			System.out.println("");
+//			System.out.println("Elite incorporada: ");
+//			for (Cromosoma crm: poblacion) {
+//				System.out.println(crm.toString());
+//				System.out.println("Fitness: " + crm.getAptitud());
+//			}
 			
 			evaluarPoblacion();
 //			actualizarValoresGrafica();
 
-			System.out.println("");
-			System.out.println("El mejor de esta generacion es: " + this.mejor_cromosoma.toString());
-			System.out.println("Con un fitness de: " + this.mejor_cromosoma.getAptitud());
-			System.out.println("");
+//			System.out.println("");
+//			System.out.println("El mejor de esta generacion es: " + this.mejor_cromosoma.toString());
+//			System.out.println("Con un fitness de: " + this.mejor_cromosoma.getAptitud());
+//			System.out.println("");
 
-			System.out.println("El mejor de esta generacion es: " + this.mejor_absoluto.toString());
-			System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());
-			System.out.println("");
+//			System.out.println("El mejor de esta generacion es: " + this.mejor_absoluto.toString());
+//			System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());
+//			System.out.println("");
 			
 //			pinta();
-			System.out.println("");
+//			System.out.println("");
 			cont_generaciones++;
 		}
 		
-
+		System.out.println("El mejor es: " + this.mejor_absoluto.toString());
+		System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());
+		System.out.println("");
 		
 		
 	}
@@ -154,7 +159,7 @@ public class AlgoritmoEvolutivo {
 	public void crearPoblacion() {
 
 		for (int i = 0; i < this.tam_poblacion; i++) {
-			this.poblacion.add(new Cromosoma(3, 2));
+			this.poblacion.add(new Cromosoma(this.profundidad, this.num_terminales));
 			this.poblacion.get(i).inicializarCromosoma();
 		}
 
@@ -286,9 +291,11 @@ public class AlgoritmoEvolutivo {
 		Arrays.sort(aptitudes);
 
 		for (int i = 0; i < elite.length; i++) {
+			boolean encontrado = false;
 			for (int j = 0; j < this.poblacion.size(); j++) {
-				if (aptitudes[aptitudes.length - 1 - i] == this.poblacion.get(j).getAptitud()) {
+				if (!encontrado && aptitudes[aptitudes.length - 1 - i] == this.poblacion.get(j).getAptitud()) {
 					this.poblacion.set(j, elite[i].hacerCopia());
+					encontrado = true;
 				}
 			}
 		}

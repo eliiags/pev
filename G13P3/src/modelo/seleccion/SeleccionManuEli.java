@@ -35,7 +35,7 @@ public class SeleccionManuEli implements Seleccion{
 			
 			
 			for (int j = 0; j < num_elems; j++) {
-				if (pos_superviviente < poblacion.size() && poblacion.size() < poblacion.size()) {
+				if (pos_superviviente < poblacion.size() && nueva_poblacion.size() < poblacion.size()) {
 					nueva_poblacion.add(poblacion.get(pos_superviviente).hacerCopia());
 				}
 			}

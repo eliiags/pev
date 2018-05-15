@@ -17,30 +17,29 @@ public class SeleccionTorneoDeterministico implements Seleccion {
 
 	
 	@Override
-	public void seleccionar(ArrayList<Cromosoma> poblacion) {
+	public ArrayList<Cromosoma> seleccionar(ArrayList<Cromosoma> poblacion) {
 
-		ArrayList<Cromosoma> aux = new ArrayList<Cromosoma>();
+		ArrayList<Cromosoma> nueva_poblacion = new ArrayList<Cromosoma>();
 		
-		aux.addAll(poblacion);
-		
-
 		int pos_mejor = 0;
 		
 		Random aleatorio = new Random(System.currentTimeMillis());
 		
 		
-		for(int i = 0; i < aux.size(); i++){
+		for (int i = 0; i < poblacion.size(); i++){
 			// Generamos las tres posiciones de los elementos a seleccionar
-			int pos1 = aleatorio.nextInt(aux.size());
-			int pos2 = aleatorio.nextInt(aux.size());
-			int pos3 = aleatorio.nextInt(aux.size());
+			int pos1 = aleatorio.nextInt(poblacion.size());
+			int pos2 = aleatorio.nextInt(poblacion.size());
+			int pos3 = aleatorio.nextInt(poblacion.size());
 
-			pos_mejor = aux.get(pos1).getAptitud() <= aux.get(pos2).getAptitud() ? pos1 : pos2;
-			pos_mejor = aux.get(pos3).getAptitud() <= aux.get(pos_mejor).getAptitud() ? pos3 : pos_mejor;
+			pos_mejor = poblacion.get(pos1).getAptitud() <= poblacion.get(pos2).getAptitud() ? pos1 : pos2;
+			pos_mejor = poblacion.get(pos3).getAptitud() <= poblacion.get(pos_mejor).getAptitud() ? pos3 : pos_mejor;
 			
 			// Annadir ese elemento a la nueva poblacion
-			poblacion.set(i, aux.get(pos_mejor));
-		}	
+			nueva_poblacion.add(poblacion.get(pos_mejor).hacerCopia());
+		}
+		
+		return nueva_poblacion;
 	}
 
 }

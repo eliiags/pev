@@ -8,19 +8,19 @@ public class Datos {
 	private static final ArrayList<Double> salida  = new ArrayList<Double>();
 	
 	public Datos() {
-		entrada.add(0.61);
+		entrada.add(0.72);
 		entrada.add(1.00);
-		entrada.add(1.84);
-		entrada.add(11.9);
-		entrada.add(29.4);
-		entrada.add(83.5);
+		entrada.add(1.52);
+		entrada.add(5.20);
+		entrada.add(9.53);
+		entrada.add(19.1);
 		
-		salida.add(0.72);
-		salida.add(1.00);
-		salida.add(1.52);
-		salida.add(5.20);
-		salida.add(9.53);
-		salida.add(19.1);
+		salida.add(0.610);
+		salida.add(1.000);
+		salida.add(1.873);
+		salida.add(11.857);
+		salida.add(29.41);
+		salida.add(83.47);
 	}
 	
 	public static ArrayList<Double> getEntrada(){

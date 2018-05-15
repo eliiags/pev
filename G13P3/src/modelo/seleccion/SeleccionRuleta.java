@@ -9,14 +9,11 @@ public class SeleccionRuleta implements Seleccion {
 	
 	
 	@Override
-	public void seleccionar(ArrayList<Cromosoma> poblacion) {
+	public ArrayList<Cromosoma> seleccionar(ArrayList<Cromosoma> poblacion) {
 
-		ArrayList<Cromosoma> aux = new ArrayList<Cromosoma>();
+		ArrayList<Cromosoma> nueva_poblacion = new ArrayList<Cromosoma>();
 		
-		aux.addAll(poblacion);
-		
-		
-		double[] acumulada = new double[aux.size()];
+		double[] acumulada = new double[poblacion.size()];
 		
 		int pos_superviviente;
 
@@ -24,33 +21,33 @@ public class SeleccionRuleta implements Seleccion {
 		
 		
 		
-		for (int i = 0; i < aux.size(); i++) {
-			acumulada[i] = aux.get(i).getAcumulada();
+		for (int i = 0; i < poblacion.size(); i++) {
+			acumulada[i] = poblacion.get(i).getAcumulada();
 		}
 			
 		
 		// Recorremos la poblacion
-		for (int i = 0; i < aux.size(); i++) {
+		for (int i = 0; i < poblacion.size(); i++) {
 			// Seleccionamos una probabilidad aleatoria
 			prob_seleccion = Math.random();
 			
 			// Inicializamos la primera posicion
 			pos_superviviente = 0;
 			
-
 			
-			while (pos_superviviente < aux.size() && prob_seleccion > acumulada[pos_superviviente]) {
+			while (pos_superviviente < poblacion.size() && prob_seleccion > acumulada[pos_superviviente]) {
 				pos_superviviente++;
 			}
 		
 			
-			if (pos_superviviente < aux.size()) {
-				poblacion.set(i, aux.get(pos_superviviente));
+			if (pos_superviviente < poblacion.size()) {
+				nueva_poblacion.add(poblacion.get(pos_superviviente).hacerCopia());
 			}
 		
 		}
 		
 		
+		return nueva_poblacion;
 	}
 	
 }

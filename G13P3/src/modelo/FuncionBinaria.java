@@ -13,10 +13,8 @@ public class FuncionBinaria implements Funcion {
 				 derecha;
 
 	
-
-	
 	@Override
-	public void inicializar(int profundidad) {
+	public void inicializar(int profundidad, int num_terminales) {
 		
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
@@ -24,7 +22,9 @@ public class FuncionBinaria implements Funcion {
 		
 		if (profundidad == 1) {
 			this.izquierda = new Terminal();
+			this.izquierda.inicializar(profundidad - 1, num_terminales);
 			this.derecha   = new Terminal();
+			this.derecha.inicializar(profundidad - 1, num_terminales);
 			return;
 		}
 		
@@ -34,14 +34,15 @@ public class FuncionBinaria implements Funcion {
 		switch (i) {
 		case 0:
 			this.izquierda = new Terminal();
+			this.izquierda.inicializar(profundidad - 1, num_terminales);
 			break;
 		case 1:
 			this.izquierda = new FuncionUnaria();
-			this.izquierda.inicializar(profundidad - 1);
+			this.izquierda.inicializar(profundidad - 1, num_terminales);
 			break;
 		case 2:
 			this.izquierda = new FuncionBinaria();
-			this.izquierda.inicializar(profundidad - 1);
+			this.izquierda.inicializar(profundidad - 1, num_terminales);
 			break;
 		default:
 			break;
@@ -53,14 +54,15 @@ public class FuncionBinaria implements Funcion {
 		switch (i) {
 		case 0:
 			this.derecha = new Terminal();
+			this.derecha.inicializar(profundidad - 1, num_terminales);
 			break;
 		case 1:
 			this.derecha = new FuncionUnaria();
-			this.derecha.inicializar(profundidad - 1);
+			this.derecha.inicializar(profundidad - 1, num_terminales);
 			break;
 		case 2:
 			this.derecha = new FuncionBinaria();
-			this.derecha.inicializar(profundidad - 1);
+			this.derecha.inicializar(profundidad - 1, num_terminales);
 			break;
 		default:
 			break;
@@ -133,15 +135,15 @@ public class FuncionBinaria implements Funcion {
 	
 	
 	@Override
-	public void muta(int numNodo) {
+	public void muta(int num_nodo) {
 		
 		Random random = new Random();
 		
-		if (numNodo == -1) {
+		if (num_nodo == -1) {
 			return;
 		}
 
-		if (numNodo == 0) {
+		if (num_nodo == 0) {
 			
 			ArrayList<String> aleatorios = new ArrayList<String>();
 			
@@ -155,8 +157,8 @@ public class FuncionBinaria implements Funcion {
 			return;
 		}
 		
-		this.izquierda.muta(numNodo - 1);
-		this.derecha.muta(numNodo - this.izquierda.numNodos() - 1);
+		this.izquierda.muta(num_nodo - 1);
+		this.derecha.muta(num_nodo - this.izquierda.numNodos() - 1);
 		
 	}
 	
@@ -164,5 +166,15 @@ public class FuncionBinaria implements Funcion {
 		return this.operacion + " (" + this.izquierda.toString() + " " + this.derecha.toString() + ")";
 	}
 
-	
+
+
+	@Override
+	public Nodo hacerCopia() {
+		FuncionBinaria nodo = new FuncionBinaria();
+		nodo.izquierda = this.izquierda.hacerCopia();
+		nodo.derecha   = this.derecha.hacerCopia();
+		nodo.operacion = this.operacion;
+		return nodo;
+	}	
+
 }

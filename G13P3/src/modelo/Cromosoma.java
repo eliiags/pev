@@ -10,6 +10,8 @@ public class Cromosoma {
 	
 	private int profundidad;
 	
+	private int num_terminales;
+	
 	private Double aptitud;
 	
 	private double relativa;
@@ -22,8 +24,9 @@ public class Cromosoma {
 
 
 
-	public Cromosoma(int profundidad) {
-		this.profundidad = profundidad;
+	public Cromosoma(int profundidad, int num_terminales) {
+		this.profundidad    = profundidad;
+		this.num_terminales = num_terminales;
 	}
 	
 
@@ -79,11 +82,11 @@ public class Cromosoma {
 		switch (i) {
 		case 0:
 			this.raiz = new FuncionUnaria();
-			raiz.inicializar(profundidad - 1);
+			raiz.inicializar(profundidad - 1, num_terminales);
 			break;
 		case 1:
 			this.raiz = new FuncionBinaria();
-			raiz.inicializar(profundidad - 1);
+			raiz.inicializar(profundidad - 1, num_terminales);
 			break;
 		default:
 			break;
@@ -91,8 +94,6 @@ public class Cromosoma {
 		
 		// Calculamos el fitness
 		calcularFitness();
-		this.modificado = false;
-		
 	}
 	
 	
@@ -124,14 +125,25 @@ public class Cromosoma {
 		return this.raiz.numNodos();
 	}
 
-	public void muta(int numNodo) {
-		this.raiz.muta(numNodo);
+	public void muta(int num_nodo) {
+		this.raiz.muta(num_nodo);
 		this.modificado = true;
+	}
+
+	public Cromosoma hacerCopia() {
+		Cromosoma crm = new Cromosoma(profundidad, num_terminales);
+		crm.raiz = this.raiz.hacerCopia();
+		crm.aptitud = this.aptitud;
+		crm.modificado = false;
+		return crm;
 	}
 	
 	
 	public String toString() {
 		return raiz.toString();
 	}
+	
+	/*************************************************************************/
+	
 	
 }

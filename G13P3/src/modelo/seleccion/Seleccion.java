@@ -6,6 +6,6 @@ import modelo.Cromosoma;
 
 public interface Seleccion {
 
-	public void seleccionar(ArrayList<Cromosoma> poblacion);
+	public ArrayList<Cromosoma> seleccionar(ArrayList<Cromosoma> poblacion);
 	
 }

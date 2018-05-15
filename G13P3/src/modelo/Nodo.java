@@ -2,11 +2,12 @@ package modelo;
 
 public interface Nodo {
 
+	
 	/**
 	 * Dada una profundidad inicializa el arbol.
 	 * @param profundidad
 	 */
-	public void inicializar(int profundidad);
+	public void inicializar(int profundidad, int num_terminales);
 
 	
 	/**
@@ -38,8 +39,13 @@ public interface Nodo {
 	 * Dado un numero de nodo muta.
 	 * @param numNodo
 	 */
-	public void muta(int numNodo);
+	public void muta(int num_nodo);
+
+	
+	public Nodo hacerCopia();
 	
 	
 	public String toString();
+		
+	
 }

@@ -15,25 +15,23 @@ public class SeleccionTruncamiento implements Seleccion {
 	
 	
 	@Override
-	public void seleccionar(ArrayList<Cromosoma> poblacion) {
+	public ArrayList<Cromosoma> seleccionar(ArrayList<Cromosoma> poblacion) {
 		
-		ArrayList<Cromosoma> aux = new ArrayList<Cromosoma>();
-		
-		aux.addAll(poblacion);
+		ArrayList<Cromosoma> nueva_poblacion = new ArrayList<Cromosoma>();
 		
 		int proporcion = (int) ((int) 1 / this.trun),
-			tam = (int) aux.size() / proporcion,
+			tam = (int) poblacion.size() / proporcion,
 			pos = 0,
-			i = 0;
+			i   = 0;
 		
-		Cromosoma[] mejores = separar(aux, tam);
+		Cromosoma[] mejores = separar(poblacion, tam);
 		
 		
-		while (tam > 0 && i < aux.size()) {
+		while (tam > 0 && i < poblacion.size()) {
 			
 			for (int j = 0; j < tam; j++) {
-				if (pos < aux.size()) {
-					poblacion.set(pos, mejores[j]);
+				if (pos < poblacion.size()) {
+					nueva_poblacion.add(mejores[j].hacerCopia());
 					pos++;
 				}
 			}
@@ -42,22 +40,23 @@ public class SeleccionTruncamiento implements Seleccion {
 		
 		}
 		
+		return nueva_poblacion;
 		
 	}
 	
 	
 	
-	private Cromosoma[] separar(ArrayList<Cromosoma> aux, int tam) {
+	private Cromosoma[] separar(ArrayList<Cromosoma> poblacion, int tam) {
 		// Mejores cromosomas
 		Cromosoma[] mejores = new Cromosoma[tam];
 
 		// Array donde se almacenaras las aptitudes para ordenarlas posteriormente
-		double[] aptitudes = new double[aux.size()];
+		double[] aptitudes = new double[poblacion.size()];
 		
 		
 		// Actualizamos el array de aptitudes con el fitness de cada individuo;
 		for (int i = 0; i < aptitudes.length; i++) {
-			aptitudes[i] = aux.get(i).getAptitud();
+			aptitudes[i] = poblacion.get(i).getAptitud();
 		}
 		
 		
@@ -71,9 +70,9 @@ public class SeleccionTruncamiento implements Seleccion {
 		for (int i = 0; i < tam; i++) {
 			encontrado = false;
 			j = 0;
-			while (!encontrado && j < aux.size()) {
-				if (aptitudes[i] == aux.get(j).getAptitud()) {
-					mejores[i] = aux.get(j);
+			while (!encontrado && j < poblacion.size()) {
+				if (aptitudes[i] == poblacion.get(j).getAptitud()) {
+					mejores[i] = poblacion.get(j);
 					encontrado = true;
 				}
 				j++;

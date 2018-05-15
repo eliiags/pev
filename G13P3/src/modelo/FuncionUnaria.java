@@ -14,7 +14,7 @@ public class FuncionUnaria implements Funcion {
 	
 
 	@Override
-	public void inicializar(int profundidad) {
+	public void inicializar(int profundidad, int num_terminales) {
 		
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
@@ -22,6 +22,7 @@ public class FuncionUnaria implements Funcion {
 		
 		if (profundidad == 1) {
 			this.hijo = new Terminal();
+			this.hijo.inicializar(profundidad - 1, num_terminales);
 			return;
 		}
 		
@@ -31,14 +32,15 @@ public class FuncionUnaria implements Funcion {
 		switch (i) {
 		case 0:
 			this.hijo = new Terminal();
+			this.hijo.inicializar(profundidad - 1, num_terminales);
 			break;
 		case 1:
 			this.hijo = new FuncionUnaria();
-			this.hijo.inicializar(profundidad - 1);
+			this.hijo.inicializar(profundidad - 1, num_terminales);
 			break;
 		case 2:
 			this.hijo = new FuncionBinaria();
-			this.hijo.inicializar(profundidad - 1);
+			this.hijo.inicializar(profundidad - 1, num_terminales);
 			break;
 		default:
 			break;
@@ -93,13 +95,13 @@ public class FuncionUnaria implements Funcion {
 	
 	
 	@Override
-	public void muta(int numNodo) {
+	public void muta(int num_nodo) {
 
-		if (numNodo == -1) {
+		if (num_nodo == -1) {
 			return;
 		}
 		
-		if (numNodo == 0) {
+		if (num_nodo == 0) {
 			if (this.operacion == operadores[0]) {
 				this.operacion = operadores[1];
 			}
@@ -109,7 +111,7 @@ public class FuncionUnaria implements Funcion {
 			return;
 		}
 
-		this.hijo.muta(numNodo - 1);
+		this.hijo.muta(num_nodo - 1);
 
 	}
 
@@ -117,5 +119,17 @@ public class FuncionUnaria implements Funcion {
 	public String toString() {
 		return this.operacion + " (" + this.hijo.toString() + ")";
 	}
+	
+	
+
+
+	@Override
+	public Nodo hacerCopia() {
+		FuncionUnaria nodo = new FuncionUnaria();
+		nodo.hijo = this.hijo.hacerCopia();
+		nodo.operacion = this.operacion;
+		return nodo;
+	}
+	
 	
 }

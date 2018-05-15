@@ -1,7 +1,8 @@
 package modelo.algoritmo;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
 
 import modelo.Cromosoma;
 import modelo.mutacion.Mutacion;
@@ -19,76 +20,132 @@ public class AlgoritmoEvolutivo {
 
 	private ArrayList<Cromosoma> poblacion;
 	
-	private int tam_poblacion = 5;
-	
-	private int num_generaciones = 1;
+	private int tam_poblacion,
+				num_generaciones,
+				cont_generaciones;
 	
 	private double total_fitness;
 	
-	private Cromosoma mejor_cromosoma;
+	private Cromosoma mejor_cromosoma,
+					  mejor_absoluto;
 	
-	private Cromosoma mejor_absoluto;
 	
+	private Cromosoma[] elite;
+
+	private boolean elitismo;
+	
+	private double porcentaje_elite;
+	
+
 	private Seleccion seleccion;
 	
 	private Mutacion mutacion;
 	
+	private double prob_mutacion,
+				   prob_cruce;
+	
+	
 	
 	
 	public AlgoritmoEvolutivo() {
-		this.poblacion = new ArrayList<Cromosoma>();
 		
-		seleccion(1);
-		this.mutacion = new MutacionBasica(); 
+		this.poblacion = new ArrayList<Cromosoma>();
+		this.tam_poblacion = 3;
+		this.num_generaciones = 2;
+		this.cont_generaciones = 0;
+		seleccion(5);
+		mutacion();
+		this.prob_mutacion = 1.0;
+		this.elitismo = true;
+		this.porcentaje_elite = 0.5;
 		
 	}	
 
 	
 	public void ejecuta() {
 		
+		int tam_elite = 0;
+		
+		if (elitismo) {
+			// Extraemos los mejores individuos de la población (hacemos una copia)
+			tam_elite = calcularTamElite();
+		}
+		
 		crearPoblacion();
 		evaluarPoblacion();
+//		pinta();
 		
-		for (Cromosoma crm : this.poblacion) {
+		System.out.println("Poblacion inicial: ");
+		for (Cromosoma crm: poblacion) {
 			System.out.println(crm.toString());
-			System.out.println(crm.getAptitud());
-//			int i = random.nextInt(crm.numNodos());
-//			System.out.println("Cant de nodos: " + crm.numNodos());
-//			System.out.println("Nodo escogido: " + i);
-//			System.out.println("Nodo encontrado: " + crm.encuentraNodo(i));
+			System.out.println("Fitness: " + crm.getAptitud());
 		}
 		
-		for (int i = 0; i < 2; i++) {
-			System.out.println("generacion: " + i+1);
-			System.out.println("");
-			this.seleccion.seleccionar(poblacion);
+		for (int i = 0; i < this.num_generaciones; i++){
 			
-			System.out.println("");
-			
-			for (Cromosoma crm : this.poblacion) {
-				System.out.println(crm.toString());
-				System.out.println(crm.getAptitud());
+			if (elitismo) {
+				this.elite = new Cromosoma[tam_elite];
+				this.elite = separarMejores(tam_elite);
 			}
 			
-			this.mutacion.muta(poblacion, 1.0);
+			System.out.println("");
+			System.out.println("Elite: ");
+			for (Cromosoma crm: elite) {
+				System.out.println(crm.toString());
+				System.out.println("Fitness: " + crm.getAptitud());
+			}
+			
+			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
+			poblacion = seleccion.seleccionar(poblacion);
+			
+			System.out.println("");
+			System.out.println("Seleccion: ");
+			for (Cromosoma crm: poblacion) {
+				System.out.println(crm.toString());
+				System.out.println("Fitness: " + crm.getAptitud());
+			}
+			
+			this.mutacion.muta(poblacion, this.prob_mutacion);
+			
+			System.out.println("");
+			System.out.println("Mutacion: ");
+			for (Cromosoma crm: poblacion) {
+				System.out.println(crm.toString());
+				System.out.println("Fitness: " + crm.getAptitud());
+			}
+			
+
+			if (elitismo) {
+				//Volvemos a integrar a la élite
+				incluirMejores();
+			}
+			
+			System.out.println("");
+			System.out.println("Elite incorporada: ");
+			for (Cromosoma crm: poblacion) {
+				System.out.println(crm.toString());
+				System.out.println("Fitness: " + crm.getAptitud());
+			}
+			
 			evaluarPoblacion();
-			
+//			actualizarValoresGrafica();
+
+			System.out.println("");
+			System.out.println("El mejor de esta generacion es: " + this.mejor_cromosoma.toString());
+			System.out.println("Con un fitness de: " + this.mejor_cromosoma.getAptitud());
+			System.out.println("");
+
+			System.out.println("El mejor de esta generacion es: " + this.mejor_absoluto.toString());
+			System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());
 			System.out.println("");
 			
-			for (Cromosoma crm : this.poblacion) {
-				System.out.println(crm.toString());
-				System.out.println(crm.getAptitud());
-			}
+//			pinta();
 			System.out.println("");
-			
+			cont_generaciones++;
 		}
 		
-//		for (int i = 0; i < poblacion.size(); i++) {
-//			System.out.println(poblacion.get(i).toString());
-//			System.out.println("Fitness:   " + poblacion.get(i).getAptitud());
-//			System.out.println("Relativa:  " + poblacion.get(i).getRelativa());
-//			System.out.println("Acumulada: " + poblacion.get(i).getAcumulada());
-//		}
+
+		
 		
 	}
 	
@@ -99,11 +156,12 @@ public class AlgoritmoEvolutivo {
 	public void crearPoblacion() {
 
 		for (int i = 0; i < this.tam_poblacion; i++) {
-			this.poblacion.add(new Cromosoma(5));
+			this.poblacion.add(new Cromosoma(3, 2));
 			this.poblacion.get(i).inicializarCromosoma();
 		}
 
 	}
+	
 	
 	
 	public void evaluarPoblacion() {
@@ -113,10 +171,25 @@ public class AlgoritmoEvolutivo {
 		
 		// Evaluamos el primer cromosoma de la poblacion
 		this.poblacion.get(0).evaluarCromosoma(this.total_fitness, 0.0);
+		this.mejor_cromosoma = this.poblacion.get(0).hacerCopia();
+				
+		if (this.cont_generaciones == 0) {
+			this.mejor_absoluto = this.poblacion.get(0).hacerCopia();
+		}
+		
 		
 		for (int i = 1; i < this.poblacion.size(); i++) {
 			this.poblacion.get(i).evaluarCromosoma(this.total_fitness, 
 					this.poblacion.get(i - 1).getAcumulada());
+			
+			if (this.poblacion.get(i).getAptitud() < this.mejor_cromosoma.getAptitud()) {
+				this.mejor_cromosoma = this.poblacion.get(i).hacerCopia();
+			}	
+			
+			if (this.mejor_cromosoma.getAptitud() < this.mejor_absoluto.getAptitud()) {
+				this.mejor_absoluto = this.mejor_cromosoma.hacerCopia();
+			}
+			
 		}
 		
 		
@@ -132,6 +205,7 @@ public class AlgoritmoEvolutivo {
 		}
 		
 	}
+	
 	
 	private void seleccion(int seleccion) {
 		
@@ -163,6 +237,79 @@ public class AlgoritmoEvolutivo {
 		
 	}
 	
+	
+	private void mutacion() {
+		this.mutacion = new MutacionBasica();
+	}
+	
+	
+	private Cromosoma[] separarMejores(int tam_elite) {
+		
+		// Mejores cromosomas
+		Cromosoma[] mejores = new Cromosoma[tam_elite];
+
+		// Array donde se almacenaras las aptitudes para ordenarlas posteriormente
+		double[] aptitudes = new double[this.tam_poblacion];
+		
+		// Actualizamos el array de aptitudes con el fitness de cada individuo;
+		for (int i = 0; i < aptitudes.length; i++) {
+			aptitudes[i] = this.poblacion.get(i).getAptitud();
+		}
+		
+		// Ordenador de mayor a menor
+		Arrays.sort(aptitudes);
+		
+		for (int i = 0; i < mejores.length; i++) {
+			for (int j = 0; j < this.poblacion.size(); j++) {
+				if (aptitudes[i] == this.poblacion.get(j).getAptitud()) {
+					mejores[i] = this.poblacion.get(j).hacerCopia();
+				}
+			}
+		}
+		
+			
+				
+		return mejores;
+
+	}
+	
+	
+	private void incluirMejores() {
+
+		// Buscamos los peores
+		double[] aptitudes = new double[this.tam_poblacion];
+		
+		// Actualizamos el array de aptitudes con el fitness de cada individuo;
+		for (int i = 0; i < aptitudes.length; i++) {
+			aptitudes[i] = this.poblacion.get(i).getAptitud();
+		}
+		
+		// Ordenador de mayor a menor
+		Arrays.sort(aptitudes);
+
+		for (int i = 0; i < this.elite.length; i++) {
+			for (int j = 0; j < this.poblacion.size(); j++) {
+				if (aptitudes[aptitudes.length - 1 - i] == this.poblacion.get(j).getAptitud()) {
+					this.poblacion.set(j, this.elite[i].hacerCopia());
+				}
+			}
+		}
+	}
+
+	
+	private int calcularTamElite() {
+		return (int) Math.ceil(this.tam_poblacion * this.porcentaje_elite / 100);
+	}	
+	
+	
+	private void pinta() {
+		
+		for (Cromosoma crm: poblacion) {
+			System.out.println(crm.toString());
+			System.out.println(crm.getAptitud());
+		}
+		
+	}
 	
 	
 	

@@ -16,17 +16,16 @@ public class MutacionBasica implements Mutacion{
 		for (Cromosoma crm : poblacion) {
 			
 			if (prob < prob_mutacion) {
-				// Muta
 				
 				// Generamos un numero aleatorio entre 0 y numNodos
 				int nodo = random.nextInt(crm.numNodos());
 				
+				// Muta
 				crm.muta(nodo);
 				
 			}
+
 		}
-		
-		
 		
 	}
 

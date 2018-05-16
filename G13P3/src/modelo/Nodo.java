@@ -42,6 +42,10 @@ public interface Nodo {
 	public void muta(int num_nodo);
 
 	
+	public Nodo getNodo(int num_nodo);
+	
+	public void setNodo(int num_nodo, Nodo nodo);
+	
 	public Nodo hacerCopia();
 	
 	

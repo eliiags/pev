@@ -130,6 +130,31 @@ public class FuncionUnaria implements Funcion {
 		nodo.operacion = this.operacion;
 		return nodo;
 	}
+
+
+
+	@Override
+	public Nodo getNodo(int num_nodo) {
+		
+		if (num_nodo == 0) {
+			return this;
+		}
+
+		return this.hijo.getNodo(num_nodo - 1);
+	}
+
+
+
+	@Override
+	public void setNodo(int num_nodo, Nodo nodo) {
+		
+		if (num_nodo == 1){
+			this.hijo = nodo;
+			return;
+		}
+		
+		this.hijo.setNodo(num_nodo - 1, nodo);
+	}
 	
 	
 }

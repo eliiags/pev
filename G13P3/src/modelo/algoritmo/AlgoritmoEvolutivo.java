@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import modelo.Cromosoma;
+import modelo.cruce.Cruce;
+import modelo.cruce.CruceBasico;
 import modelo.mutacion.Mutacion;
 import modelo.mutacion.MutacionBasica;
 import modelo.seleccion.Seleccion;
@@ -38,7 +40,7 @@ public class AlgoritmoEvolutivo {
 	
 
 	private Seleccion seleccion;
-	
+	private Cruce cruce;
 	private Mutacion mutacion;
 	
 	private double prob_mutacion,
@@ -50,14 +52,16 @@ public class AlgoritmoEvolutivo {
 	public AlgoritmoEvolutivo() {
 		
 		this.poblacion = new ArrayList<Cromosoma>();
-		this.tam_poblacion = 500;
-		this.num_generaciones = 500;
+		this.tam_poblacion = 3;
+		this.num_generaciones = 2;
 		this.cont_generaciones = 0;
-		this.profundidad = 5;
-		this.num_terminales = 10;
-		seleccion(1);
+		this.profundidad = 3;
+		this.num_terminales = 1;
+		seleccion(0);
+		cruce();
 		mutacion();
 		this.prob_mutacion = 0.6;
+		this.prob_cruce    = 1.0;
 		this.elitismo = true;
 		this.porcentaje_elite = 0.5;
 		
@@ -97,7 +101,7 @@ public class AlgoritmoEvolutivo {
 //			}
 
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
-			poblacion = seleccion.seleccionar(poblacion);
+//			poblacion = seleccion.seleccionar(poblacion);
 			
 //			System.out.println("");
 //			System.out.println("Seleccion: ");
@@ -106,7 +110,7 @@ public class AlgoritmoEvolutivo {
 //				System.out.println("Fitness: " + crm.getAptitud());
 //			}
 			
-			this.mutacion.muta(poblacion, this.prob_mutacion);
+//			this.mutacion.muta(poblacion, this.prob_mutacion);
 			
 //			System.out.println("");
 //			System.out.println("Mutacion: ");
@@ -115,6 +119,7 @@ public class AlgoritmoEvolutivo {
 //				System.out.println("Fitness: " + crm.getAptitud());
 //			}
 			
+			this.cruce.reproduccion(poblacion, this.prob_cruce);
 
 			if (elitismo) {
 				//Volvemos a integrar a la élite
@@ -238,6 +243,11 @@ public class AlgoritmoEvolutivo {
 			break;
 		}
 		
+	}
+	
+	
+	private void cruce() {
+		this.cruce = new CruceBasico();
 	}
 	
 	

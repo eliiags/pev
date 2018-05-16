@@ -132,8 +132,6 @@ public class FuncionBinaria implements Funcion {
 	}
 	
 	
-	
-	
 	@Override
 	public void muta(int num_nodo) {
 		
@@ -175,6 +173,41 @@ public class FuncionBinaria implements Funcion {
 		nodo.derecha   = this.derecha.hacerCopia();
 		nodo.operacion = this.operacion;
 		return nodo;
+	}
+
+
+
+	@Override
+	public Nodo getNodo(int num_nodo) {
+		if (num_nodo == 0){
+			return this;
+		}
+		
+		Nodo izq = this.izquierda.getNodo(num_nodo - 1);
+		if (izq == null){
+			return izq;
+		}
+		
+		return this.derecha.getNodo(num_nodo - this.izquierda.numNodos() - 1);
+		
+	}
+
+
+
+	@Override
+	public void setNodo(int num_nodo, Nodo nodo) {
+		
+		if (num_nodo == 1) {
+			this.izquierda = nodo;
+			return;
+		}
+		
+		this.izquierda.setNodo(num_nodo - 1, nodo);
+		
+		if ((num_nodo - this.izquierda.numNodos() - 1) > 0){
+			this.derecha.setNodo(num_nodo - this.izquierda.numNodos() - 1, nodo);
+		}
+		
 	}	
 
 }

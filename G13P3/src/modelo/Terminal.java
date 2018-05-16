@@ -92,5 +92,25 @@ public class Terminal implements Nodo {
 		return nodo; 
 	}
 
+
+	@Override
+	public Nodo getNodo(int num_nodo) {
+		
+		if (num_nodo == 0){
+			return this;
+		}
+		
+		return null;
+	}
+
+
+	@Override
+	public void setNodo(int num_nodo, Nodo nodo) {
+		if (num_nodo == 0){
+			
+		}
+		
+	}
+
 	
 }

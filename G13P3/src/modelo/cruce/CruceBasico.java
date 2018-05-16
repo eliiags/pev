@@ -1,4 +1,62 @@
-//package modelo.cruce;
+package modelo.cruce;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import modelo.Cromosoma;
+import modelo.Nodo;
+
+
+public class CruceBasico implements Cruce {
+
+	@Override
+	public void reproduccion(ArrayList<Cromosoma> poblacion, double prob_cruce) {
+		
+		Random random = new Random(System.currentTimeMillis());
+		
+		System.out.println("Individuo 1: " + poblacion.get(0).toString());
+		System.out.println("Individuo 2: " + poblacion.get(1).toString());
+		
+		int aleatorio1 = random.nextInt(poblacion.get(0).numNodos());
+		int aleatorio2 = random.nextInt(poblacion.get(1).numNodos());
+		
+		System.out.println("Aleatorio 1: " + aleatorio1);
+		System.out.println("Aleatorio 2: " + aleatorio2);
+		
+		Nodo hijo1 = poblacion.get(0).getNodo(aleatorio1);
+		Nodo hijo2 = poblacion.get(1).getNodo(aleatorio2);
+		
+		System.out.println("Hijo 1: " + hijo1.toString());
+		System.out.println("Hijo 2: " + hijo2.toString());
+		
+		poblacion.get(0).setNodo(aleatorio1, hijo2);
+		poblacion.get(1).setNodo(aleatorio2, hijo1);
+		
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
 //
 //import java.util.ArrayList;
 //import java.util.Arrays;

@@ -70,6 +70,16 @@ public class Cromosoma {
 		this.modificado = modificado;
 	}
 	
+	
+	public void setNodo(int num_nodo, Nodo nodo){
+		this.raiz.setNodo(num_nodo, nodo);
+	}
+	
+	
+	public Nodo getNodo(int num_nodo){
+		return this.raiz.getNodo(num_nodo);
+	}
+	
 	/************************************************************/
 	
 	

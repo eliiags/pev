@@ -12,6 +12,8 @@ public class Cromosoma {
 	
 	private int num_terminales;
 	
+	private int num_nodos;
+	
 	private Double aptitud;
 	
 	private double relativa;
@@ -42,7 +44,9 @@ public class Cromosoma {
 	public Double getAptitud() {
 		
 		if (this.modificado) {
+			calcularNumNodos();
 			calcularFitness();
+			this.modificado = false;
 		}
 		
 		if (this.aptitud.isNaN() || this.aptitud.isInfinite()) {
@@ -73,6 +77,7 @@ public class Cromosoma {
 	
 	public void setNodo(int num_nodo, Nodo nodo){
 		this.raiz.setNodo(num_nodo, nodo);
+		this.modificado = true;
 	}
 	
 	
@@ -80,6 +85,9 @@ public class Cromosoma {
 		return this.raiz.getNodo(num_nodo);
 	}
 	
+	public int getNumNodos() {
+		return this.num_nodos;
+	}
 	/************************************************************/
 	
 	
@@ -102,6 +110,9 @@ public class Cromosoma {
 			break;
 		}
 		
+		// Calculamos el numero de nodos
+		calcularNumNodos();
+		
 		// Calculamos el fitness
 		calcularFitness();
 	}
@@ -117,8 +128,7 @@ public class Cromosoma {
 			this.aptitud += Math.abs(valor - Datos.getSalida().get(i));
 		}
 
-		this.modificado = false;
-			
+		this.aptitud += this.num_nodos * 0.00001;
 	}
 	
 
@@ -127,23 +137,29 @@ public class Cromosoma {
 		this.acumulada = this.relativa + relativa;
 	}
 
-	public Nodo encuentraNodo(int aleatorio) {
-		return raiz.encuentraNodo(aleatorio);
-	}
+//	public Nodo encuentraNodo(int aleatorio) {
+//		return raiz.encuentraNodo(aleatorio);
+//	}
 	
-	public int numNodos() {
-		return this.raiz.numNodos();
+	private void calcularNumNodos() {
+		this.num_nodos = this.raiz.numNodos();
 	}
 
-	public void muta(int num_nodo) {
-		this.raiz.muta(num_nodo);
+//	public void muta(int num_nodo) {
+//		this.raiz.muta(num_nodo);
+//		this.modificado = true;
+//	}
+	
+	public void muta(int tipo_mutacion, double prob) {
+		this.raiz.muta(tipo_mutacion, prob);
 		this.modificado = true;
 	}
 
 	public Cromosoma hacerCopia() {
 		Cromosoma crm = new Cromosoma(profundidad, num_terminales);
-		crm.raiz = this.raiz.hacerCopia();
-		crm.aptitud = this.aptitud;
+		crm.raiz 	   = this.raiz.hacerCopia();
+		crm.aptitud    = this.aptitud;
+		crm.num_nodos  = this.num_nodos;
 		crm.modificado = false;
 		return crm;
 	}

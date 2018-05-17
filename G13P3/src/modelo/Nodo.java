@@ -25,7 +25,7 @@ public interface Nodo {
 	 * @param aleatorio
 	 * @return el nodo buscado.
 	 */
-	public Nodo encuentraNodo(int aleatorio);
+//	public Nodo encuentraNodo(int aleatorio);
 	
 	/**
 	 * Devuelve el numero de nodos que tiene el arbol. 
@@ -41,10 +41,18 @@ public interface Nodo {
 	 */
 	public void muta(int num_nodo);
 
+	public boolean muta(int tipo_mutacion, double prob);
+
+	public void mutacionArbol(int num_nodo);
+	
+	
 	
 	public Nodo getNodo(int num_nodo);
 	
 	public void setNodo(int num_nodo, Nodo nodo);
+	
+	public boolean esHoja();
+
 	
 	public Nodo hacerCopia();
 	

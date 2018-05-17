@@ -6,6 +6,8 @@ public class FuncionUnaria implements Funcion {
 
 	private static final String[] operadores = { "sqrt", "log" };
 
+	private int[] datos;
+	
 	private Nodo hijo;
 	
 	private String operacion;
@@ -15,6 +17,10 @@ public class FuncionUnaria implements Funcion {
 
 	@Override
 	public void inicializar(int profundidad, int num_terminales) {
+		
+		datos = new int[2];
+		datos[0] = profundidad;
+		datos[1] = num_terminales;
 		
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
@@ -75,16 +81,16 @@ public class FuncionUnaria implements Funcion {
 	}
 	
 
-	@Override
-	public Nodo encuentraNodo(int aleatorio) {
-		
-		if (aleatorio == 0) {
-			return this;
-		}
-
-		return this.hijo.encuentraNodo(aleatorio - 1);
-		
-	}	
+//	@Override
+//	public Nodo encuentraNodo(int aleatorio) {
+//		
+//		if (aleatorio == 0) {
+//			return this;
+//		}
+//
+//		return this.hijo.encuentraNodo(aleatorio - 1);
+//		
+//	}	
 		
 
 	
@@ -130,9 +136,7 @@ public class FuncionUnaria implements Funcion {
 		nodo.operacion = this.operacion;
 		return nodo;
 	}
-
-
-
+	
 	@Override
 	public Nodo getNodo(int num_nodo) {
 		
@@ -154,7 +158,64 @@ public class FuncionUnaria implements Funcion {
 		}
 		
 		this.hijo.setNodo(num_nodo - 1, nodo);
+}
+
+
+
+	@Override
+	public boolean esHoja() {
+		return false;
 	}
-	
+
+
+
+	@Override
+	public boolean muta(int tipo_mutacion, double prob) {
+		
+		double p = Math.random(); 
+		
+		switch (tipo_mutacion) {
+		case 0:
+			if (p > prob) {
+				if (this.operacion == operadores[0]) {
+					this.operacion = operadores[1];
+				}
+				else {
+					this.operacion = operadores[0];
+				}
+				return true;
+			}
+			else {
+				this.hijo.muta(tipo_mutacion, prob);
+			}
+			break;
+		case 1:
+			return this.hijo.muta(tipo_mutacion, prob);
+//			break;
+		default:
+			break;
+		}
+		
+		return false;
+	}
+
+
+
+	@Override
+	public void mutacionArbol(int num_nodo) {
+		
+		if (num_nodo == -1) {
+			return;
+		}
+
+		if (num_nodo == 1) {
+			this.hijo.inicializar(datos[0], datos[1]);
+			return;
+		}
+		
+		this.hijo.muta(num_nodo - 1);
+		
+	}
+
 	
 }

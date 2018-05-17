@@ -1,5 +1,7 @@
 package modelo.algoritmo;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -7,7 +9,7 @@ import modelo.Cromosoma;
 import modelo.cruce.Cruce;
 import modelo.cruce.CruceBasico;
 import modelo.mutacion.Mutacion;
-import modelo.mutacion.MutacionBasica;
+import modelo.mutacion.MutacionManuEli;
 import modelo.seleccion.Seleccion;
 import modelo.seleccion.SeleccionEstocastico;
 import modelo.seleccion.SeleccionManuEli;
@@ -16,8 +18,9 @@ import modelo.seleccion.SeleccionRuleta;
 import modelo.seleccion.SeleccionTorneoDeterministico;
 import modelo.seleccion.SeleccionTorneoProbabilistico;
 import modelo.seleccion.SeleccionTruncamiento;
+import vista.Vista;
 
-public class AlgoritmoEvolutivo {
+public class AlgoritmoEvolutivo implements ActionListener{
 
 	private ArrayList<Cromosoma> poblacion;
 	
@@ -42,33 +45,72 @@ public class AlgoritmoEvolutivo {
 	private Seleccion seleccion;
 	private Cruce cruce;
 	private Mutacion mutacion;
+	private Vista vista;
 	
-	private double prob_mutacion,
+	private double prob_seleccion,
+				   prob_mutacion,
 				   prob_cruce;
+	
+	private double mejor,
+				   media,
+				   absoluto,
+				   generaciones;
 	
 	
 	
 	
 	public AlgoritmoEvolutivo() {
 		
-		this.poblacion = new ArrayList<Cromosoma>();
-		this.tam_poblacion = 3;
-		this.num_generaciones = 2;
-		this.cont_generaciones = 0;
-		this.profundidad = 3;
-		this.num_terminales = 1;
-		seleccion(0);
-		cruce();
-		mutacion();
-		this.prob_mutacion = 0.6;
-		this.prob_cruce    = 1.0;
-		this.elitismo = true;
-		this.porcentaje_elite = 0.5;
-		
 	}	
 
 	
-	public void ejecuta() {
+	public void conectarVista(Vista vista) {
+		this.vista = vista;
+	}
+	
+	
+	public void setDatos(
+			int tam_poblacion,
+			int num_generaciones,
+			double porcentaje_elite,
+			int opcion_seleccion,
+			int opcion_cruce,
+			int opcion_mutacion,
+			double prob_seleccion,
+			double prob_cruce,
+			double prob_mutacion, 
+			int profundidad,
+			int terminales, 
+			int inicializacion) {
+
+		
+		this.tam_poblacion = tam_poblacion;
+		
+		this.num_generaciones  = num_generaciones;
+		this.cont_generaciones = 0;
+		
+		this.porcentaje_elite = porcentaje_elite;
+		
+		this.prob_seleccion = prob_seleccion;
+		this.prob_cruce     = prob_cruce;
+		this.prob_mutacion  = prob_mutacion;
+	
+		this.profundidad    = profundidad;
+		this.num_terminales = terminales;
+		
+		this.poblacion = new ArrayList<Cromosoma>();
+		
+		seleccion(opcion_seleccion);
+		cruce();
+		mutacion();
+		
+		boolean elite = this.porcentaje_elite == 0.0 ? false : true; 
+		
+		this.ejecuta(elite);
+	}
+	
+	
+	public void ejecuta(boolean elitismo) {
 		
 		int tam_elite = 0;
 		
@@ -110,8 +152,11 @@ public class AlgoritmoEvolutivo {
 //				System.out.println("Fitness: " + crm.getAptitud());
 //			}
 			
-//			this.mutacion.muta(poblacion, this.prob_mutacion);
+//			this.cruce.reproduccion(poblacion, this.prob_cruce);
 			
+
+			this.mutacion.muta(poblacion, this.prob_mutacion);
+
 //			System.out.println("");
 //			System.out.println("Mutacion: ");
 //			for (Cromosoma crm: poblacion) {
@@ -119,8 +164,6 @@ public class AlgoritmoEvolutivo {
 //				System.out.println("Fitness: " + crm.getAptitud());
 //			}
 			
-			this.cruce.reproduccion(poblacion, this.prob_cruce);
-
 			if (elitismo) {
 				//Volvemos a integrar a la élite
 				incluirMejores(elite);
@@ -134,6 +177,9 @@ public class AlgoritmoEvolutivo {
 //			}
 			
 			evaluarPoblacion();
+			actualizarValoresGrafica();
+			this.vista.actualiza(this.generaciones, this.media, 
+					 this.mejor, this.absoluto, "");
 //			actualizarValoresGrafica();
 
 //			System.out.println("");
@@ -154,6 +200,7 @@ public class AlgoritmoEvolutivo {
 		System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());
 		System.out.println("");
 		
+		this.vista.borrarDatos();
 		
 	}
 	
@@ -252,7 +299,7 @@ public class AlgoritmoEvolutivo {
 	
 	
 	private void mutacion() {
-		this.mutacion = new MutacionBasica();
+		this.mutacion = new MutacionManuEli();
 	}
 	
 	
@@ -325,7 +372,122 @@ public class AlgoritmoEvolutivo {
 		}
 		
 	}
+
+	public void actualizarValoresGrafica() {
+
+		//			this.media_fitness.add(this.total_fitness / this.tam_poblacion);
+		//			this.mejor_fitness.add(this.el_mejor.getAptitud());
+		//			this.mejor_absoluto.add(this.el_mejor_absoluto.getAptitud());
+		//			
+
+		if (this.cont_generaciones < this.num_generaciones) {
+			
+			this.media = this.total_fitness / this.tam_poblacion;
+			this.mejor = this.mejor_cromosoma.getAptitud();
+			this.absoluto     = this.mejor_absoluto.getAptitud();
+			this.generaciones = this.cont_generaciones;
+			
+				System.out.println("Gen: [" + this.cont_generaciones + "] Fitness: " + mejor_absoluto.getAptitud());
+				System.out.println("Gen: [" + this.cont_generaciones + "] Media  : " + media);
+				System.out.println(mejor_absoluto.toString());
+			}
+
+			this.cont_generaciones++;
+			
+	}
+
 	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		String comando  = e.getActionCommand();
+
+		if (comando == "INICIAR") {
+			new Thread() {
+				@Override
+				public void run () {
+					iniciar();
+				}
+			}.start();
+		}
+		
+	}
+	
+	
+	
+	
+	@SuppressWarnings("static-access")
+	public void iniciar() {
+
+		// Hacemos las conversiones
+        int tam_poblacion;
+        int num_generaciones;
+        double prob_seleccion;
+        double prob_cruce;
+        double prob_mutacion;
+        double porcentaje_elite; 
+        int opcion_seleccion;
+        int opcion_cruce;
+        int opcion_mutacion;
+        int profundidad;
+        int terminales;
+        int inicializacion;
+		
+		// Obtenemos los valores
+        tam_poblacion = Integer.parseInt(this.vista.getTextFieldPoblacion().getText());
+        num_generaciones = Integer.parseInt(this.vista.getTextFieldGeneraciones().getText()); 
+        
+        prob_seleccion = Double.parseDouble(this.vista.getTextFieldSeleccion().getText());
+        prob_cruce     = Double.parseDouble(this.vista.getTextFieldCruces().getText());
+        prob_mutacion  = Double.parseDouble(this.vista.getTextFieldMutacion().getText());
+        
+        porcentaje_elite = Double.parseDouble(this.vista.getTextFieldElitismo().getText());
+        
+        opcion_seleccion = this.vista.getComboBoxOpcionSeleccion().getSelectedIndex();
+        opcion_cruce     = this.vista.getComboBoxOpcionCruce().getSelectedIndex();
+        opcion_mutacion  = this.vista.getComboBoxOpcionMutacion().getSelectedIndex();
+
+        profundidad = Integer.parseInt(this.vista.getTextFieldProfundidad().getText());
+        terminales  = Integer.parseInt(this.vista.getTextFieldTerminales().getText());
+        inicializacion = this.vista.getComboBoxInicializacion().getSelectedIndex();
+		
+        // Creamos el algoritmo genetico
+		setDatos(
+				tam_poblacion, 
+        		num_generaciones, 
+        		porcentaje_elite, 
+        		
+        		opcion_seleccion, 
+        		opcion_cruce, 
+        		opcion_mutacion, 
+        		
+        		prob_seleccion, 
+        		prob_cruce, 
+        		prob_mutacion, 
+        		
+				profundidad,
+				terminales, 
+				inicializacion);
+	
+	}
 	
 	
 }

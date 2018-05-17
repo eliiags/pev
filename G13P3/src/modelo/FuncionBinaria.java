@@ -3,10 +3,13 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class FuncionBinaria implements Funcion {
 	
 	private static final String[] operadores = { "+", "-", "*", "/" };
 
+	private int[] datos;
+	
 	private String operacion;
 
 	private Nodo izquierda,
@@ -15,6 +18,11 @@ public class FuncionBinaria implements Funcion {
 	
 	@Override
 	public void inicializar(int profundidad, int num_terminales) {
+		
+		datos = new int[2];
+		datos[0] = profundidad;
+		datos[1] = num_terminales;
+		
 		
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
@@ -71,7 +79,6 @@ public class FuncionBinaria implements Funcion {
 	}
 	
 
-	
 	@Override
 	public double getValor(double valor) {
 		return getResultado(valor);
@@ -104,26 +111,26 @@ public class FuncionBinaria implements Funcion {
 
 	
 	
-	@Override
-	public Nodo encuentraNodo(int aleatorio) {
-		
-		if (aleatorio == 0) {
-			return this;
-		}
-		else {
-			Nodo izq = this.izquierda.encuentraNodo(aleatorio - 1);
-			if (izq != null) {
-				return izq;
-			}
-
-			Nodo der = this.derecha.encuentraNodo(aleatorio - this.izquierda.numNodos() - 1);
-			if (der != null) {
-				return der;
-			}
-		}
-		
-		return null;
-	}
+//	@Override
+//	public Nodo encuentraNodo(int aleatorio) {
+//		
+//		if (aleatorio == 0) {
+//			return this;
+//		}
+//		else {
+//			Nodo izq = this.izquierda.encuentraNodo(aleatorio - 1);
+//			if (izq != null) {
+//				return izq;
+//			}
+//
+//			Nodo der = this.derecha.encuentraNodo(aleatorio - this.izquierda.numNodos() - 1);
+//			if (der != null) {
+//				return der;
+//			}
+//		}
+//		
+//		return null;
+//	}
 
 	
 	@Override
@@ -131,11 +138,11 @@ public class FuncionBinaria implements Funcion {
 		return 1 + this.izquierda.numNodos() + this.derecha.numNodos();
 	}
 	
-	
+
 	@Override
 	public void muta(int num_nodo) {
 		
-		Random random = new Random();
+		Random random = new Random();		
 		
 		if (num_nodo == -1) {
 			return;
@@ -165,7 +172,6 @@ public class FuncionBinaria implements Funcion {
 	}
 
 
-
 	@Override
 	public Nodo hacerCopia() {
 		FuncionBinaria nodo = new FuncionBinaria();
@@ -173,10 +179,9 @@ public class FuncionBinaria implements Funcion {
 		nodo.derecha   = this.derecha.hacerCopia();
 		nodo.operacion = this.operacion;
 		return nodo;
-	}
+	}	
 
-
-
+	
 	@Override
 	public Nodo getNodo(int num_nodo) {
 		if (num_nodo == 0){
@@ -184,14 +189,13 @@ public class FuncionBinaria implements Funcion {
 		}
 		
 		Nodo izq = this.izquierda.getNodo(num_nodo - 1);
-		if (izq == null){
+		if (izq != null){
 			return izq;
 		}
 		
 		return this.derecha.getNodo(num_nodo - this.izquierda.numNodos() - 1);
 		
 	}
-
 
 
 	@Override
@@ -202,12 +206,88 @@ public class FuncionBinaria implements Funcion {
 			return;
 		}
 		
-		this.izquierda.setNodo(num_nodo - 1, nodo);
-		
 		if ((num_nodo - this.izquierda.numNodos() - 1) > 0){
 			this.derecha.setNodo(num_nodo - this.izquierda.numNodos() - 1, nodo);
 		}
+		else {
+			this.izquierda.setNodo(num_nodo - 1, nodo);
+		}
 		
-	}	
+	}
+
+
+
+	@Override
+	public boolean esHoja() {
+		return false;
+	}
+
+
+	@Override
+	public boolean muta(int tipo_mutacion, double prob) {
+
+		Random random = new Random(System.currentTimeMillis());
+		double p = Math.random(); 
+		boolean izq = false;
+		
+		switch (tipo_mutacion) {
+		case 0:
+			if (p < prob) {
+				ArrayList<String> aleatorios = new ArrayList<String>();
+				
+				for (int j = 0; j < operadores.length; j++) {
+					aleatorios.add(operadores[j]);
+				}
+				
+				aleatorios.remove(this.operacion);
+				this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
+				
+				return true;
+			}
+			else {
+				if (!this.izquierda.muta(tipo_mutacion, prob)) {
+					this.derecha.muta(tipo_mutacion, prob);
+				}
+			}
+			break;
+		case 1:
+			
+			izq = this.izquierda.muta(tipo_mutacion, prob);
+			
+			if (!izq) {
+				 return this.derecha.muta(tipo_mutacion, prob);
+			}
+			break;
+		default:
+			break;
+		}
+		
+		return izq;
+		
+	}
+
+
+	@Override
+	public void mutacionArbol(int num_nodo) {
+		
+		if (num_nodo == -1) {
+			return;
+		}
+
+		if (num_nodo == 1) {
+			this.izquierda.inicializar(datos[0], datos[1]);
+			return;
+		}
+		
+		if ((num_nodo - this.izquierda.numNodos() - 1) > 0) {
+			this.derecha.muta(num_nodo - this.izquierda.numNodos() - 1);
+		}
+		else {
+			this.izquierda.muta(num_nodo - 1);
+		}
+		
+	}
+
+
 
 }

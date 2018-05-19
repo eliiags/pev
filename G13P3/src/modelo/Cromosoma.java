@@ -52,8 +52,8 @@ public class Cromosoma {
 			this.modificado = false;
 		}
 		
-		if (this.aptitud.isNaN() || this.aptitud.isInfinite()) {
-			this.aptitud = 1.0E3;
+		if (this.aptitud.isNaN() || this.aptitud.isInfinite() || this.aptitud > 1000.0) {
+			this.aptitud = 1000.0;
 		}
 		
 		return this.aptitud;
@@ -155,7 +155,7 @@ public class Cromosoma {
 			this.aptitud += Math.abs(valor - Datos.getSalida().get(i));
 		}
 
-		this.aptitud += this.num_nodos * 0.0001;
+		this.aptitud += this.num_nodos * 0.001;
 	}
 	
 
@@ -179,6 +179,10 @@ public class Cromosoma {
 		this.modificado = true;
 	}
 
+	public void hacerPoda() {
+		this.raiz.hacerPoda(this.profundidad - 1);
+	}
+	
 	public Cromosoma hacerCopia() {
 		Cromosoma crm = new Cromosoma(profundidad, num_terminales, tipo_ini);
 		crm.raiz 	   = this.raiz.hacerCopia();

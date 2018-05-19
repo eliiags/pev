@@ -21,12 +21,15 @@ public interface Nodo {
 	public int numNodosTerminales();
 	
 	
+	public boolean esHoja();
 	
 	public void muta(int num_nodo);
 	
 	public boolean muta(int num_nodo, int tipo_mutacion);
 	
-
+	
+	public void hacerPoda(int profundidad);
+	
 	public Nodo hacerCopia();
 	
 	public String toString();

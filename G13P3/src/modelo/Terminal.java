@@ -80,6 +80,12 @@ public class Terminal implements Nodo {
 
 	
 	@Override
+	public boolean esHoja() {
+		return true;
+	}
+	
+	
+	@Override
 	public void muta(int num_nodo) {
 		
 		if (num_nodo == -1) {
@@ -132,6 +138,12 @@ public class Terminal implements Nodo {
 		
 	}
 
+	
+	@Override
+	public void hacerPoda(int profundidad) {
+		
+	}
+	
 	
 	@Override
 	public Nodo hacerCopia() {

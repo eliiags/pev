@@ -78,11 +78,11 @@ public class Vista extends javax.swing.JFrame {
 
         LabelPoblacion.setText("Poblacion");
 
-        TextFieldPoblacion.setText("50");
+        TextFieldPoblacion.setText("5");
 
         LabelGeneraciones.setText("Generaciones");
 
-        TextFieldGeneraciones.setText("200");
+        TextFieldGeneraciones.setText("2");
 
         LabelElitismo.setText("Elitismo");
 
@@ -106,7 +106,7 @@ public class Vista extends javax.swing.JFrame {
         ComboBoxOpcionCruces.setModel(new javax.swing.DefaultComboBoxModel<>(
         		new String[] { "Basico" }));
 
-        TextFieldCruces.setText("0.6");
+        TextFieldCruces.setText("0.7");
 
         LabelOpcionMutacion.setText("Mutacion");
 

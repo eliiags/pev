@@ -17,8 +17,8 @@ public class MutacionArbol implements Mutacion{
 			double prob = random.nextDouble();
 
 			if (prob < prob_mutacion) {
-				
-//				System.out.println(crm.toString());
+				System.out.println("Mutacion: ");
+				System.out.println(crm.toString());
 				
 				// Generamos un numero aleatorio entre 0 y numNodos
 				int nodo = random.nextInt(crm.getNumNodos(2));
@@ -26,7 +26,7 @@ public class MutacionArbol implements Mutacion{
 				// Muta
 				crm.muta(nodo, 2);
 				
-//				System.out.println(crm.toString());
+				System.out.println(crm.toString());
 			}
 
 		}

@@ -147,7 +147,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 //			}
 
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
-			poblacion = seleccion.seleccionar(poblacion);
+//			poblacion = seleccion.seleccionar(poblacion);
 			
 //			System.out.println("");
 //			System.out.println("Seleccion: ");
@@ -159,7 +159,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			this.cruce.reproduccion(poblacion, this.prob_cruce);
 			
 
-			this.mutacion.muta(poblacion, this.prob_mutacion);
+//			this.mutacion.muta(poblacion, this.prob_mutacion);
 
 //			System.out.println("");
 //			System.out.println("Mutacion: ");
@@ -198,6 +198,13 @@ public class AlgoritmoEvolutivo implements ActionListener{
 //			System.out.println("");
 			cont_generaciones++;
 		}
+		
+		System.out.println("Poblacion inicial: ");
+		for (Cromosoma crm: poblacion) {
+			System.out.println(crm.toString());
+			System.out.println("Fitness: " + crm.getAptitud());
+		}
+		
 		
 		System.out.println("El mejor es: " + this.mejor_absoluto.toString());
 		System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());

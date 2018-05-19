@@ -39,17 +39,38 @@ public class CruceBasico implements Cruce {
 		
 			Random random = new Random(System.currentTimeMillis());
 			
+			System.out.println("Padre 1: " + poblacion.get(seleccionado_cruce[i]).toString());
+			System.out.println("Padre 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
+			
 			int aleatorio1 = random.nextInt(poblacion.get(seleccionado_cruce[i]).getNumNodos(0) - 1);
 			int aleatorio2 = random.nextInt(poblacion.get(seleccionado_cruce[i+1]).getNumNodos(0) - 1);
+
+			System.out.println(aleatorio1);
+			System.out.println(aleatorio2);
 			
 			Nodo hijo1 = poblacion.get(seleccionado_cruce[i]).getNodo(aleatorio1 + 1).hacerCopia();
 			Nodo hijo2 = poblacion.get(seleccionado_cruce[i+1]).getNodo(aleatorio2 + 1).hacerCopia();
 			
+			System.out.println("Parte padre 1: " + hijo1.toString());
+			System.out.println("Parte padre 2: " + hijo2.toString());
+			
 			poblacion.get(seleccionado_cruce[i]).setNodo(aleatorio1 + 1, hijo2);
 			poblacion.get(seleccionado_cruce[i+1]).setNodo(aleatorio2 + 1, hijo1);
 			
+			System.out.println("Hijo 1: " + poblacion.get(seleccionado_cruce[i]).toString());
+			System.out.println("Hijo 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
+			
+			poblacion.get(seleccionado_cruce[i]).hacerPoda();
+			poblacion.get(seleccionado_cruce[i+1]).hacerPoda();
+			
+			System.out.println("Poda 1: " + poblacion.get(seleccionado_cruce[i]).toString());
+			System.out.println("Poda 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
+			
+			System.out.println("----");
 		}
 		
+		
 	}
+	
 	
 }

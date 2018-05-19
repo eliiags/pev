@@ -135,6 +135,12 @@ public class FuncionUnaria implements Nodo {
 
 	
 	@Override
+	public boolean esHoja() {
+		return false;
+	}
+	
+	
+	@Override
 	public void muta(int num_nodo) {
 		
 		if (num_nodo == -1) {
@@ -182,7 +188,7 @@ public class FuncionUnaria implements Nodo {
 			}
 			
 			if (num_nodo == 1) {
-				this.hijo.inicializar(datos[0], datos[1], datos[2]);
+				this.hijo.inicializar(datos[0] - 1, datos[1], datos[2]);
 				return true;
 			}
 			
@@ -197,6 +203,20 @@ public class FuncionUnaria implements Nodo {
 		return false;
 	}
 
+	
+	@Override
+	public void hacerPoda(int profundidad) {
+		
+		if (profundidad == 1 && !this.hijo.esHoja()) {
+			this.hijo = new Terminal();
+			this.hijo.inicializar(profundidad, datos[1], datos[2]);
+			return;
+		}
+		
+		this.hijo.hacerPoda(profundidad - 1);
+		
+	}
+	
 	
 	@Override
 	public Nodo hacerCopia() {

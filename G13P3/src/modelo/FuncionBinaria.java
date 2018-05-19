@@ -182,6 +182,12 @@ public class FuncionBinaria implements Nodo {
 
 	
 	@Override
+	public boolean esHoja() {
+		return false;
+	}
+	
+	
+	@Override
 	public void muta(int num_nodo) {
 		
 		Random random = new Random();		
@@ -251,7 +257,7 @@ public class FuncionBinaria implements Nodo {
 			}
 			
 			if (num_nodo == 1) {
-				this.izquierda.inicializar(datos[0], datos[1], datos[2]);
+				this.izquierda.inicializar(datos[0] - 1, datos[1], datos[2]);
 				return true;
 			}
 			
@@ -259,7 +265,7 @@ public class FuncionBinaria implements Nodo {
 				return this.derecha.muta(num_nodo - (this.izquierda.numNodosBinarios() + this.izquierda.numNodosUnarios()) - 1, tipo_mutacion);
 			}
 			break;
-		case 3:
+		case 3: // PERMUTACION
 			if (num_nodo == 0) {
 				Nodo aux = this.izquierda.hacerCopia();
 				this.izquierda = this.derecha.hacerCopia();
@@ -267,7 +273,9 @@ public class FuncionBinaria implements Nodo {
 				return true;
 			}
 			
-			if (!this.izquierda.muta(num_nodo - 1, tipo_mutacion)) {
+			izq = this.izquierda.muta(num_nodo - 1, tipo_mutacion);
+			
+			if (!izq) {
 				return this.derecha.muta(num_nodo - this.izquierda.numNodosBinarios() - 1, tipo_mutacion);
 			}
 			break;
@@ -279,6 +287,23 @@ public class FuncionBinaria implements Nodo {
 
 	}
 
+	
+	@Override
+	public void hacerPoda(int profundidad) {
+		
+		if (profundidad == 1 && !this.izquierda.esHoja() && !this.derecha.esHoja()) {
+			this.izquierda = new Terminal();
+			this.izquierda.inicializar(profundidad, datos[1], datos[2]);
+			this.derecha   = new Terminal();
+			this.derecha.inicializar(profundidad, datos[1], datos[2]);
+			return;
+		}
+		
+		this.izquierda.hacerPoda(profundidad - 1);
+		this.derecha.hacerPoda(profundidad - 1);
+		
+	}
+	
 	
 	@Override
 	public Nodo hacerCopia() {

@@ -110,7 +110,7 @@ public class Terminal implements Nodo {
 		Random random = new Random(System.currentTimeMillis());
 		
 		switch (tipo_mutacion) {
-		case 1: // Terminal
+		case 1: // TERMINAL
 			if (num_nodo == 0) {
 				ArrayList<Character> terminales = new ArrayList<Character>();
 				
@@ -124,7 +124,7 @@ public class Terminal implements Nodo {
 				return true;
 			}
 			break;
-		default: // Funcional // Arbol // Permutacion
+		default: // FUNCIONAL // ARBOL // PERMUTACION
 			break;
 		}
 		

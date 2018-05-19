@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class FuncionBinaria implements Funcion {
+public class FuncionBinaria implements Nodo {
 	
 	private static final String[] operadores = { "+", "-", "*", "/" };
 
@@ -246,13 +246,17 @@ public class FuncionBinaria implements Funcion {
 			}
 			break;
 		case 2: // ARBOL
+			if (num_nodo == 0) {
+				return true;
+			}
+			
 			if (num_nodo == 1) {
 				this.izquierda.inicializar(datos[0], datos[1], datos[2]);
 				return true;
 			}
 			
 			if (!this.izquierda.muta(num_nodo - 1, tipo_mutacion)) {
-				this.derecha.muta(num_nodo - 1, tipo_mutacion);
+				return this.derecha.muta(num_nodo - (this.izquierda.numNodosBinarios() + this.izquierda.numNodosUnarios()) - 1, tipo_mutacion);
 			}
 			break;
 		case 3:
@@ -282,6 +286,7 @@ public class FuncionBinaria implements Funcion {
 		nodo.izquierda = this.izquierda.hacerCopia();
 		nodo.derecha   = this.derecha.hacerCopia();
 		nodo.operacion = this.operacion;
+		nodo.datos = this.datos;
 		return nodo;
 	}
 	

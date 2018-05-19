@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.Random;
 
-public class FuncionUnaria implements Funcion {
+public class FuncionUnaria implements Nodo {
 
 	private static final String[] operadores = { "sqrt", "log" };
 
@@ -177,6 +177,10 @@ public class FuncionUnaria implements Funcion {
 		case 1: // TERMINAL
 			return this.hijo.muta(num_nodo, tipo_mutacion);
 		case 2: // ARBOL
+			if (num_nodo == 0) {
+				return true;
+			}
+			
 			if (num_nodo == 1) {
 				this.hijo.inicializar(datos[0], datos[1], datos[2]);
 				return true;
@@ -199,6 +203,7 @@ public class FuncionUnaria implements Funcion {
 		FuncionUnaria nodo = new FuncionUnaria();
 		nodo.hijo = this.hijo.hacerCopia();
 		nodo.operacion = this.operacion;
+		nodo.datos = this.datos;
 		return nodo;
 	}
 	

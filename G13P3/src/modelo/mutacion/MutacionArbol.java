@@ -18,12 +18,15 @@ public class MutacionArbol implements Mutacion{
 
 			if (prob < prob_mutacion) {
 				
+//				System.out.println(crm.toString());
+				
 				// Generamos un numero aleatorio entre 0 y numNodos
 				int nodo = random.nextInt(crm.getNumNodos(2));
 				
 				// Muta
 				crm.muta(nodo, 2);
 				
+//				System.out.println(crm.toString());
 			}
 
 		}

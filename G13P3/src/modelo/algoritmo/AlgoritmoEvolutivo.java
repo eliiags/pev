@@ -127,11 +127,11 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		crearPoblacion();
 		evaluarPoblacion();
 
-		System.out.println("Poblacion inicial: ");
-		for (Cromosoma crm: poblacion) {
-			System.out.println(crm.toString());
-			System.out.println("Fitness: " + crm.getAptitud());
-		}
+//		System.out.println("Poblacion inicial: ");
+//		for (Cromosoma crm: poblacion) {
+//			System.out.println(crm.toString());
+//			System.out.println("Fitness: " + crm.getAptitud());
+//		}
 		
 		for (int i = 0; i < this.num_generaciones; i++){
 			
@@ -147,7 +147,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 //			}
 
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
-//			poblacion = seleccion.seleccionar(poblacion);
+			poblacion = seleccion.seleccionar(poblacion);
 			
 //			System.out.println("");
 //			System.out.println("Seleccion: ");
@@ -156,7 +156,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 //				System.out.println("Fitness: " + crm.getAptitud());
 //			}
 			
-//			this.cruce.reproduccion(poblacion, this.prob_cruce);
+			this.cruce.reproduccion(poblacion, this.prob_cruce);
 			
 
 			this.mutacion.muta(poblacion, this.prob_mutacion);
@@ -315,7 +315,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			this.seleccion = new SeleccionTorneoProbabilistico();
 			break;
 		case 6:
-			this.seleccion = new SeleccionTruncamiento(0.5);
+			this.seleccion = new SeleccionTruncamiento(this.prob_seleccion);
 			break;
 		default:
 			break;
@@ -414,22 +414,9 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		return (int) Math.ceil(this.tam_poblacion * this.porcentaje_elite / 100);
 	}	
 	
-	
-//	private void pinta() {
-//		
-//		for (Cromosoma crm: poblacion) {
-//			System.out.println(crm.toString());
-//			System.out.println(crm.getAptitud());
-//		}
-//		
-//	}
+
 
 	public void actualizarValoresGrafica() {
-
-		//			this.media_fitness.add(this.total_fitness / this.tam_poblacion);
-		//			this.mejor_fitness.add(this.el_mejor.getAptitud());
-		//			this.mejor_absoluto.add(this.el_mejor_absoluto.getAptitud());
-		//			
 
 		if (this.cont_generaciones < this.num_generaciones) {
 			
@@ -438,12 +425,8 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			this.absoluto     = this.mejor_absoluto.getAptitud();
 			this.generaciones = this.cont_generaciones;
 			
-//				System.out.println("Gen: [" + this.cont_generaciones + "] Fitness: " + mejor_absoluto.getAptitud());
-//				System.out.println("Gen: [" + this.cont_generaciones + "] Media  : " + media);
-//				System.out.println(mejor_absoluto.toString());
-			}
+		}
 
-			this.cont_generaciones++;
 			
 	}
 
@@ -485,7 +468,6 @@ public class AlgoritmoEvolutivo implements ActionListener{
 	
 	
 	
-	@SuppressWarnings("static-access")
 	public void iniciar() {
 
 		// Hacemos las conversiones

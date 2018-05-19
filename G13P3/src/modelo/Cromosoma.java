@@ -50,7 +50,7 @@ public class Cromosoma {
 		}
 		
 		if (this.aptitud.isNaN() || this.aptitud.isInfinite()) {
-			this.aptitud = 1.0E10;
+			this.aptitud = 1.0E3;
 		}
 		
 		return this.aptitud;
@@ -85,8 +85,32 @@ public class Cromosoma {
 		return this.raiz.getNodo(num_nodo);
 	}
 	
-	public int getNumNodos() {
-		return this.num_nodos;
+	
+	/**
+	 * Devuelve el numero de nodos que hay dado el tipo.
+	 *    0 - Todos los nodos.
+	 *    1 - Unicamente nodos binarios
+	 *    2 - Nodos funcionales
+	 *    3 - Nodos Terminales
+	 * @param tipo_nodo
+	 * @return
+	 */
+	public int getNumNodos(int tipo_nodo) {
+		
+		switch (tipo_nodo) {
+		case 0: // Todos los nodos
+			return this.num_nodos;
+		case 1: // Nodos Binarios
+			return this.raiz.numNodosBinarios();
+		case 2: // Nodos Funcionales
+			return this.raiz.numNodosBinarios() + this.raiz.numNodosUnarios();
+		case 3: // Nodos Terminales
+			return this.raiz.numNodosTerminales();
+		default:
+			break;
+		}
+		
+		return 0;
 	}
 	/************************************************************/
 	
@@ -128,7 +152,7 @@ public class Cromosoma {
 			this.aptitud += Math.abs(valor - Datos.getSalida().get(i));
 		}
 
-		this.aptitud += this.num_nodos * 0.00001;
+		this.aptitud += this.num_nodos * 0.0001;
 	}
 	
 
@@ -137,21 +161,18 @@ public class Cromosoma {
 		this.acumulada = this.relativa + relativa;
 	}
 
-//	public Nodo encuentraNodo(int aleatorio) {
-//		return raiz.encuentraNodo(aleatorio);
-//	}
-	
+
 	private void calcularNumNodos() {
 		this.num_nodos = this.raiz.numNodos();
 	}
 
-//	public void muta(int num_nodo) {
-//		this.raiz.muta(num_nodo);
-//		this.modificado = true;
-//	}
+	public void muta(int num_nodo) {
+		this.raiz.muta(num_nodo);
+		this.modificado = true;
+	}
 	
-	public void muta(int tipo_mutacion, double prob) {
-		this.raiz.muta(tipo_mutacion, prob);
+	public void muta(int num_nodos, int tipo_mutacion) {
+		this.raiz.muta(num_nodos, tipo_mutacion);
 		this.modificado = true;
 	}
 

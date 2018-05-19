@@ -5,7 +5,7 @@ import java.util.Random;
 
 import modelo.Cromosoma;
 
-public class MutacionFuncional implements Mutacion {
+public class MutacionPermutacion implements Mutacion{
 
 	@Override
 	public void muta(ArrayList<Cromosoma> poblacion, double prob_mutacion) {
@@ -18,16 +18,18 @@ public class MutacionFuncional implements Mutacion {
 
 			if (prob < prob_mutacion) {
 				
-				// Generamos un numero aleatorio entre 0 y numNodos
-				int nodo = random.nextInt(crm.getNumNodos(2));
+				int nodo = crm.getNumNodos(1);
 				
-				// Muta
-				crm.muta(nodo, 0);
+				if (nodo != 0) {
+					// Generamos un numero aleatorio entre 0 y numNodos
+					nodo = random.nextInt(nodo);
+					// Muta
+					crm.muta(nodo, 3);
+				}
 				
 			}
 
 		}
-
 		
 	}
 

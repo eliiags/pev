@@ -9,7 +9,11 @@ import modelo.Cromosoma;
 import modelo.cruce.Cruce;
 import modelo.cruce.CruceBasico;
 import modelo.mutacion.Mutacion;
+import modelo.mutacion.MutacionArbol;
+import modelo.mutacion.MutacionFuncional;
 import modelo.mutacion.MutacionManuEli;
+import modelo.mutacion.MutacionPermutacion;
+import modelo.mutacion.MutacionTerminal;
 import modelo.seleccion.Seleccion;
 import modelo.seleccion.SeleccionEstocastico;
 import modelo.seleccion.SeleccionManuEli;
@@ -36,8 +40,6 @@ public class AlgoritmoEvolutivo implements ActionListener{
 	private Cromosoma mejor_cromosoma,
 					  mejor_absoluto;
 	
-	
-	private boolean elitismo;
 	
 	private double porcentaje_elite;
 	
@@ -102,7 +104,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		
 		seleccion(opcion_seleccion);
 		cruce();
-		mutacion();
+		mutacion(opcion_mutacion);
 		
 		boolean elite = this.porcentaje_elite == 0.0 ? false : true; 
 		
@@ -180,7 +182,6 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			actualizarValoresGrafica();
 			this.vista.actualiza(this.generaciones, this.media, 
 					 this.mejor, this.absoluto, "");
-//			actualizarValoresGrafica();
 
 //			System.out.println("");
 //			System.out.println("El mejor de esta generacion es: " + this.mejor_cromosoma.toString());
@@ -203,6 +204,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		this.vista.borrarDatos();
 		
 	}
+	
 	
 	
 	/**
@@ -298,8 +300,28 @@ public class AlgoritmoEvolutivo implements ActionListener{
 	}
 	
 	
-	private void mutacion() {
-		this.mutacion = new MutacionManuEli();
+	private void mutacion(int mutacion) {
+
+		switch (mutacion) {
+		case 0:
+			this.mutacion = new MutacionArbol();
+			break;
+		case 1:
+			this.mutacion = new MutacionFuncional();
+			break;
+		case 2:
+			this.mutacion = new MutacionManuEli();
+			break;
+		case 3:
+			this.mutacion = new MutacionPermutacion();
+			break;
+		case 4:
+			this.mutacion = new MutacionTerminal();
+			break;
+		default:
+			break;
+		}
+	
 	}
 	
 	
@@ -387,9 +409,9 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			this.absoluto     = this.mejor_absoluto.getAptitud();
 			this.generaciones = this.cont_generaciones;
 			
-				System.out.println("Gen: [" + this.cont_generaciones + "] Fitness: " + mejor_absoluto.getAptitud());
-				System.out.println("Gen: [" + this.cont_generaciones + "] Media  : " + media);
-				System.out.println(mejor_absoluto.toString());
+//				System.out.println("Gen: [" + this.cont_generaciones + "] Fitness: " + mejor_absoluto.getAptitud());
+//				System.out.println("Gen: [" + this.cont_generaciones + "] Media  : " + media);
+//				System.out.println(mejor_absoluto.toString());
 			}
 
 			this.cont_generaciones++;

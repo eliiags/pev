@@ -13,6 +13,30 @@ public class Terminal implements Nodo {
 	
 	
 	@Override
+	public Nodo getNodo(int num_nodo) {
+		
+		if (num_nodo == 0){
+			return this;
+		}
+		
+		return null;
+	
+	}
+
+
+	@Override
+	public void setNodo(int num_nodo, Nodo nodo) {
+		
+	}
+
+	
+	@Override
+	public double getValor(double valor) {
+		return valor;
+	}
+	
+	
+	@Override
 	public void inicializar(int profundidad, int num_terminales) {
 		
 		datos = new int[2];
@@ -36,24 +60,7 @@ public class Terminal implements Nodo {
 		
 	}
 	
-	
-	@Override
-	public double getValor(double valor) {
-		return valor;
-	}
 
-	
-//	@Override
-//	public Nodo encuentraNodo(int aleatorio) {
-//		
-//		if (aleatorio == 0) {
-//			return this;
-//		}
-//		
-//		return null;
-//	}
-
-	
 	@Override
 	public int numNodos() {
 		return 1;
@@ -61,13 +68,31 @@ public class Terminal implements Nodo {
 
 	
 	@Override
-	public void muta(int numNodo) {
+	public int numNodosBinarios() {
+		return 0;
+	}
 
-		if (numNodo == -1) {
+	
+	@Override
+	public int numNodosUnarios() {
+		return 0;
+	}
+
+	
+	@Override
+	public int numNodosTerminales() {
+		return 1;
+	}
+
+	
+	@Override
+	public void muta(int num_nodo) {
+		
+		if (num_nodo == -1) {
 			return;
 		}
 		
-		if (numNodo == 0) {
+		if (num_nodo == 0) {
 
 			Random random = new Random();
 			
@@ -85,52 +110,14 @@ public class Terminal implements Nodo {
 	}
 
 	
-	public String toString() {
-		return this.terminal;
-	}
-
-
 	@Override
-	public Nodo hacerCopia() {
-		Terminal nodo = new Terminal();
-		nodo.terminal = this.terminal;
-		nodo.num_terminales = this.num_terminales;
-		return nodo; 
-	}
-	
-	@Override
-	public Nodo getNodo(int num_nodo) {
+	public boolean muta(int num_nodo, int tipo_mutacion) {
 		
-		if (num_nodo == 0){
-			return this;
-		}
-		
-		return null;
-	}
-
-
-	@Override
-	public void setNodo(int num_nodo, Nodo nodo) {
-		
-	}
-
-
-	@Override
-	public boolean esHoja() {
-		return true;
-	}
-
-
-	@Override
-	public boolean muta(int tipo_mutacion, double prob) {
 		Random random = new Random(System.currentTimeMillis());
-		double p = Math.random(); 
 		
 		switch (tipo_mutacion) {
-		case 0:
-			break;
-		case 1:
-			if (p > prob) {
+		case 1: // Terminal
+			if (num_nodo == 0) {
 				ArrayList<Character> terminales = new ArrayList<Character>();
 				
 				for (int i = 0; i < this.num_terminales; i++) {
@@ -143,18 +130,25 @@ public class Terminal implements Nodo {
 				return true;
 			}
 			break;
-		default:
+		default: // Funcional // Arbol // Permutacion
 			break;
 		}
 		
 		return false;
-	}
-
-
-	@Override
-	public void mutacionArbol(int num_nodo) {
 		
 	}
 
 	
+	@Override
+	public Nodo hacerCopia() {
+		Terminal nodo = new Terminal();
+		nodo.terminal = this.terminal;
+		nodo.num_terminales = this.num_terminales;
+		return nodo; 
+	}
+
+	
+	public String toString() {
+		return this.terminal;
+	}
 }

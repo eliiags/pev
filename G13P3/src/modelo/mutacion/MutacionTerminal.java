@@ -18,10 +18,10 @@ public class MutacionTerminal implements Mutacion{
 			if (prob < prob_mutacion) {
 				
 				// Generamos un numero aleatorio entre 0 y numNodos
-				int nodo = random.nextInt(crm.getNumNodos());
+				int nodo = random.nextInt(crm.getNumNodos(3));
 				
 				// Muta
-//				crm.muta(nodo);
+				crm.muta(nodo, 1);
 				
 			}
 

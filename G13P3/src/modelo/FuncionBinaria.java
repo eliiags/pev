@@ -15,6 +15,72 @@ public class FuncionBinaria implements Funcion {
 	private Nodo izquierda,
 				 derecha;
 
+	@Override
+	public Nodo getNodo(int num_nodo) {
+	
+		if (num_nodo == 0){
+			return this;
+		}
+		
+		Nodo izq = this.izquierda.getNodo(num_nodo - 1);
+		if (izq != null){
+			return izq;
+		}
+		
+		return this.derecha.getNodo(num_nodo - this.izquierda.numNodos() - 1);
+	
+	}
+	
+	
+	@Override
+	public void setNodo(int num_nodo, Nodo nodo) {
+		
+		if (num_nodo == 1) {
+			this.izquierda = nodo;
+			return;
+		}
+		
+		if ((num_nodo - this.izquierda.numNodos() - 1) > 0){
+			this.derecha.setNodo(num_nodo - this.izquierda.numNodos() - 1, nodo);
+		}
+		else {
+			this.izquierda.setNodo(num_nodo - 1, nodo);
+		}
+		
+	}
+
+	
+	@Override
+	public double getValor(double valor) {
+		return getResultado(valor);
+	}
+
+	
+	private double getResultado(double valor) {
+		
+		double resultado = 0.0;
+		
+		switch (operacion) {
+		case "+":
+			resultado = (this.izquierda.getValor(valor) + this.derecha.getValor(valor));
+			break;
+		case "-":
+			resultado = (this.izquierda.getValor(valor) - this.derecha.getValor(valor));
+			break;
+		case "*":
+			resultado = (this.izquierda.getValor(valor) * this.derecha.getValor(valor));
+			break;
+		case "/":
+			resultado = (this.izquierda.getValor(valor) / this.derecha.getValor(valor));
+			break;
+		default:
+			break;
+		}
+		
+		return resultado;
+	
+	}
+	
 	
 	@Override
 	public void inicializar(int profundidad, int num_terminales) {
@@ -75,70 +141,34 @@ public class FuncionBinaria implements Funcion {
 		default:
 			break;
 		}
-		
+	
 	}
-	
-
-	@Override
-	public double getValor(double valor) {
-		return getResultado(valor);
-	}
-	
-	
-	private double getResultado(double valor) {
-		
-		double resultado = 0.0;
-		
-		switch (operacion) {
-		case "+":
-			resultado = (this.izquierda.getValor(valor) + this.derecha.getValor(valor));
-			break;
-		case "-":
-			resultado = (this.izquierda.getValor(valor) - this.derecha.getValor(valor));
-			break;
-		case "*":
-			resultado = (this.izquierda.getValor(valor) * this.derecha.getValor(valor));
-			break;
-		case "/":
-			resultado = (this.izquierda.getValor(valor) / this.derecha.getValor(valor));
-			break;
-		default:
-			break;
-		}
-		
-		return resultado;
-	}
-
-	
-	
-//	@Override
-//	public Nodo encuentraNodo(int aleatorio) {
-//		
-//		if (aleatorio == 0) {
-//			return this;
-//		}
-//		else {
-//			Nodo izq = this.izquierda.encuentraNodo(aleatorio - 1);
-//			if (izq != null) {
-//				return izq;
-//			}
-//
-//			Nodo der = this.derecha.encuentraNodo(aleatorio - this.izquierda.numNodos() - 1);
-//			if (der != null) {
-//				return der;
-//			}
-//		}
-//		
-//		return null;
-//	}
 
 	
 	@Override
 	public int numNodos() {
 		return 1 + this.izquierda.numNodos() + this.derecha.numNodos();
 	}
-	
 
+	
+	@Override
+	public int numNodosBinarios() {
+		return 1 + this.izquierda.numNodosBinarios() + this.derecha.numNodosBinarios();
+	}
+
+	
+	@Override
+	public int numNodosUnarios() {
+		return this.izquierda.numNodosUnarios() + this.derecha.numNodosUnarios();
+	}
+
+	
+	@Override
+	public int numNodosTerminales() {
+		return this.izquierda.numNodosTerminales() + this.derecha.numNodosTerminales();
+	}
+
+	
 	@Override
 	public void muta(int num_nodo) {
 		
@@ -166,73 +196,18 @@ public class FuncionBinaria implements Funcion {
 		this.derecha.muta(num_nodo - this.izquierda.numNodos() - 1);
 		
 	}
-	
-	public String toString() {
-		return this.operacion + " (" + this.izquierda.toString() + " " + this.derecha.toString() + ")";
-	}
-
-
-	@Override
-	public Nodo hacerCopia() {
-		FuncionBinaria nodo = new FuncionBinaria();
-		nodo.izquierda = this.izquierda.hacerCopia();
-		nodo.derecha   = this.derecha.hacerCopia();
-		nodo.operacion = this.operacion;
-		return nodo;
-	}	
 
 	
 	@Override
-	public Nodo getNodo(int num_nodo) {
-		if (num_nodo == 0){
-			return this;
-		}
+	public boolean muta(int num_nodo, int tipo_mutacion) {
 		
-		Nodo izq = this.izquierda.getNodo(num_nodo - 1);
-		if (izq != null){
-			return izq;
-		}
-		
-		return this.derecha.getNodo(num_nodo - this.izquierda.numNodos() - 1);
-		
-	}
-
-
-	@Override
-	public void setNodo(int num_nodo, Nodo nodo) {
-		
-		if (num_nodo == 1) {
-			this.izquierda = nodo;
-			return;
-		}
-		
-		if ((num_nodo - this.izquierda.numNodos() - 1) > 0){
-			this.derecha.setNodo(num_nodo - this.izquierda.numNodos() - 1, nodo);
-		}
-		else {
-			this.izquierda.setNodo(num_nodo - 1, nodo);
-		}
-		
-	}
-
-
-
-	@Override
-	public boolean esHoja() {
-		return false;
-	}
-
-
-	@Override
-	public boolean muta(int tipo_mutacion, double prob) {
-
-		Random random = new Random(System.currentTimeMillis());
-		double p = Math.random(); 
+		Random random = new Random();
 		boolean izq = false;
 		
 		switch (tipo_mutacion) {
-		case 0:
-			if (p < prob) {
+		case 0: // FUNCIONAL
+			if (num_nodo == 0) {
+				
 				ArrayList<String> aleatorios = new ArrayList<String>();
 				
 				for (int j = 0; j < operadores.length; j++) {
@@ -243,19 +218,41 @@ public class FuncionBinaria implements Funcion {
 				this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
 				
 				return true;
+			
 			}
 			else {
-				if (!this.izquierda.muta(tipo_mutacion, prob)) {
-					this.derecha.muta(tipo_mutacion, prob);
+				if (!this.izquierda.muta(num_nodo - 1, tipo_mutacion)) {
+					return this.derecha.muta(num_nodo - (this.izquierda.numNodosBinarios() + this.izquierda.numNodosUnarios()) - 1, tipo_mutacion);
 				}
 			}
 			break;
-		case 1:
-			
-			izq = this.izquierda.muta(tipo_mutacion, prob);
+		case 1: // TERMINAL
+			izq = this.izquierda.muta(num_nodo, tipo_mutacion);
 			
 			if (!izq) {
-				 return this.derecha.muta(tipo_mutacion, prob);
+				return this.derecha.muta(num_nodo - this.izquierda.numNodosTerminales(), tipo_mutacion);
+			}
+			break;
+		case 2: // ARBOL
+			if (num_nodo == 1) {
+				this.izquierda.inicializar(datos[0], datos[1]);
+				return true;
+			}
+			
+			if (!this.izquierda.muta(num_nodo - 1, tipo_mutacion)) {
+				this.derecha.muta(num_nodo - 1, tipo_mutacion);
+			}
+			break;
+		case 3:
+			if (num_nodo == 0) {
+				Nodo aux = this.izquierda.hacerCopia();
+				this.izquierda = this.derecha.hacerCopia();
+				this.derecha   = aux.hacerCopia();
+				return true;
+			}
+			
+			if (!this.izquierda.muta(num_nodo - 1, tipo_mutacion)) {
+				return this.derecha.muta(num_nodo - this.izquierda.numNodosBinarios() - 1, tipo_mutacion);
 			}
 			break;
 		default:
@@ -263,31 +260,22 @@ public class FuncionBinaria implements Funcion {
 		}
 		
 		return izq;
-		
+
 	}
 
-
+	
 	@Override
-	public void mutacionArbol(int num_nodo) {
-		
-		if (num_nodo == -1) {
-			return;
-		}
-
-		if (num_nodo == 1) {
-			this.izquierda.inicializar(datos[0], datos[1]);
-			return;
-		}
-		
-		if ((num_nodo - this.izquierda.numNodos() - 1) > 0) {
-			this.derecha.muta(num_nodo - this.izquierda.numNodos() - 1);
-		}
-		else {
-			this.izquierda.muta(num_nodo - 1);
-		}
-		
+	public Nodo hacerCopia() {
+		FuncionBinaria nodo = new FuncionBinaria();
+		nodo.izquierda = this.izquierda.hacerCopia();
+		nodo.derecha   = this.derecha.hacerCopia();
+		nodo.operacion = this.operacion;
+		return nodo;
 	}
-
-
+	
+	
+	public String toString() {
+		return this.operacion + " (" + this.izquierda.toString() + " " + this.derecha.toString() + ")";
+	}
 
 }

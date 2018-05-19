@@ -78,15 +78,15 @@ public class Vista extends javax.swing.JFrame {
 
         LabelPoblacion.setText("Poblacion");
 
-        TextFieldPoblacion.setText("100");
+        TextFieldPoblacion.setText("5");
 
         LabelGeneraciones.setText("Generaciones");
 
-        TextFieldGeneraciones.setText("100");
+        TextFieldGeneraciones.setText("2");
 
         LabelElitismo.setText("Elitismo");
 
-        TextFieldElitismo.setText("0.6");
+        TextFieldElitismo.setText("0.0");
 
         LabelOpcionSeleccion.setText("Seleccion");
 
@@ -117,7 +117,7 @@ public class Vista extends javax.swing.JFrame {
 							   "Permutacion", 
 					           "Terminal" }));
 
-        TextFieldMutacion.setText("0.05");
+        TextFieldMutacion.setText("1.0");
 
         LabelProfundidad.setText("Profundidad");
 

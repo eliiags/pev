@@ -20,10 +20,10 @@ public class MutacionManuEli implements Mutacion{
 				
 				System.out.println("crm: " + crm.toString());
 				// Generamos un numero aleatorio entre 0 y numNodos
-//				int nodo = random.nextInt(crm.getNumNodos());
+				int nodo = random.nextInt(crm.getNumNodos(0));
 				
 				// Muta
-				crm.muta(0, prob);
+				crm.muta(nodo);
 				
 				System.out.println("crm: " + crm.toString());
 				

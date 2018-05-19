@@ -83,12 +83,12 @@ public class FuncionBinaria implements Funcion {
 	
 	
 	@Override
-	public void inicializar(int profundidad, int num_terminales) {
+	public void inicializar(int profundidad, int num_terminales, int tipo) {
 		
-		datos = new int[2];
+		datos = new int[3];
 		datos[0] = profundidad;
 		datos[1] = num_terminales;
-		
+		datos[2] = tipo;
 		
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
@@ -96,47 +96,59 @@ public class FuncionBinaria implements Funcion {
 		
 		if (profundidad == 1) {
 			this.izquierda = new Terminal();
-			this.izquierda.inicializar(profundidad - 1, num_terminales);
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
 			this.derecha   = new Terminal();
-			this.derecha.inicializar(profundidad - 1, num_terminales);
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
 			return;
 		}
 		
 		
-		i = random.nextInt(3);
+		if (tipo == 0) { // Si la inicializacion es completa
+			i = random.nextInt(2);
+		}
+		else { // Si la inicializacion es creciente
+			i = random.nextInt(3);
+		}
+		
 		
 		switch (i) {
 		case 0:
-			this.izquierda = new Terminal();
-			this.izquierda.inicializar(profundidad - 1, num_terminales);
+			this.izquierda = new FuncionBinaria();
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		case 1:
 			this.izquierda = new FuncionUnaria();
-			this.izquierda.inicializar(profundidad - 1, num_terminales);
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		case 2:
-			this.izquierda = new FuncionBinaria();
-			this.izquierda.inicializar(profundidad - 1, num_terminales);
+			this.izquierda = new Terminal();
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		default:
 			break;
 		}
 		
 		
-		i = random.nextInt(3);
+		if (tipo == 0) { // Si la inicializacion es creciente
+			i = random.nextInt(3);
+		}
+		else { // Si la inicializacion es completa
+			i = random.nextInt(2);
+		}
+		
 		
 		switch (i) {
 		case 0:
-			this.derecha = new Terminal();
-			this.derecha.inicializar(profundidad - 1, num_terminales);
+			this.derecha = new FuncionBinaria();
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		case 1:
 			this.derecha = new FuncionUnaria();
-			this.derecha.inicializar(profundidad - 1, num_terminales);
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		case 2:
-			this.derecha = new FuncionBinaria();
-			this.derecha.inicializar(profundidad - 1, num_terminales);
+			this.derecha = new Terminal();
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		default:
 			break;
@@ -235,7 +247,7 @@ public class FuncionBinaria implements Funcion {
 			break;
 		case 2: // ARBOL
 			if (num_nodo == 1) {
-				this.izquierda.inicializar(datos[0], datos[1]);
+				this.izquierda.inicializar(datos[0], datos[1], datos[2]);
 				return true;
 			}
 			

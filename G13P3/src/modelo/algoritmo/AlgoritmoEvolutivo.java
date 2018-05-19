@@ -33,7 +33,8 @@ public class AlgoritmoEvolutivo implements ActionListener{
 				cont_generaciones;
 	
 	private int profundidad,
-				num_terminales;
+				num_terminales, 
+				tipo_ini;
 	
 	private double total_fitness;
 	
@@ -58,8 +59,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 				   absoluto,
 				   generaciones;
 	
-	
-	
+
 	
 	public AlgoritmoEvolutivo() {
 		
@@ -100,6 +100,8 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		this.profundidad    = profundidad;
 		this.num_terminales = terminales;
 		
+		this.tipo_ini = inicializacion;
+		
 		this.poblacion = new ArrayList<Cromosoma>();
 		
 		seleccion(opcion_seleccion);
@@ -125,11 +127,11 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		crearPoblacion();
 		evaluarPoblacion();
 
-//		System.out.println("Poblacion inicial: ");
-//		for (Cromosoma crm: poblacion) {
-//			System.out.println(crm.toString());
-//			System.out.println("Fitness: " + crm.getAptitud());
-//		}
+		System.out.println("Poblacion inicial: ");
+		for (Cromosoma crm: poblacion) {
+			System.out.println(crm.toString());
+			System.out.println("Fitness: " + crm.getAptitud());
+		}
 		
 		for (int i = 0; i < this.num_generaciones; i++){
 			
@@ -212,13 +214,40 @@ public class AlgoritmoEvolutivo implements ActionListener{
 	 */
 	public void crearPoblacion() {
 
+		if (tipo_ini == 2) {
+			rampedAndHalf();
+			return;
+		}
+		
 		for (int i = 0; i < this.tam_poblacion; i++) {
-			this.poblacion.add(new Cromosoma(this.profundidad, this.num_terminales));
+			this.poblacion.add(new Cromosoma(this.profundidad, this.num_terminales, this.tipo_ini));
 			this.poblacion.get(i).inicializarCromosoma();
 		}
 
 	}
 	
+	
+	public void rampedAndHalf() {
+		
+		int num_grupos     = this.tam_poblacion / (this.profundidad - 1);
+		int num_cromosomas = this.tam_poblacion / num_grupos;
+		
+		int profundidad_grupo = 2;
+		int grupo = 0;
+		
+		for (int i = 0; i < this.tam_poblacion; i++) {
+			// 0: Completa
+			// 1: Creciente
+			this.poblacion.add(new Cromosoma(profundidad_grupo, this.num_terminales, i % 2));
+			this.poblacion.get(i).inicializarCromosoma();
+			
+			if ((i / num_cromosomas) > grupo)  {
+				profundidad_grupo++;
+				grupo++;
+			}
+		}
+		
+	}
 	
 	
 	public void evaluarPoblacion() {
@@ -386,14 +415,14 @@ public class AlgoritmoEvolutivo implements ActionListener{
 	}	
 	
 	
-	private void pinta() {
-		
-		for (Cromosoma crm: poblacion) {
-			System.out.println(crm.toString());
-			System.out.println(crm.getAptitud());
-		}
-		
-	}
+//	private void pinta() {
+//		
+//		for (Cromosoma crm: poblacion) {
+//			System.out.println(crm.toString());
+//			System.out.println(crm.getAptitud());
+//		}
+//		
+//	}
 
 	public void actualizarValoresGrafica() {
 
@@ -487,10 +516,11 @@ public class AlgoritmoEvolutivo implements ActionListener{
         opcion_cruce     = this.vista.getComboBoxOpcionCruce().getSelectedIndex();
         opcion_mutacion  = this.vista.getComboBoxOpcionMutacion().getSelectedIndex();
 
-        profundidad = Integer.parseInt(this.vista.getTextFieldProfundidad().getText());
-        terminales  = Integer.parseInt(this.vista.getTextFieldTerminales().getText());
+        profundidad    = Integer.parseInt(this.vista.getTextFieldProfundidad().getText());
+        terminales     = Integer.parseInt(this.vista.getTextFieldTerminales().getText());
         inicializacion = this.vista.getComboBoxInicializacion().getSelectedIndex();
 		
+        
         // Creamos el algoritmo genetico
 		setDatos(
 				tam_poblacion, 

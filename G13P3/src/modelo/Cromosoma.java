@@ -12,6 +12,8 @@ public class Cromosoma {
 	
 	private int num_terminales;
 	
+	private int tipo_ini;
+	
 	private int num_nodos;
 	
 	private Double aptitud;
@@ -26,9 +28,10 @@ public class Cromosoma {
 
 
 
-	public Cromosoma(int profundidad, int num_terminales) {
+	public Cromosoma(int profundidad, int num_terminales, int tipo_ini) {
 		this.profundidad    = profundidad;
 		this.num_terminales = num_terminales;
+		this.tipo_ini       = tipo_ini;
 	}
 	
 
@@ -124,11 +127,11 @@ public class Cromosoma {
 		switch (i) {
 		case 0:
 			this.raiz = new FuncionUnaria();
-			raiz.inicializar(profundidad - 1, num_terminales);
+			raiz.inicializar(profundidad - 1, num_terminales, tipo_ini);
 			break;
 		case 1:
 			this.raiz = new FuncionBinaria();
-			raiz.inicializar(profundidad - 1, num_terminales);
+			raiz.inicializar(profundidad - 1, num_terminales, tipo_ini);
 			break;
 		default:
 			break;
@@ -177,7 +180,7 @@ public class Cromosoma {
 	}
 
 	public Cromosoma hacerCopia() {
-		Cromosoma crm = new Cromosoma(profundidad, num_terminales);
+		Cromosoma crm = new Cromosoma(profundidad, num_terminales, tipo_ini);
 		crm.raiz 	   = this.raiz.hacerCopia();
 		crm.aptitud    = this.aptitud;
 		crm.num_nodos  = this.num_nodos;

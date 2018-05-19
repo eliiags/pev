@@ -9,7 +9,7 @@ public interface Nodo {
 	public double getValor(double valor);
 
 
-	public void inicializar(int profundidad, int num_terminales);
+	public void inicializar(int profundidad, int num_terminales, int tipo);
 	
 	
 	public int numNodos();

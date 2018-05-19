@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class Terminal implements Nodo {
 
-	private int[] datos;
-	
 	private String terminal;
 	
 	private int num_terminales;
@@ -37,11 +35,7 @@ public class Terminal implements Nodo {
 	
 	
 	@Override
-	public void inicializar(int profundidad, int num_terminales) {
-		
-		datos = new int[2];
-		datos[0] = profundidad;
-		datos[1] = num_terminales;
+	public void inicializar(int profundidad, int num_terminales, int tipo) {
 		
 		this.num_terminales = num_terminales;
 		

@@ -65,11 +65,12 @@ public class FuncionUnaria implements Funcion {
 
 	
 	@Override
-	public void inicializar(int profundidad, int num_terminales) {
+	public void inicializar(int profundidad, int num_terminales, int tipo) {
 	
-		datos = new int[2];
+		datos = new int[3];
 		datos[0] = profundidad;
 		datos[1] = num_terminales;
+		datos[2] = tipo;
 		
 		Random random = new Random();
 		int i = random.nextInt(operadores.length);
@@ -77,25 +78,30 @@ public class FuncionUnaria implements Funcion {
 		
 		if (profundidad == 1) {
 			this.hijo = new Terminal();
-			this.hijo.inicializar(profundidad - 1, num_terminales);
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
 			return;
 		}
 		
 		
-		i = random.nextInt(3);
+		if (tipo == 0) { // Si la inicializacion es completa
+			i = random.nextInt(2);
+		}
+		else { // Si la inicializacion es creciente
+			i = random.nextInt(3);
+		}
 		
 		switch (i) {
 		case 0:
-			this.hijo = new Terminal();
-			this.hijo.inicializar(profundidad - 1, num_terminales);
+			this.hijo = new FuncionBinaria();
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		case 1:
 			this.hijo = new FuncionUnaria();
-			this.hijo.inicializar(profundidad - 1, num_terminales);
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		case 2:
-			this.hijo = new FuncionBinaria();
-			this.hijo.inicializar(profundidad - 1, num_terminales);
+			this.hijo = new Terminal();
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
 			break;
 		default:
 			break;
@@ -172,7 +178,7 @@ public class FuncionUnaria implements Funcion {
 			return this.hijo.muta(num_nodo, tipo_mutacion);
 		case 2: // ARBOL
 			if (num_nodo == 1) {
-				this.hijo.inicializar(datos[0], datos[1]);
+				this.hijo.inicializar(datos[0], datos[1], datos[2]);
 				return true;
 			}
 			

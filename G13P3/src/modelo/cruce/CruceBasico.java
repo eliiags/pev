@@ -1,10 +1,11 @@
 package modelo.cruce;
 
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
 
 import modelo.Cromosoma;
 import modelo.Nodo;
+import modelo.algoritmo.Datos;
 
 
 public class CruceBasico implements Cruce {
@@ -37,36 +38,46 @@ public class CruceBasico implements Cruce {
 		// Se cruzan
 		for (int i = 0; i < cont_seleccionado; i += 2) {
 		
-			Random random = new Random(System.currentTimeMillis());
+//			Random random = new Random(System.currentTimeMillis());
 			
-			System.out.println("Padre 1: " + poblacion.get(seleccionado_cruce[i]).toString());
-			System.out.println("Padre 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
+//			System.out.println("Padre 1: " + poblacion.get(seleccionado_cruce[i]).toString());
+//			System.out.println("Padre 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
 			
-			int aleatorio1 = random.nextInt(poblacion.get(seleccionado_cruce[i]).getNumNodos(0) - 1);
-			int aleatorio2 = random.nextInt(poblacion.get(seleccionado_cruce[i+1]).getNumNodos(0) - 1);
-
-			System.out.println(aleatorio1);
-			System.out.println(aleatorio2);
+			int aleatorio1 = -1; 
+			int aleatorio2 = -1;
+			
+			if ((poblacion.get(seleccionado_cruce[i]).getNumNodos(2) - 1) > 0) {
+//				aleatorio1 = random.nextInt((poblacion.get(seleccionado_cruce[i]).getNumNodos(2) - 1));
+				aleatorio1 = Datos.nextInt((poblacion.get(seleccionado_cruce[i]).getNumNodos(2) - 1));
+			} 
+	
+			if ((poblacion.get(seleccionado_cruce[i+1]).getNumNodos(2) - 1) > 0) {
+//				aleatorio2 = random.nextInt((poblacion.get(seleccionado_cruce[i+1]).getNumNodos(2) - 1));
+				aleatorio2 = Datos.nextInt((poblacion.get(seleccionado_cruce[i+1]).getNumNodos(2) - 1));
+			} 
+			
+//			System.out.println(aleatorio1);
+//			System.out.println(aleatorio2);
 			
 			Nodo hijo1 = poblacion.get(seleccionado_cruce[i]).getNodo(aleatorio1 + 1).hacerCopia();
 			Nodo hijo2 = poblacion.get(seleccionado_cruce[i+1]).getNodo(aleatorio2 + 1).hacerCopia();
 			
-			System.out.println("Parte padre 1: " + hijo1.toString());
-			System.out.println("Parte padre 2: " + hijo2.toString());
+//			System.out.println("Parte padre 1: " + hijo1.toString());
+//			System.out.println("Parte padre 2: " + hijo2.toString());
 			
 			poblacion.get(seleccionado_cruce[i]).setNodo(aleatorio1 + 1, hijo2);
 			poblacion.get(seleccionado_cruce[i+1]).setNodo(aleatorio2 + 1, hijo1);
 			
-			System.out.println("Hijo 1: " + poblacion.get(seleccionado_cruce[i]).toString());
-			System.out.println("Hijo 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
+//			System.out.println("Hijo 1: " + poblacion.get(seleccionado_cruce[i]).toString());
+//			System.out.println("Hijo 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
 			
 			poblacion.get(seleccionado_cruce[i]).hacerPoda();
 			poblacion.get(seleccionado_cruce[i+1]).hacerPoda();
 			
-			System.out.println("Poda 1: " + poblacion.get(seleccionado_cruce[i]).toString());
-			System.out.println("Poda 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
-			
-			System.out.println("----");
+//			System.out.println("Poda 1: " + poblacion.get(seleccionado_cruce[i]).toString());
+//			System.out.println("Poda 2: " + poblacion.get(seleccionado_cruce[i+1]).toString());
+//			
+//			System.out.println("----");
 		}
 		
 		

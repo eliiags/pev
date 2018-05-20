@@ -36,26 +36,21 @@ public class SeleccionEstocastico implements Seleccion {
 		acumulada[0] = ( max - poblacion.get(0).getAptitud()) / fitness_total; 
 		
 		for (int i = 1; i < poblacion.size(); i++) {
-			acumulada[i] = acumulada[i-1] + ( max - 
-					poblacion.get(i).getAptitud()) / fitness_total;
+			acumulada[i] = acumulada[i-1] + ( max - poblacion.get(i).getAptitud()) / fitness_total;
 		}
 		
 			
 		for (int i = 0; i < poblacion.size(); i++) {
 			
-			if(pos_elegida == 0) {
-				i = 0;
-			}
-			
 			// Inicializamos la primera posicion	
 			pos_elegida = 0;
 			marca += valor_a_sumar;
 
-			while(pos_elegida < poblacion.size() && marca > acumulada[pos_elegida]) {
+			while (pos_elegida < poblacion.size() && marca > acumulada[pos_elegida]) {
 				pos_elegida++;
 			}
 		
-			if (pos_elegida < poblacion.size() && pos_elegida > 0) {
+			if (pos_elegida < poblacion.size()) {
 				nueva_poblacion.add(poblacion.get(pos_elegida).hacerCopia());
 			}
 			else if(pos_elegida == poblacion.size()){

@@ -24,11 +24,27 @@ public class SeleccionRestos implements Seleccion{
 
 		this.k = (int) (poblacion.size() / N);
 
-
-		for (int i = 0; i < poblacion.size(); i++) {
-			acumulada[i] = poblacion.get(i).getAcumulada();
+		double total_fitness = 0.0;
+		
+		double max = 0.0;
+		
+		for (int i = 0; i < poblacion.size(); i++) { 
+			if (poblacion.get(i).getAptitud() > max) {
+				max = poblacion.get(i).getAptitud();
+			}
 		}
 			
+		for (int i = 0; i < poblacion.size(); i++) { 
+			total_fitness += max - poblacion.get(i).getAptitud();
+		}
+		
+		acumulada[0] = ( max - poblacion.get(0).getAptitud()) / total_fitness; 
+		
+		for (int i = 1; i < poblacion.size(); i++) {
+			acumulada[i] = acumulada[i-1] + ( max - poblacion.get(i).getAptitud()) / total_fitness;
+		}
+			
+		
 		// Recorremos el array de pobacion
 		for (int i = 0; i < poblacion.size(); i++) {
 			// Seleccionamos una probabilidad aleatoria

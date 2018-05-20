@@ -78,11 +78,11 @@ public class Vista extends javax.swing.JFrame {
 
         LabelPoblacion.setText("Poblacion");
 
-        TextFieldPoblacion.setText("5");
+        TextFieldPoblacion.setText("50");
 
         LabelGeneraciones.setText("Generaciones");
 
-        TextFieldGeneraciones.setText("2");
+        TextFieldGeneraciones.setText("100");
 
         LabelElitismo.setText("Elitismo");
 
@@ -476,7 +476,11 @@ public class Vista extends javax.swing.JFrame {
 	
 	
 	public void borrarDatos() {
-		plot.removeAllPlots();
+		try {
+			plot.removeAllPlots();
+		} catch (java.util.ConcurrentModificationException e) {
+			
+		}
 	}
 	
 	
@@ -488,7 +492,6 @@ public class Vista extends javax.swing.JFrame {
 		javax.swing.SwingUtilities.invokeLater(() -> {
 			try {
 				plot.removeAllPlots();
-//				TextAreaPlano.setText("");
 				
 				for (int i = 0; i < generaciones.length; i++) {
 					System.out.println("Generaciones: " + generaciones[i]);

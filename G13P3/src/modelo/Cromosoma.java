@@ -102,7 +102,10 @@ public class Cromosoma {
 		
 		switch (tipo_nodo) {
 		case 0: // Todos los nodos
-			return this.num_nodos;
+			if (this.modificado)
+				return this.raiz.numNodos();
+			else 
+				return this.num_nodos;
 		case 1: // Nodos Binarios
 			return this.raiz.numNodosBinarios();
 		case 2: // Nodos Funcionales
@@ -181,6 +184,7 @@ public class Cromosoma {
 
 	public void hacerPoda() {
 		this.raiz.hacerPoda(this.profundidad - 1);
+		this.modificado = true;
 	}
 	
 	public Cromosoma hacerCopia() {

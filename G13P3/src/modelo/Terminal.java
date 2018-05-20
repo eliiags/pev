@@ -1,7 +1,9 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.Random;
+
+import modelo.algoritmo.Datos;
+//import java.util.Random;
 
 public class Terminal implements Nodo {
 
@@ -18,7 +20,6 @@ public class Terminal implements Nodo {
 		}
 		
 		return null;
-	
 	}
 
 
@@ -45,10 +46,10 @@ public class Terminal implements Nodo {
 			terminales.add((char) (i + 65));
 		}
 		
-		int i;
 		
-		Random random = new Random();
-		i = random.nextInt(terminales.size());
+//		Random random = new Random();
+//		i = random.nextInt(terminales.size());
+		int i = Datos.nextInt(terminales.size());
 			
 		this.terminal = terminales.get(i) + "";
 		
@@ -94,7 +95,7 @@ public class Terminal implements Nodo {
 		
 		if (num_nodo == 0) {
 
-			Random random = new Random();
+//			Random random = new Random();
 			
 			ArrayList<Character> terminales = new ArrayList<Character>();
 			
@@ -103,8 +104,8 @@ public class Terminal implements Nodo {
 			}
 			
 			terminales.remove(new Character(this.terminal.charAt(0)));
-			this.terminal = terminales.get(random.nextInt(terminales.size())) + "";
-			
+//			this.terminal = terminales.get(random.nextInt(terminales.size())) + "";
+			this.terminal = terminales.get(Datos.nextInt(terminales.size())) + "";
 		}
 		
 	}
@@ -113,7 +114,7 @@ public class Terminal implements Nodo {
 	@Override
 	public boolean muta(int num_nodo, int tipo_mutacion) {
 		
-		Random random = new Random(System.currentTimeMillis());
+//		Random random = new Random(System.currentTimeMillis());
 		
 		switch (tipo_mutacion) {
 		case 1: // TERMINAL
@@ -125,7 +126,8 @@ public class Terminal implements Nodo {
 				}
 				
 				terminales.remove(new Character(this.terminal.charAt(0)));
-				this.terminal = terminales.get(random.nextInt(terminales.size())) + "";
+//				this.terminal = terminales.get(random.nextInt(terminales.size())) + "";
+				this.terminal = terminales.get(Datos.nextInt(terminales.size())) + "";
 				
 				return true;
 			}

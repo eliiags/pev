@@ -1,6 +1,8 @@
 package modelo;
 
-import java.util.Random;
+//import java.util.Random;
+
+import modelo.algoritmo.Datos;
 
 public class FuncionUnaria implements Nodo {
 
@@ -28,8 +30,11 @@ public class FuncionUnaria implements Nodo {
 	@Override
 	public void setNodo(int num_nodo, Nodo nodo) {
 		
+		if (num_nodo == 0)
+			return;
+		
 		if (num_nodo == 1){
-			this.hijo = nodo;
+			this.hijo = nodo.hacerCopia();
 			return;
 		}
 		
@@ -72,8 +77,9 @@ public class FuncionUnaria implements Nodo {
 		datos[1] = num_terminales;
 		datos[2] = tipo;
 		
-		Random random = new Random();
-		int i = random.nextInt(operadores.length);
+//		Random random = new Random();
+//		int i = random.nextInt(operadores.length);
+		int i = Datos.nextInt(operadores.length);
 		this.operacion = operadores[i];
 		
 		if (profundidad == 1) {
@@ -84,10 +90,12 @@ public class FuncionUnaria implements Nodo {
 		
 		
 		if (tipo == 0) { // Si la inicializacion es completa
-			i = random.nextInt(2);
+//			i = random.nextInt(2);
+			i = Datos.nextInt(2);
 		}
 		else { // Si la inicializacion es creciente
-			i = random.nextInt(3);
+//			i = random.nextInt(3);
+			i = Datos.nextInt(3);
 		}
 		
 		switch (i) {
@@ -188,7 +196,7 @@ public class FuncionUnaria implements Nodo {
 			}
 			
 			if (num_nodo == 1) {
-				this.hijo.inicializar(datos[0] - 1, datos[1], datos[2]);
+				this.hijo.inicializar(Datos.getProfundidad(), datos[1], datos[2]);
 				return true;
 			}
 			

@@ -1,7 +1,9 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
+
+import modelo.algoritmo.Datos;
 
 
 public class FuncionBinaria implements Nodo {
@@ -27,7 +29,7 @@ public class FuncionBinaria implements Nodo {
 			return izq;
 		}
 		
-		return this.derecha.getNodo(num_nodo - this.izquierda.numNodos() - 1);
+		return this.derecha.getNodo(num_nodo - (this.izquierda.numNodosBinarios() + this.izquierda.numNodosUnarios()) - 1);
 	
 	}
 	
@@ -35,13 +37,16 @@ public class FuncionBinaria implements Nodo {
 	@Override
 	public void setNodo(int num_nodo, Nodo nodo) {
 		
+		if (num_nodo == 0)
+			return;
+		
 		if (num_nodo == 1) {
-			this.izquierda = nodo;
+			this.izquierda = nodo.hacerCopia();
 			return;
 		}
 		
-		if ((num_nodo - this.izquierda.numNodos() - 1) > 0){
-			this.derecha.setNodo(num_nodo - this.izquierda.numNodos() - 1, nodo);
+		if ((num_nodo - (this.izquierda.numNodosBinarios() + this.izquierda.numNodosUnarios()) - 1) > 0){
+			this.derecha.setNodo(num_nodo - (this.izquierda.numNodosBinarios() + this.izquierda.numNodosUnarios()) - 1, nodo);
 		}
 		else {
 			this.izquierda.setNodo(num_nodo - 1, nodo);
@@ -90,8 +95,11 @@ public class FuncionBinaria implements Nodo {
 		datos[1] = num_terminales;
 		datos[2] = tipo;
 		
-		Random random = new Random();
-		int i = random.nextInt(operadores.length);
+		
+		
+//		Random random = new Random();
+//		int i = random.nextInt(operadores.length);
+		int i = Datos.nextInt(operadores.length);
 		this.operacion = operadores[i];
 		
 		if (profundidad == 1) {
@@ -104,10 +112,12 @@ public class FuncionBinaria implements Nodo {
 		
 		
 		if (tipo == 0) { // Si la inicializacion es completa
-			i = random.nextInt(2);
+//			i = random.nextInt(2);
+			i = Datos.nextInt(2);
 		}
 		else { // Si la inicializacion es creciente
-			i = random.nextInt(3);
+//			i = random.nextInt(3);
+			i = Datos.nextInt(3);
 		}
 		
 		
@@ -129,11 +139,13 @@ public class FuncionBinaria implements Nodo {
 		}
 		
 		
-		if (tipo == 0) { // Si la inicializacion es creciente
-			i = random.nextInt(3);
+		if (tipo == 0) { // Si la inicializacion es completa
+//			i = random.nextInt(2);
+			i = Datos.nextInt(2);
 		}
-		else { // Si la inicializacion es completa
-			i = random.nextInt(2);
+		else { // Si la inicializacion es creciente
+//			i = random.nextInt(3);
+			i = Datos.nextInt(3);
 		}
 		
 		
@@ -190,7 +202,7 @@ public class FuncionBinaria implements Nodo {
 	@Override
 	public void muta(int num_nodo) {
 		
-		Random random = new Random();		
+//		Random random = new Random();		
 		
 		if (num_nodo == -1) {
 			return;
@@ -205,8 +217,8 @@ public class FuncionBinaria implements Nodo {
 			}
 			
 			aleatorios.remove(this.operacion);
-			this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
-			
+//			this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
+			this.operacion = aleatorios.get(Datos.nextInt(aleatorios.size()));
 			return;
 		}
 		
@@ -219,7 +231,7 @@ public class FuncionBinaria implements Nodo {
 	@Override
 	public boolean muta(int num_nodo, int tipo_mutacion) {
 		
-		Random random = new Random();
+//		Random random = new Random();
 		boolean izq = false;
 		
 		switch (tipo_mutacion) {
@@ -233,8 +245,8 @@ public class FuncionBinaria implements Nodo {
 				}
 				
 				aleatorios.remove(this.operacion);
-				this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
-				
+//				this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
+				this.operacion = aleatorios.get(Datos.nextInt(aleatorios.size()));
 				return true;
 			
 			}
@@ -257,7 +269,7 @@ public class FuncionBinaria implements Nodo {
 			}
 			
 			if (num_nodo == 1) {
-				this.izquierda.inicializar(datos[0] - 1, datos[1], datos[2]);
+				this.izquierda.inicializar(Datos.getProfundidad(), datos[1], datos[2]);
 				return true;
 			}
 			
@@ -291,11 +303,18 @@ public class FuncionBinaria implements Nodo {
 	@Override
 	public void hacerPoda(int profundidad) {
 		
-		if (profundidad == 1 && !this.izquierda.esHoja() && !this.derecha.esHoja()) {
-			this.izquierda = new Terminal();
-			this.izquierda.inicializar(profundidad, datos[1], datos[2]);
-			this.derecha   = new Terminal();
-			this.derecha.inicializar(profundidad, datos[1], datos[2]);
+		if (profundidad == 1) {
+			
+			if (!this.izquierda.esHoja()) {
+				this.izquierda = new Terminal();
+				this.izquierda.inicializar(profundidad, datos[1], datos[2]);
+			}
+
+			if (!this.derecha.esHoja()) {
+				this.derecha   = new Terminal();
+				this.derecha.inicializar(profundidad, datos[1], datos[2]);
+			}
+			
 			return;
 		}
 		

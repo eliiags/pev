@@ -18,14 +18,14 @@ public class MutacionManuEli implements Mutacion{
 
 			if (prob < prob_mutacion) {
 				
-				System.out.println("crm: " + crm.toString());
+//				System.out.println("crm: " + crm.toString());
 				// Generamos un numero aleatorio entre 0 y numNodos
 				int nodo = random.nextInt(crm.getNumNodos(0));
 				
 				// Muta
 				crm.muta(nodo);
 				
-				System.out.println("crm: " + crm.toString());
+//				System.out.println("crm: " + crm.toString());
 				
 			}
 

@@ -1,11 +1,16 @@
 package modelo.algoritmo;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Datos {
 
 	private static final ArrayList<Double> entrada = new ArrayList<Double>(); 
 	private static final ArrayList<Double> salida  = new ArrayList<Double>();
+	
+	private static Random random = new Random(System.currentTimeMillis());
+	
+	private static int profundidad;
 	
 	public Datos() {
 		entrada.add(0.72);
@@ -29,6 +34,22 @@ public class Datos {
 	
 	public static ArrayList<Double> getSalida(){
 		return salida;
+	}
+	
+	public static int nextInt(int rango) {
+		return random.nextInt(rango);
+	}
+	
+	public static double nextDouble() {
+		return random.nextDouble();
+	}
+	
+	public static void setProfundidad(int prof) {
+		profundidad = prof;
+	}
+	
+	public static int getProfundidad() {
+		return profundidad;
 	}
 	
 }

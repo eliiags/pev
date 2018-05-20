@@ -102,6 +102,8 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		
 		this.tipo_ini = inicializacion;
 		
+		Datos.setProfundidad(profundidad);
+		
 		this.poblacion = new ArrayList<Cromosoma>();
 		
 		seleccion(opcion_seleccion);
@@ -147,7 +149,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 //			}
 
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
-//			poblacion = seleccion.seleccionar(poblacion);
+			poblacion = seleccion.seleccionar(poblacion);
 			
 //			System.out.println("");
 //			System.out.println("Seleccion: ");
@@ -156,10 +158,10 @@ public class AlgoritmoEvolutivo implements ActionListener{
 //				System.out.println("Fitness: " + crm.getAptitud());
 //			}
 			
-			this.cruce.reproduccion(poblacion, this.prob_cruce);
+			this.cruce.reproduccion(poblacion, /*this.prob_cruce*/1.0);
 			
 
-//			this.mutacion.muta(poblacion, this.prob_mutacion);
+			this.mutacion.muta(poblacion, this.prob_mutacion);
 
 //			System.out.println("");
 //			System.out.println("Mutacion: ");
@@ -182,9 +184,27 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			
 			evaluarPoblacion();
 			actualizarValoresGrafica();
+			String texto = this.mejor_absoluto.toString() + "\n"
+							+  this.mejor_absoluto.getAptitud();
 			this.vista.actualiza(this.generaciones, this.media, 
-					 this.mejor, this.absoluto, "");
+					 this.mejor, this.absoluto, texto);
 
+//			if (i == 49) {
+//				int j = 0;
+//				for (Cromosoma crm: poblacion) {
+//					System.out.println(j + ": " + crm.toString());
+//					System.out.println("Fitness: " + crm.getAptitud());
+//					j++;
+//				}
+//				
+//				System.out.println("Total fitness: " + this.total_fitness);
+//				
+//				System.out.println("Media : " + this.total_fitness / this.tam_poblacion);
+//				
+//				
+//			}
+//			
+			
 //			System.out.println("");
 //			System.out.println("El mejor de esta generacion es: " + this.mejor_cromosoma.toString());
 //			System.out.println("Con un fitness de: " + this.mejor_cromosoma.getAptitud());
@@ -199,11 +219,14 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			cont_generaciones++;
 		}
 		
-		System.out.println("Poblacion inicial: ");
-		for (Cromosoma crm: poblacion) {
-			System.out.println(crm.toString());
-			System.out.println("Fitness: " + crm.getAptitud());
-		}
+//		System.out.println("Poblacion Final: ");
+//		int i = 0;
+//		for (Cromosoma crm: poblacion) {
+//			System.out.println(i + ": " + crm.toString());
+//			System.out.println("Fitness: " + crm.getAptitud());
+//			i++;
+//		}
+		
 		
 		
 		System.out.println("El mejor es: " + this.mejor_absoluto.toString());
@@ -492,7 +515,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
         int inicializacion;
 		
 		// Obtenemos los valores
-        tam_poblacion = Integer.parseInt(this.vista.getTextFieldPoblacion().getText());
+        tam_poblacion    = Integer.parseInt(this.vista.getTextFieldPoblacion().getText());
         num_generaciones = Integer.parseInt(this.vista.getTextFieldGeneraciones().getText()); 
         
         prob_seleccion = Double.parseDouble(this.vista.getTextFieldSeleccion().getText());

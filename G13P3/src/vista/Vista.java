@@ -7,7 +7,7 @@ import modelo.algoritmo.AlgoritmoEvolutivo;
 
 /**
  *
- * @author Elianni Ag�ero
+ * @author Elianni Agüero
  */
 public class Vista extends javax.swing.JFrame {
 
@@ -47,6 +47,10 @@ public class Vista extends javax.swing.JFrame {
         TextFieldGeneraciones = new javax.swing.JTextField();
         LabelElitismo = new javax.swing.JLabel();
         TextFieldElitismo = new javax.swing.JTextField();
+        LabelProfundidad = new javax.swing.JLabel();
+        TextFieldProfundidad = new javax.swing.JTextField();
+        LabelTerminales = new javax.swing.JLabel();
+        TextFieldTerminales = new javax.swing.JTextField();
         Separador1 = new javax.swing.JSeparator();
         LabelOpcionSeleccion = new javax.swing.JLabel();
         ComboBoxOpcionSeleccion = new javax.swing.JComboBox<>();
@@ -57,20 +61,21 @@ public class Vista extends javax.swing.JFrame {
         LabelOpcionMutacion = new javax.swing.JLabel();
         ComboBoxOpcionMutacion = new javax.swing.JComboBox<>();
         TextFieldMutacion = new javax.swing.JTextField();
-        Separador2 = new javax.swing.JSeparator();
-        LabelProfundidad = new javax.swing.JLabel();
-        TextFieldProfundidad = new javax.swing.JTextField();
-        LabelTerminales = new javax.swing.JLabel();
-        TextFieldTerminales = new javax.swing.JTextField();
-        ButtonIniciar = new javax.swing.JButton();
         LabelInicializacion = new javax.swing.JLabel();
         ComboBoxInicializacion = new javax.swing.JComboBox<>();
+        Separador2 = new javax.swing.JSeparator();
+        LabelFunciones = new javax.swing.JLabel();
+        CheckBoxSuma = new javax.swing.JCheckBox();
+        CheckBoxResta = new javax.swing.JCheckBox();
+        CheckBoxMultiplicacion = new javax.swing.JCheckBox();
+        CheckBoxDivision = new javax.swing.JCheckBox();
+        CheckBoxLog = new javax.swing.JCheckBox();
+        CheckBoxRaiz = new javax.swing.JCheckBox();
+        ButtonIniciar = new javax.swing.JButton();
         PanelDiagrama = new javax.swing.JPanel();
         TabbedPaneDiagrama = new javax.swing.JTabbedPane();
         plot = new org.math.plot.Plot2DPanel();
         PanelInformacion = new javax.swing.JPanel();
-        ScrollPaneDesencriptar = new javax.swing.JScrollPane();
-        TextAreaDesencriptar = new javax.swing.JTextArea();
         ScrollPanePlano = new javax.swing.JScrollPane();
         TextAreaPlano = new javax.swing.JTextArea();
 
@@ -82,11 +87,19 @@ public class Vista extends javax.swing.JFrame {
 
         LabelGeneraciones.setText("Generaciones");
 
-        TextFieldGeneraciones.setText("100");
+        TextFieldGeneraciones.setText("200");
 
         LabelElitismo.setText("Elitismo");
 
-        TextFieldElitismo.setText("0.0");
+        TextFieldElitismo.setText("0.2");
+
+        LabelProfundidad.setText("Profundidad");
+
+        TextFieldProfundidad.setText("5");
+
+        LabelTerminales.setText("Nº Terminales");
+
+        TextFieldTerminales.setText("2");
 
         LabelOpcionSeleccion.setText("Seleccion");
 
@@ -97,7 +110,7 @@ public class Vista extends javax.swing.JFrame {
 								"Ruleta", 
 								"Torneo Deterministico",
 								"Torneo Probabilistico",
-								"Truncamiento" }));
+        						"Truncamiento" }));
 
         TextFieldSeleccion.setText("0.5");
 
@@ -105,9 +118,9 @@ public class Vista extends javax.swing.JFrame {
 
         ComboBoxOpcionCruces.setModel(new javax.swing.DefaultComboBoxModel<>(
         		new String[] { "Basico" }));
-
-        TextFieldCruces.setText("0.7");
-
+        
+        TextFieldCruces.setText("0.6");
+        
         LabelOpcionMutacion.setText("Mutacion");
 
         ComboBoxOpcionMutacion.setModel(new javax.swing.DefaultComboBoxModel<>(
@@ -115,17 +128,9 @@ public class Vista extends javax.swing.JFrame {
 							   "Funcional", 
 							   "ManuEli", 
 							   "Permutacion", 
-					           "Terminal" }));
+        					   "Terminal" }));
 
-        TextFieldMutacion.setText("0.2");
-
-        LabelProfundidad.setText("Profundidad");
-
-        TextFieldProfundidad.setText("5");
-
-        LabelTerminales.setText("Terminales");
-
-        TextFieldTerminales.setText("2");
+        TextFieldMutacion.setText("0.05");
 
         LabelInicializacion.setText("Inicializacion");
 
@@ -133,6 +138,26 @@ public class Vista extends javax.swing.JFrame {
         		new String[] { "Completa", 
         					   "Creciente", 
         					   "Ramped & Half" }));
+
+        LabelFunciones.setText("Funciones");
+
+        CheckBoxSuma.setSelected(true);
+        CheckBoxSuma.setText("+");
+
+        CheckBoxResta.setSelected(true);
+        CheckBoxResta.setText("-");
+
+        CheckBoxMultiplicacion.setSelected(true);
+        CheckBoxMultiplicacion.setText("x");
+
+        CheckBoxDivision.setSelected(true);
+        CheckBoxDivision.setText("÷");
+
+        CheckBoxLog.setSelected(true);
+        CheckBoxLog.setText("log");
+
+        CheckBoxRaiz.setSelected(true);
+        CheckBoxRaiz.setText("√");
 
         ButtonIniciar.setText("Iniciar");
 
@@ -145,55 +170,82 @@ public class Vista extends javax.swing.JFrame {
                 .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(LabelPoblacion)
                     .addComponent(LabelGeneraciones)
-                    .addComponent(LabelElitismo))
+                    .addComponent(LabelElitismo)
+                    .addComponent(LabelProfundidad)
+                    .addComponent(LabelTerminales))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(TextFieldElitismo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextFieldGeneraciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextFieldPoblacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextFieldPoblacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextFieldProfundidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextFieldTerminales, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23))
             .addComponent(Separador1)
             .addComponent(Separador2)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(LabelProfundidad)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(TextFieldProfundidad, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
             .addGroup(PanelOpcionesLayout.createSequentialGroup()
                 .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelOpcionesLayout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(ButtonIniciar))
-                    .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelOpcionesLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(LabelInicializacion)
-                            .addGap(18, 18, 18)
-                            .addComponent(ComboBoxInicializacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelOpcionesLayout.createSequentialGroup()
-                            .addGap(29, 29, 29)
-                            .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(ComboBoxOpcionCruces, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(ComboBoxOpcionMutacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(ComboBoxOpcionSeleccion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(18, 18, 18)
-                            .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(TextFieldCruces, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(TextFieldSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(TextFieldMutacion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelOpcionesLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(LabelOpcionSeleccion)
-                                .addComponent(LabelOpcionCruces)
-                                .addComponent(LabelOpcionMutacion)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelOpcionesLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(LabelTerminales)
-                            .addGap(75, 75, 75)
-                            .addComponent(TextFieldTerminales))))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(LabelInicializacion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ComboBoxInicializacion, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(144, 144, 144)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TextFieldSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextFieldCruces, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextFieldMutacion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(ComboBoxOpcionSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(LabelOpcionSeleccion)))
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(ComboBoxOpcionCruces, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(LabelOpcionCruces)))
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(ComboBoxOpcionMutacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(LabelOpcionMutacion))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LabelFunciones)
+                            .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                        .addComponent(CheckBoxDivision)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(CheckBoxLog))
+                                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                                        .addComponent(CheckBoxSuma)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(CheckBoxResta)))
+                                .addGap(18, 18, 18)
+                                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(CheckBoxMultiplicacion)
+                                    .addComponent(CheckBoxRaiz)))))
+                    .addGroup(PanelOpcionesLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(ButtonIniciar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PanelOpcionesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {TextFieldElitismo, TextFieldGeneraciones, TextFieldPoblacion});
@@ -216,10 +268,18 @@ public class Vista extends javax.swing.JFrame {
                     .addComponent(LabelElitismo)
                     .addComponent(TextFieldElitismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelProfundidad)
+                    .addComponent(TextFieldProfundidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelTerminales)
+                    .addComponent(TextFieldTerminales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Separador1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LabelOpcionSeleccion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ComboBoxOpcionSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextFieldSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -236,22 +296,26 @@ public class Vista extends javax.swing.JFrame {
                     .addComponent(ComboBoxOpcionMutacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextFieldMutacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ComboBoxInicializacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LabelInicializacion))
+                .addGap(18, 18, 18)
                 .addComponent(Separador2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(LabelFunciones)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelProfundidad)
-                    .addComponent(TextFieldProfundidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CheckBoxSuma)
+                    .addComponent(CheckBoxResta)
+                    .addComponent(CheckBoxMultiplicacion))
                 .addGap(18, 18, 18)
                 .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelTerminales)
-                    .addComponent(TextFieldTerminales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(PanelOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelInicializacion)
-                    .addComponent(ComboBoxInicializacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                    .addComponent(CheckBoxDivision)
+                    .addComponent(CheckBoxLog)
+                    .addComponent(CheckBoxRaiz))
+                .addGap(27, 27, 27)
                 .addComponent(ButtonIniciar)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PanelOpcionesLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {TextFieldElitismo, TextFieldGeneraciones, TextFieldPoblacion});
@@ -275,41 +339,25 @@ public class Vista extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        TextAreaDesencriptar.setColumns(20);
-        TextAreaDesencriptar.setRows(5);
-        TextAreaDesencriptar.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
-        TextAreaDesencriptar.setEditable(true);
-        TextAreaDesencriptar.setLineWrap(true);
-        TextAreaDesencriptar.setWrapStyleWord(true);
-        ScrollPaneDesencriptar.setViewportView(TextAreaDesencriptar);
-        
-
         TextAreaPlano.setColumns(20);
+        TextAreaPlano.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
         TextAreaPlano.setRows(5);
-        TextAreaPlano.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
-        TextAreaPlano.setLineWrap(true);
-        TextAreaPlano.setWrapStyleWord(true);
         ScrollPanePlano.setViewportView(TextAreaPlano);
-        ScrollPanePlano.setLocation(0, 0);
 
         javax.swing.GroupLayout PanelInformacionLayout = new javax.swing.GroupLayout(PanelInformacion);
         PanelInformacion.setLayout(PanelInformacionLayout);
         PanelInformacionLayout.setHorizontalGroup(
             PanelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelInformacionLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInformacionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ScrollPaneDesencriptar, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(ScrollPanePlano, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addComponent(ScrollPanePlano, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                 .addContainerGap())
         );
         PanelInformacionLayout.setVerticalGroup(
             PanelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInformacionLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(ScrollPanePlano, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                    .addComponent(ScrollPaneDesencriptar))
+                .addComponent(ScrollPanePlano, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -345,16 +393,65 @@ public class Vista extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>                         
 
 
-    // Variables declaration - do not modify                     
+ // Variables declaration - do not modify                     
     private javax.swing.JButton ButtonIniciar;
+    private javax.swing.JCheckBox CheckBoxDivision;
+    private javax.swing.JCheckBox CheckBoxLog;
+    private javax.swing.JCheckBox CheckBoxSuma;
+    private javax.swing.JCheckBox CheckBoxResta;
+    private javax.swing.JCheckBox CheckBoxMultiplicacion;
+    private javax.swing.JCheckBox CheckBoxRaiz;
     private javax.swing.JComboBox<String> ComboBoxInicializacion;
-    private javax.swing.JComboBox<String> ComboBoxOpcionCruces;
+   
+    
+    public javax.swing.JCheckBox getCheckBoxDivision() {
+		return CheckBoxDivision;
+	}
+
+
+	public javax.swing.JCheckBox getCheckBoxLog() {
+		return CheckBoxLog;
+	}
+
+
+	public void setCheckBoxLog(javax.swing.JCheckBox checkBoxLog) {
+		CheckBoxLog = checkBoxLog;
+	}
+
+
+	public javax.swing.JCheckBox getCheckBoxSuma() {
+		return CheckBoxSuma;
+	}
+
+
+	public javax.swing.JCheckBox getCheckBoxResta() {
+		return CheckBoxResta;
+	}
+
+
+	public javax.swing.JCheckBox getCheckBoxMultiplicacion() {
+		return CheckBoxMultiplicacion;
+	}
+
+
+	public javax.swing.JCheckBox getCheckBoxRaiz() {
+		return CheckBoxRaiz;
+	}
+
+
+	public void setCheckBoxRaiz(javax.swing.JCheckBox checkBoxRaiz) {
+		CheckBoxRaiz = checkBoxRaiz;
+	}
+
+
+	private javax.swing.JComboBox<String> ComboBoxOpcionCruces;
     private javax.swing.JComboBox<String> ComboBoxOpcionMutacion;
     private javax.swing.JComboBox<String> ComboBoxOpcionSeleccion;
     private javax.swing.JLabel LabelElitismo;
+    private javax.swing.JLabel LabelFunciones;
     private javax.swing.JLabel LabelGeneraciones;
     private javax.swing.JLabel LabelInicializacion;
     private javax.swing.JLabel LabelOpcionCruces;
@@ -367,21 +464,19 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JPanel PanelInformacion;
     private javax.swing.JPanel PanelOpciones;
     private javax.swing.JPanel PanelPrincipal;
-    private javax.swing.JScrollPane ScrollPaneDesencriptar;
     private javax.swing.JScrollPane ScrollPanePlano;
     private javax.swing.JSeparator Separador1;
     private javax.swing.JSeparator Separador2;
     private javax.swing.JTabbedPane TabbedPaneDiagrama;
-    private javax.swing.JTextArea TextAreaDesencriptar;
     private javax.swing.JTextArea TextAreaPlano;
     private javax.swing.JTextField TextFieldCruces;
     private javax.swing.JTextField TextFieldElitismo;
     private javax.swing.JTextField TextFieldGeneraciones;
+    private javax.swing.JTextField TextFieldMutacion;
     private javax.swing.JTextField TextFieldPoblacion;
     private javax.swing.JTextField TextFieldProfundidad;
     private javax.swing.JTextField TextFieldSeleccion;
     private javax.swing.JTextField TextFieldTerminales;
-    private javax.swing.JTextField TextFieldMutacion;
     private org.math.plot.Plot2DPanel plot;
 
     

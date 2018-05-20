@@ -1,12 +1,15 @@
 package modelo;
 
+import java.util.ArrayList;
+
 //import java.util.Random;
 
 import modelo.algoritmo.Datos;
 
 public class FuncionUnaria implements Nodo {
 
-	private static final String[] operadores = { "sqrt", "log" };
+//	private static final String[] operadores = { "sqrt", "log" };
+	private ArrayList<ArrayList<String>> operadores = new ArrayList<>();
 
 	private int[] datos;
 	
@@ -70,7 +73,7 @@ public class FuncionUnaria implements Nodo {
 
 	
 	@Override
-	public void inicializar(int profundidad, int num_terminales, int tipo) {
+	public void inicializar(int profundidad, int num_terminales, int tipo, ArrayList<ArrayList<String>> operadores) {
 	
 		datos = new int[3];
 		datos[0] = profundidad;
@@ -79,12 +82,15 @@ public class FuncionUnaria implements Nodo {
 		
 //		Random random = new Random();
 //		int i = random.nextInt(operadores.length);
-		int i = Datos.nextInt(operadores.length);
-		this.operacion = operadores[i];
+//		int i = Datos.nextInt(operadores.length);
+//		this.operacion = operadores[i];
+		this.operadores.addAll(operadores); 
+		int i = Datos.nextInt(this.operadores.get(1).size());
+		this.operacion = operadores.get(1).get(i);
 		
 		if (profundidad == 1) {
 			this.hijo = new Terminal();
-			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			return;
 		}
 		
@@ -101,15 +107,15 @@ public class FuncionUnaria implements Nodo {
 		switch (i) {
 		case 0:
 			this.hijo = new FuncionBinaria();
-			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		case 1:
 			this.hijo = new FuncionUnaria();
-			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		case 2:
 			this.hijo = new Terminal();
-			this.hijo.inicializar(profundidad - 1, num_terminales, tipo);
+			this.hijo.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		default:
 			break;
@@ -156,11 +162,19 @@ public class FuncionUnaria implements Nodo {
 		}
 		
 		if (num_nodo == 0) {
-			if (this.operacion == operadores[0]) {
-				this.operacion = operadores[1];
-			}
-			else {
-				this.operacion = operadores[0];
+//			if (this.operacion == operadores[0]) {
+//				this.operacion = operadores[1];
+//			}
+//			else {
+//				this.operacion = operadores[0];
+//			}
+			if (this.operadores.get(1).size() > 0) {
+				if (this.operacion == operadores.get(1).get(0)) {
+					this.operacion = operadores.get(1).get(1);
+				}
+				else {
+					this.operacion = operadores.get(1).get(0);
+				}
 			}
 			return;
 		}
@@ -176,11 +190,19 @@ public class FuncionUnaria implements Nodo {
 		switch (tipo_mutacion) {
 		case 0: // FUNCIONAL
 			if (num_nodo == 0) {
-				if (this.operacion == operadores[0]) {
-					this.operacion = operadores[1];
-				}
-				else {
-					this.operacion = operadores[0];
+//				if (this.operacion == operadores[0]) {
+//					this.operacion = operadores[1];
+//				}
+//				else {
+//					this.operacion = operadores[0];
+//				}
+				if (this.operadores.get(1).size() > 0) {
+					if (this.operacion == operadores.get(1).get(0)) {
+						this.operacion = operadores.get(1).get(1);
+					}
+					else {
+						this.operacion = operadores.get(1).get(0);
+					}
 				}
 				return true;
 			}
@@ -196,7 +218,7 @@ public class FuncionUnaria implements Nodo {
 			}
 			
 			if (num_nodo == 1) {
-				this.hijo.inicializar(Datos.getProfundidad(), datos[1], datos[2]);
+				this.hijo.inicializar(Datos.getProfundidad(), datos[1], datos[2], this.operadores);
 				return true;
 			}
 			
@@ -217,7 +239,7 @@ public class FuncionUnaria implements Nodo {
 		
 		if (profundidad == 1 && !this.hijo.esHoja()) {
 			this.hijo = new Terminal();
-			this.hijo.inicializar(profundidad, datos[1], datos[2]);
+			this.hijo.inicializar(profundidad, datos[1], datos[2], this.operadores);
 			return;
 		}
 		
@@ -232,6 +254,7 @@ public class FuncionUnaria implements Nodo {
 		nodo.hijo = this.hijo.hacerCopia();
 		nodo.operacion = this.operacion;
 		nodo.datos = this.datos;
+		nodo.operadores = this.operadores;
 		return nodo;
 	}
 	

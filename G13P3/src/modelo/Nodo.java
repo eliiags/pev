@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.ArrayList;
+
 public interface Nodo {
 
 	public Nodo getNodo(int num_nodo);
@@ -9,7 +11,8 @@ public interface Nodo {
 	public double getValor(double valor);
 
 
-	public void inicializar(int profundidad, int num_terminales, int tipo);
+	public void inicializar(int profundidad, int num_terminales, 
+			int tipo, ArrayList<ArrayList<String>> operadores);
 	
 	
 	public int numNodos();

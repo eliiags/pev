@@ -8,7 +8,8 @@ import modelo.algoritmo.Datos;
 
 public class FuncionBinaria implements Nodo {
 	
-	private static final String[] operadores = { "+", "-", "*", "/" };
+//	private static final String[] operadores = { "+", "-", "*", "/" };
+	private ArrayList<ArrayList<String>> operadores = new ArrayList<>();
 
 	private int[] datos;
 	
@@ -88,7 +89,7 @@ public class FuncionBinaria implements Nodo {
 	
 	
 	@Override
-	public void inicializar(int profundidad, int num_terminales, int tipo) {
+	public void inicializar(int profundidad, int num_terminales, int tipo, ArrayList<ArrayList<String>> operadores) {
 		
 		datos = new int[3];
 		datos[0] = profundidad;
@@ -96,17 +97,20 @@ public class FuncionBinaria implements Nodo {
 		datos[2] = tipo;
 		
 		
-		
 //		Random random = new Random();
 //		int i = random.nextInt(operadores.length);
-		int i = Datos.nextInt(operadores.length);
-		this.operacion = operadores[i];
+//		int i = Datos.nextInt(operadores.length);
+//		this.operacion = operadores[i];
+		this.operadores.addAll(operadores);
+		int i = Datos.nextInt(this.operadores.get(0).size());
+		this.operacion = this.operadores.get(0).get(i);
+		
 		
 		if (profundidad == 1) {
 			this.izquierda = new Terminal();
-			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			this.derecha   = new Terminal();
-			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			return;
 		}
 		
@@ -124,15 +128,15 @@ public class FuncionBinaria implements Nodo {
 		switch (i) {
 		case 0:
 			this.izquierda = new FuncionBinaria();
-			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		case 1:
 			this.izquierda = new FuncionUnaria();
-			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		case 2:
 			this.izquierda = new Terminal();
-			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo);
+			this.izquierda.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		default:
 			break;
@@ -152,15 +156,15 @@ public class FuncionBinaria implements Nodo {
 		switch (i) {
 		case 0:
 			this.derecha = new FuncionBinaria();
-			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		case 1:
 			this.derecha = new FuncionUnaria();
-			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		case 2:
 			this.derecha = new Terminal();
-			this.derecha.inicializar(profundidad - 1, num_terminales, tipo);
+			this.derecha.inicializar(profundidad - 1, num_terminales, tipo, operadores);
 			break;
 		default:
 			break;
@@ -212,8 +216,12 @@ public class FuncionBinaria implements Nodo {
 			
 			ArrayList<String> aleatorios = new ArrayList<String>();
 			
-			for (int j = 0; j < operadores.length; j++) {
-				aleatorios.add(operadores[j]);
+//			for (int j = 0; j < operadores.length; j++) {
+//				aleatorios.add(operadores[j]);
+//			}
+			
+			for (int i = 0; i < this.operadores.get(0).size(); i++) {
+				aleatorios.add(this.operadores.get(0).get(i));
 			}
 			
 			aleatorios.remove(this.operacion);
@@ -240,9 +248,14 @@ public class FuncionBinaria implements Nodo {
 				
 				ArrayList<String> aleatorios = new ArrayList<String>();
 				
-				for (int j = 0; j < operadores.length; j++) {
-					aleatorios.add(operadores[j]);
+//				for (int j = 0; j < operadores.length; j++) {
+//					aleatorios.add(operadores[j]);
+//				}
+				
+				for (int i = 0; i < this.operadores.get(0).size(); i++) {
+					aleatorios.add(this.operadores.get(0).get(i));
 				}
+				
 				
 				aleatorios.remove(this.operacion);
 //				this.operacion = aleatorios.get(random.nextInt(aleatorios.size()));
@@ -269,7 +282,7 @@ public class FuncionBinaria implements Nodo {
 			}
 			
 			if (num_nodo == 1) {
-				this.izquierda.inicializar(Datos.getProfundidad(), datos[1], datos[2]);
+				this.izquierda.inicializar(Datos.getProfundidad(), datos[1], datos[2], this.operadores);
 				return true;
 			}
 			
@@ -307,12 +320,12 @@ public class FuncionBinaria implements Nodo {
 			
 			if (!this.izquierda.esHoja()) {
 				this.izquierda = new Terminal();
-				this.izquierda.inicializar(profundidad, datos[1], datos[2]);
+				this.izquierda.inicializar(profundidad, datos[1], datos[2], this.operadores);
 			}
 
 			if (!this.derecha.esHoja()) {
 				this.derecha   = new Terminal();
-				this.derecha.inicializar(profundidad, datos[1], datos[2]);
+				this.derecha.inicializar(profundidad, datos[1], datos[2], this.operadores);
 			}
 			
 			return;
@@ -331,6 +344,7 @@ public class FuncionBinaria implements Nodo {
 		nodo.derecha   = this.derecha.hacerCopia();
 		nodo.operacion = this.operacion;
 		nodo.datos = this.datos;
+		nodo.operadores = this.operadores;
 		return nodo;
 	}
 	

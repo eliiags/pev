@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import modelo.algoritmo.Datos;
@@ -122,7 +123,7 @@ public class Cromosoma {
 	
 	
 	
-	public void inicializarCromosoma() {
+	public void inicializarCromosoma(ArrayList<ArrayList<String>> operadores) {
 		
 		Random random = new Random();
 		int i = random.nextInt(2);
@@ -130,11 +131,11 @@ public class Cromosoma {
 		switch (i) {
 		case 0:
 			this.raiz = new FuncionUnaria();
-			raiz.inicializar(profundidad - 1, num_terminales, tipo_ini);
+			raiz.inicializar(profundidad - 1, num_terminales, tipo_ini, operadores);
 			break;
 		case 1:
 			this.raiz = new FuncionBinaria();
-			raiz.inicializar(profundidad - 1, num_terminales, tipo_ini);
+			raiz.inicializar(profundidad - 1, num_terminales, tipo_ini, operadores);
 			break;
 		default:
 			break;
@@ -145,6 +146,7 @@ public class Cromosoma {
 		
 		// Calculamos el fitness
 		calcularFitness();
+			
 	}
 	
 	

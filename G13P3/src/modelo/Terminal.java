@@ -36,7 +36,7 @@ public class Terminal implements Nodo {
 	
 	
 	@Override
-	public void inicializar(int profundidad, int num_terminales, int tipo) {
+	public void inicializar(int profundidad, int num_terminales, int tipo, ArrayList<ArrayList<String>> operadores) {
 		
 		this.num_terminales = num_terminales;
 		

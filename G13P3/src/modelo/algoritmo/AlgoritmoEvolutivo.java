@@ -59,7 +59,8 @@ public class AlgoritmoEvolutivo implements ActionListener{
 				   absoluto,
 				   generaciones;
 	
-
+	private ArrayList<ArrayList<String>> operadores;
+	
 	
 	public AlgoritmoEvolutivo() {
 		
@@ -83,7 +84,9 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			double prob_mutacion, 
 			int profundidad,
 			int terminales, 
-			int inicializacion) {
+			int inicializacion,
+			ArrayList<String> binarios,
+			ArrayList<String> unarios) {
 
 		
 		this.tam_poblacion = tam_poblacion;
@@ -105,6 +108,10 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		Datos.setProfundidad(profundidad);
 		
 		this.poblacion = new ArrayList<Cromosoma>();
+		this.operadores = new ArrayList<>();
+		this.operadores.add(binarios);
+		this.operadores.add(unarios);
+		
 		
 		seleccion(opcion_seleccion);
 		cruce();
@@ -251,7 +258,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		
 		for (int i = 0; i < this.tam_poblacion; i++) {
 			this.poblacion.add(new Cromosoma(this.profundidad, this.num_terminales, this.tipo_ini));
-			this.poblacion.get(i).inicializarCromosoma();
+			this.poblacion.get(i).inicializarCromosoma(this.operadores);
 		}
 
 	}
@@ -269,7 +276,7 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			// 0: Completa
 			// 1: Creciente
 			this.poblacion.add(new Cromosoma(profundidad_grupo, this.num_terminales, i % 2));
-			this.poblacion.get(i).inicializarCromosoma();
+			this.poblacion.get(i).inicializarCromosoma(this.operadores);
 			
 			if ((i / num_cromosomas) > grupo)  {
 				profundidad_grupo++;
@@ -513,7 +520,11 @@ public class AlgoritmoEvolutivo implements ActionListener{
         int profundidad;
         int terminales;
         int inicializacion;
+        
+        ArrayList<String> operadores_binarios = new ArrayList<>();
+        ArrayList<String> operadores_unarios  = new ArrayList<>();
 		
+        
 		// Obtenemos los valores
         tam_poblacion    = Integer.parseInt(this.vista.getTextFieldPoblacion().getText());
         num_generaciones = Integer.parseInt(this.vista.getTextFieldGeneraciones().getText()); 
@@ -533,6 +544,40 @@ public class AlgoritmoEvolutivo implements ActionListener{
         inicializacion = this.vista.getComboBoxInicializacion().getSelectedIndex();
 		
         
+        if (this.vista.getCheckBoxSuma().isSelected()) {
+        	operadores_binarios.add("+");
+        }
+        
+        if (this.vista.getCheckBoxResta().isSelected()) {
+        	operadores_binarios.add("-");
+        }
+        
+        if (this.vista.getCheckBoxMultiplicacion().isSelected()) {
+        	operadores_binarios.add("*");
+        }
+        
+        if (this.vista.getCheckBoxDivision().isSelected()) {
+        	operadores_binarios.add("/");
+        }
+        
+        if (this.vista.getCheckBoxLog().isSelected()) {
+        	operadores_unarios.add("log");
+        }
+        
+        if (this.vista.getCheckBoxRaiz().isSelected()) {
+        	operadores_unarios.add("sqrt");
+        }
+        
+        
+        if (operadores_binarios.isEmpty()) {
+        	operadores_binarios.add("*");
+        }
+        
+        if (operadores_unarios.isEmpty()) {
+        	operadores_unarios.add("sqrt");
+        }
+        
+        
         // Creamos el algoritmo genetico
 		setDatos(
 				tam_poblacion, 
@@ -549,7 +594,10 @@ public class AlgoritmoEvolutivo implements ActionListener{
         		
 				profundidad,
 				terminales, 
-				inicializacion);
+				inicializacion, 
+				
+				operadores_binarios,
+				operadores_unarios);
 	
 	}
 	

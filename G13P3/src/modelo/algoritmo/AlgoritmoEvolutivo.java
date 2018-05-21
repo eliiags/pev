@@ -135,115 +135,34 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		
 		crearPoblacion();
 		evaluarPoblacion();
-
-//		System.out.println("Poblacion inicial: ");
-//		for (Cromosoma crm: poblacion) {
-//			System.out.println(crm.toString());
-//			System.out.println("Fitness: " + crm.getAptitud());
-//		}
 		
-		for (int i = 0; i < this.num_generaciones; i++){
+		for (int i = 0; i < num_generaciones; i++){
 			
 			if (elitismo) {
 				elite = separarMejores(tam_elite);
 			}
-			
-//			System.out.println("");
-//			System.out.println("Elite: ");
-//			for (Cromosoma crm: elite) {
-//				System.out.println(crm.toString());
-//				System.out.println("Fitness: " + crm.getAptitud());
-//			}
 
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
 			poblacion = seleccion.seleccionar(poblacion);
-			
-//			System.out.println("");
-//			System.out.println("Seleccion: ");
-//			for (Cromosoma crm: poblacion) {
-//				System.out.println(crm.toString());
-//				System.out.println("Fitness: " + crm.getAptitud());
-//			}
-			
-			this.cruce.reproduccion(poblacion, /*this.prob_cruce*/1.0);
-			
-
-			this.mutacion.muta(poblacion, this.prob_mutacion);
-
-//			System.out.println("");
-//			System.out.println("Mutacion: ");
-//			for (Cromosoma crm: poblacion) {
-//				System.out.println(crm.toString());
-//				System.out.println("Fitness: " + crm.getAptitud());
-//			}
+			cruce.reproduccion(poblacion, prob_cruce);
+			mutacion.muta(poblacion, prob_mutacion);
 			
 			if (elitismo) {
 				//Volvemos a integrar a la élite
 				incluirMejores(elite);
 			}
 			
-//			System.out.println("");
-//			System.out.println("Elite incorporada: ");
-//			for (Cromosoma crm: poblacion) {
-//				System.out.println(crm.toString());
-//				System.out.println("Fitness: " + crm.getAptitud());
-//			}
-			
 			evaluarPoblacion();
 			actualizarValoresGrafica();
-			String texto = this.mejor_absoluto.toString() + "\n"
-							+  this.mejor_absoluto.getAptitud();
-			this.vista.actualiza(this.generaciones, this.media, 
-					 this.mejor, this.absoluto, texto);
-
-//			if (i == 49) {
-//				int j = 0;
-//				for (Cromosoma crm: poblacion) {
-//					System.out.println(j + ": " + crm.toString());
-//					System.out.println("Fitness: " + crm.getAptitud());
-//					j++;
-//				}
-//				
-//				System.out.println("Total fitness: " + this.total_fitness);
-//				
-//				System.out.println("Media : " + this.total_fitness / this.tam_poblacion);
-//				
-//				
-//			}
-//			
+			String texto = "El mejor es: " + this.mejor_absoluto.toString() + "\n" + 
+					"Con un fitness de: " + this.mejor_absoluto.getAptitud();
+			vista.actualiza(generaciones, media, mejor, absoluto, texto);
 			
-//			System.out.println("");
-//			System.out.println("El mejor de esta generacion es: " + this.mejor_cromosoma.toString());
-//			System.out.println("Con un fitness de: " + this.mejor_cromosoma.getAptitud());
-//			System.out.println("");
-
-//			System.out.println("El mejor de esta generacion es: " + this.mejor_absoluto.toString());
-//			System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());
-//			System.out.println("");
-			
-//			pinta();
-//			System.out.println("");
 			cont_generaciones++;
 		}
 		
-//		System.out.println("Poblacion Final: ");
-//		int i = 0;
-//		for (Cromosoma crm: poblacion) {
-//			System.out.println(i + ": " + crm.toString());
-//			System.out.println("Fitness: " + crm.getAptitud());
-//			i++;
-//		}
-		
-		
-		
-		System.out.println("El mejor es: " + this.mejor_absoluto.toString());
-		System.out.println("Con un fitness de: " + this.mejor_absoluto.getAptitud());
-		System.out.println("");
-		
 		this.vista.borrarDatos();
-		
 	}
-	
 	
 	
 	/**
@@ -314,7 +233,6 @@ public class AlgoritmoEvolutivo implements ActionListener{
 			}
 			
 		}
-		
 		
 	}
 	
@@ -414,8 +332,6 @@ public class AlgoritmoEvolutivo implements ActionListener{
 				}
 			}
 		}
-		
-			
 				
 		return mejores;
 
@@ -453,17 +369,14 @@ public class AlgoritmoEvolutivo implements ActionListener{
 	
 
 
-	public void actualizarValoresGrafica() {
+	private void actualizarValoresGrafica() {
 
 		if (this.cont_generaciones < this.num_generaciones) {
-			
 			this.media = this.total_fitness / this.tam_poblacion;
 			this.mejor = this.mejor_cromosoma.getAptitud();
 			this.absoluto     = this.mejor_absoluto.getAptitud();
 			this.generaciones = this.cont_generaciones;
-			
 		}
-
 			
 	}
 
@@ -501,7 +414,6 @@ public class AlgoritmoEvolutivo implements ActionListener{
 		}
 		
 	}
-	
 	
 	
 	

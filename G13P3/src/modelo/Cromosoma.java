@@ -60,22 +60,14 @@ public class Cromosoma {
 		return this.aptitud;
 	}
 	
+	
 	public double getRelativa() {
 		return this.relativa;
 	}
+
 	
 	public double getAcumulada() {
 		return this.acumulada;
-	}
-	
-	
-	/**
-	 * Si el individuo ha sido modificado, 
-	 * se actualiza el atributo.
-	 * @param modificado
-	 */
-	public void setModificado(boolean modificado) {
-		this.modificado = modificado;
 	}
 	
 	
@@ -174,20 +166,24 @@ public class Cromosoma {
 		this.num_nodos = this.raiz.numNodos();
 	}
 
+	
 	public void muta(int num_nodo) {
 		this.raiz.muta(num_nodo);
 		this.modificado = true;
 	}
+	
 	
 	public void muta(int num_nodos, int tipo_mutacion) {
 		this.raiz.muta(num_nodos, tipo_mutacion);
 		this.modificado = true;
 	}
 
+	
 	public void hacerPoda() {
 		this.raiz.hacerPoda(this.profundidad - 1);
 		this.modificado = true;
 	}
+	
 	
 	public Cromosoma hacerCopia() {
 		Cromosoma crm = new Cromosoma(profundidad, num_terminales, tipo_ini);

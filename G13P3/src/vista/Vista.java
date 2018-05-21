@@ -148,16 +148,16 @@ public class Vista extends javax.swing.JFrame {
         CheckBoxResta.setText("-");
 
         CheckBoxMultiplicacion.setSelected(true);
-        CheckBoxMultiplicacion.setText("x");
+        CheckBoxMultiplicacion.setText("*");
 
         CheckBoxDivision.setSelected(true);
-        CheckBoxDivision.setText("÷");
+        CheckBoxDivision.setText("/");
 
         CheckBoxLog.setSelected(true);
         CheckBoxLog.setText("log");
 
         CheckBoxRaiz.setSelected(true);
-        CheckBoxRaiz.setText("√");
+        CheckBoxRaiz.setText("sqrt");
 
         ButtonIniciar.setText("Iniciar");
 

@@ -102,15 +102,22 @@ public class Vista extends javax.swing.JFrame {
 
         LabelOpcionSeleccion.setText("Seleccion");
 
-        ComboBoxOpcionSeleccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estocastico", "Ruleta", "Torneo Deterministico", "Trucamiento" }));
+        ComboBoxOpcionSeleccion.setModel(new javax.swing.DefaultComboBoxModel<>(
+        		new String[] { "Estocastico", 
+        					   "Ruleta", 
+        					   "Torneo Deterministico",
+        					   "Torneo Probabilistico",
+        					   "Truncamiento" }));
 
         LabelOpcionCruce.setText("Cruce");
 
-        ComboBoxOpcionCruce.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MonoPunto" }));
+        ComboBoxOpcionCruce.setModel(new javax.swing.DefaultComboBoxModel<>(
+        		new String[] { "MonoPunto" }));
 
         LabelOpcionMutacion.setText("Mutacion");
 
-        ComboBoxOpcionMutacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Basica" }));
+        ComboBoxOpcionMutacion.setModel(new javax.swing.DefaultComboBoxModel<>(
+        		new String[] { "Basica" }));
 
         ButtonIniciar.setText("Iniciar");
 

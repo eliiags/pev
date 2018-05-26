@@ -5,7 +5,7 @@ import pev.modelo.Gen;
 import pev.modelo.GenBinario;
 
 public class Funcion1 extends Cromosoma {
-
+	
 	public Funcion1(double tolerancia) {
 		super(1);
 		
@@ -21,12 +21,6 @@ public class Funcion1 extends Cromosoma {
 		
 		// Calculamos la longitud del cromosoma
 		this.calcularLongitudCromosoma();
-		// Inicializamos el cromosoma
-		this.inicializarCromosoma();
-		// Calculamos el fenotipo del cromosoma
-		this.calcularFenotipo();
-		// Calculamos el fitness del individuo
-		this.funcionFitness();
 	}
 	
 	
@@ -36,11 +30,17 @@ public class Funcion1 extends Cromosoma {
 		// Inicializo el array
 		this.genes = new Gen[this.num_genes];
 		
-		// 
 		for (int i = 0; i < this.genes.length; i++) {
 			this.genes[i] = new GenBinario(this.longitud_gen[i]);
+			this.genes[i].inicializaGen();
 		}
 		
+		// Calculamos el fenotipo del cromosoma
+		this.calcularFenotipo();
+		// Calculamos el fitness del individuo
+		this.funcionFitness();
+
+		this.modificado = false;
 	}
 
 
@@ -60,25 +60,27 @@ public class Funcion1 extends Cromosoma {
 	}
 
 	
-	public int bin2dec() {
+	private int bin2dec() {
 		return Integer.parseInt(this.toString(), 2);
 	}
 
 
 	@Override
 	public Cromosoma hacerCopia() {
-		// Creamos un cromosoma
-		Cromosoma cromosoma = new Funcion1(this.tolerancia);
-		// Hacemos una copia de cada uno de los genes y los
-		// establecemos en el cromosoma creado. 
-		cromosoma.setGen(this.genes[0].hacerCopia(), 0);
-		// Calculamos el fenotipo
-		cromosoma.calcularFenotipo();
-		// Calculamos su aptitud
-		cromosoma.funcionFitness();
-		// Lo devolvemos
-		return cromosoma;
-	}
 
+		Funcion1 crm = new Funcion1(this.tolerancia);
+
+		crm.genes = new Gen[this.num_genes];
+
+		crm.longitud_gen[0] = this.longitud_gen[0];
+
+		crm.setGen(this.genes[0].hacerCopia(), 0);
+
+		crm.fenotipo[0] = this.fenotipo[0];
+		
+		crm.aptitud = this.aptitud;
+		
+		return crm;
+	}
 
 }

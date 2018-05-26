@@ -8,7 +8,7 @@ public class Funcion4 extends Cromosoma{
 
 	public Funcion4(double tolerancia) {
 		super(2);
-		
+
 		this.num_genes = 2;
 		this.longitud_fenotipo = 2;
 		
@@ -24,26 +24,26 @@ public class Funcion4 extends Cromosoma{
 				
 		// Calculamos la longitud del cromosoma
 		this.calcularLongitudCromosoma();
-		// Inicializamos el cromosoma
-		this.inicializarCromosoma();
+	}
+
+	
+	@Override
+	public void inicializarCromosoma() {
+		// Inicializo el array
+		this.genes = new Gen[this.num_genes];
+		
+		for (int i = 0; i < this.genes.length; i++) {
+			this.genes[i] = new GenBinario(this.longitud_gen[i]);
+			this.genes[i].inicializaGen();
+		}
+		
 		// Calculamos el fenotipo del cromosoma
 		this.calcularFenotipo();
 		// Calculamos el fitness del individuo
 		this.funcionFitness();
-	}
-	
-	
-	@Override
-	public void inicializarCromosoma() {
-		
-		// Inicializo el array
-		this.genes = new Gen[this.num_genes];
-		
-		// 
-		for (int i = 0; i < this.genes.length; i++) {
-			this.genes[i] = new GenBinario(this.longitud_gen[i]);
-		}
-		
+
+		this.modificado = false;
+
 	}
 
 	
@@ -65,46 +65,41 @@ public class Funcion4 extends Cromosoma{
 		}
 		
 		this.aptitud = paso1 * paso2;
-	
+
 	}
 
 	
 	@Override
 	public void calcularFenotipo() {
-		
 		for (int i = 0; i < fenotipo.length; i++) {
 			this.fenotipo[i] = this.xmin[i] + (this.xmax[i] - 
 					this.xmin[i]) * bin2dec(this.genes[i]) / (Math.pow(2, this.longitud_gen[i]) - 1);
 		}
-		
 	}
 
 	
-	public int bin2dec(Gen gen) {
-		
+	private int bin2dec(Gen gen) {
 		return Integer.parseInt(gen.toString(), 2);
-
 	}
 	
-	
+
 	@Override
 	public Cromosoma hacerCopia() {
-		// Creamos un cromosoma
-		Cromosoma cromosoma = new Funcion4(this.tolerancia);
-		
-		// Hacemos una copia
-		for (int i = 0; i < fenotipo.length; i++) {
-			cromosoma.setGen(this.genes[i].hacerCopia(), i);
+		Funcion4 crm = new Funcion4(this.tolerancia);
+
+		crm.genes = new Gen[this.num_genes];
+
+		crm.longitud_gen[0] = this.longitud_gen[0];
+
+		for (int i = 0; i < this.genes.length; i++) {
+			crm.longitud_gen[i] = this.longitud_gen[i];
+			crm.setGen(this.genes[i].hacerCopia(), i);
+			crm.fenotipo[i] = this.fenotipo[i];
 		}
 		
-		// Calculamos el fenotipo
-		cromosoma.calcularFenotipo();
+		crm.aptitud = this.aptitud;
 		
-		// Calculamos su aptitud
-		cromosoma.funcionFitness();
-		
-		// Lo devolvemos
-		return cromosoma;
+		return crm;
 	}
 
 }

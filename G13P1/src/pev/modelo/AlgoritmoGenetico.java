@@ -11,29 +11,34 @@ import pev.modelo.cruce.Cruce;
 import pev.modelo.cruce.CruceMonoPunto;
 import pev.modelo.mutacion.Mutacion;
 import pev.modelo.mutacion.MutacionBitBit;
+import pev.modelo.seleccion.Seleccion;
 import pev.modelo.seleccion.SeleccionEstocastico;
 import pev.modelo.seleccion.SeleccionRuleta;
-import pev.modelo.seleccion.Seleccion;
 import pev.modelo.seleccion.SeleccionTorneoDeterministico;
+import pev.modelo.seleccion.SeleccionTorneoProbabilistico;
 import pev.modelo.seleccion.SeleccionTruncamiento;
 
 
 public class AlgoritmoGenetico{
 	
-	// Poblacion con la que se trabajará
+	// Poblacion con la que se trabajar
 	private Cromosoma[] poblacion;
 	
 	private int tam_poblacion;
 
 	private int num_generaciones; // Numero maximo de generaciones
 
-	private Cromosoma[] elite;
-	
 	private double porcentaje_elite;
 	
 	private Cromosoma el_mejor; // Mejor individuo
 	
 	private Cromosoma el_mejor_absoluto;
+	
+	private Seleccion seleccion;
+	
+	private Cruce cruce;
+	
+	private Mutacion mutacion;
 	
 	private int pos_mejor; // Posicion del mejor cromosoma
 	
@@ -42,8 +47,6 @@ public class AlgoritmoGenetico{
 	private double prob_mutacion; // Probabilidad de mutacion
 	
 	private double tolerancia; // Tolerancia de la representacion
-	
-	private int tipo_funcion;
 	
 	private double total_fitness;
 	
@@ -56,8 +59,6 @@ public class AlgoritmoGenetico{
 	private double[] mejor_fitness;
 	
 	private int cont_generaciones;
-	
-	private int opcion_seleccion;
 	
 	
 	
@@ -91,13 +92,10 @@ public class AlgoritmoGenetico{
 			this.tolerancia 	  = tolerancia;
 			this.prob_cruce 	  = prob_cruce;
 			this.prob_mutacion 	  = prob_mutacion;
-			this.tipo_funcion 	  = tipo_funcion;
 			this.num_generaciones = num_generaciones;
 			this.porcentaje_elite = porcentaje_elite;
 			this.genes		  	  = genes;
 	
-			this.opcion_seleccion = opcion_seleccion;
-			
 			// Creamos el array de poblacion
 			this.poblacion = new Cromosoma[this.tam_poblacion];
 			
@@ -107,10 +105,13 @@ public class AlgoritmoGenetico{
 			this.mejor_fitness = new double[this.num_generaciones];
 			this.cont_generaciones = 0;
 			
+			seleccion(opcion_seleccion);
+			cruce(opcion_cruce);
+			mutacion(opcion_mutacion);
 			
 			boolean elite = this.porcentaje_elite == 0.0 ? false : true;
 			
-			ejecuta(elite);
+			ejecuta(elite, tipo_funcion);
 		}
 
 	
@@ -149,26 +150,31 @@ public class AlgoritmoGenetico{
 	
 	/***************************** METODOS *********************************/
 
-	public void inicializaPoblacion() {
+	public void inicializaPoblacion(int tipo_funcion) {
 	
 		// Para cada uno de los individuos de la poblacion se crea un tipo de Funcion
 		for (int i = 0; i < this.poblacion.length; i++) {
 			
-			switch (this.tipo_funcion) {
+			switch (tipo_funcion) {
 			case 1:
 				this.poblacion[i] = new Funcion1(this.tolerancia);
+				this.poblacion[i].inicializarCromosoma();
 				break;
 			case 2:
 				this.poblacion[i] = new Funcion2(this.tolerancia);
+				this.poblacion[i].inicializarCromosoma();
 				break;
 			case 3:
 				this.poblacion[i] = new Funcion3(this.tolerancia);
+				this.poblacion[i].inicializarCromosoma();
 				break;
 			case 4:
 				this.poblacion[i] = new Funcion4(this.tolerancia);
+				this.poblacion[i].inicializarCromosoma();
 				break;
 			case 5:
 				this.poblacion[i] = new Funcion5(this.tolerancia, this.genes);
+				this.poblacion[i].inicializarCromosoma();
 				break;
 			default:
 				System.out.println("Introduzca una funcion");
@@ -190,7 +196,7 @@ public class AlgoritmoGenetico{
 		this.pos_mejor = 0;
 		this.el_mejor = this.poblacion[0].hacerCopia();
 		
-		if(this.cont_generaciones == 0)
+		if (this.cont_generaciones == 0)
 			this.el_mejor_absoluto = this.poblacion[0].hacerCopia();
 		
 		
@@ -200,7 +206,7 @@ public class AlgoritmoGenetico{
 					this.poblacion[i-1].getPuntuacionAcumulada());
 			
 			// Si es Funcion1 o Funcion3 (MAXIMIZAR)
-			if (this.tipo_funcion == 1 || this.tipo_funcion == 3){
+			if (this.poblacion[0].getMaximizar()){
 				if (this.poblacion[i].getAptitud() > this.el_mejor.getAptitud()) {
 					this.pos_mejor = i;
 					this.el_mejor = this.poblacion[i].hacerCopia();
@@ -231,8 +237,6 @@ public class AlgoritmoGenetico{
 			this.media_fitness[cont_generaciones] = this.total_fitness / this.tam_poblacion;
 			this.mejor_fitness[cont_generaciones] = this.el_mejor.getAptitud();
 			this.mejor_absoluto[cont_generaciones] = this.el_mejor_absoluto.getAptitud();	
-			
-			this.cont_generaciones++;
 		}
 	}
 	
@@ -253,31 +257,23 @@ public class AlgoritmoGenetico{
 	}
 	
 	
-	public void seleccion() {
+	public void seleccion(int opcion_seleccion) {
 		
-		Seleccion seleccion;
-		
-		
-		switch (this.opcion_seleccion) {
+		switch (opcion_seleccion) {
 		case 0:
 			seleccion = new SeleccionEstocastico();
-			seleccion.seleccionar(this.poblacion);
-			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		case 1:
 			seleccion = new SeleccionRuleta();
-			seleccion.seleccionar(this.poblacion);
-			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		case 2:
 			seleccion = new SeleccionTorneoDeterministico();
-			seleccion.seleccionar(this.poblacion);
-			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		case 3:
+			seleccion = new SeleccionTorneoProbabilistico();
+			break;
+		case 4:
 			seleccion = new SeleccionTruncamiento(0.5);
-			seleccion.seleccionar(this.poblacion);
-			this.poblacion = seleccion.getNuevaPoblacion();
 			break;
 		default:
 			System.out.println("Introduzca tipo de seleccion");
@@ -286,53 +282,52 @@ public class AlgoritmoGenetico{
 	}
 	
 	
-	public void cruce() {
-		Cruce cruce = new CruceMonoPunto();
-		cruce.reproduccion(this.poblacion, this.prob_cruce);
-		this.poblacion = cruce.getNuevaPoblacion();
+	public void cruce(int opcion_cruce) {
+		cruce = new CruceMonoPunto();
 	}
 	
 	
-	public void mutacion() {
-		Mutacion mutacion = new MutacionBitBit();
-		mutacion.muta(this.poblacion, this.prob_mutacion);
-		this.poblacion = mutacion.getNuevaPoblacion();
+	public void mutacion(int opcion_mutacion) {
+		mutacion = new MutacionBitBit();
 	}
 
-
 	
-	public void ejecuta (boolean elite) {
+	public void ejecuta (boolean elitismo, int tipo_funcion) {
 
 		int tam_elite = 0;
 		
-		if (elite) {
+		if (elitismo) {
 			// Extraemos los mejores individuos de la población (hacemos una copia)
 			tam_elite = calcularTamElite();
 		}
 		
-		inicializaPoblacion();
+		inicializaPoblacion(tipo_funcion);
 		evaluarPoblacion();
 		// pinta();
 		
 		for (int i = 0; i < this.num_generaciones; i++){
 			
-			if (elite) {
-				this.elite = new Cromosoma[tam_elite];
-				this.elite = separarMejores(tam_elite);
+			Cromosoma[] elite = new Cromosoma[tam_elite]; 
+			
+			if (elitismo) {
+				elite = separarMejores(tam_elite);
 			}
 			
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
-			seleccion();
-			cruce();
-			mutacion();
+			this.poblacion = seleccion.seleccionar(this.poblacion);
+			this.poblacion = cruce.reproduccion(this.poblacion, this.prob_cruce);
+			this.poblacion = mutacion.muta(this.poblacion, this.prob_mutacion);
 			
-			if (elite) {
+			
+			if (elitismo) {
 				//Volvemos a integrar a la élite
-				incluirMejores();
+				incluirMejores(elite);
 			}
 			
 			evaluarPoblacion();
 			actualizarValoresGrafica();
+			
+			this.cont_generaciones++;
 		}
 		
 		// pinta();
@@ -341,7 +336,7 @@ public class AlgoritmoGenetico{
 	
 	
 	
-	public Cromosoma[] separarMejores(int tam_elite) {
+	private Cromosoma[] separarMejores(int tam_elite) {
 		
 		// Mejores cromosomas
 		Cromosoma[] mejores = new Cromosoma[tam_elite];
@@ -358,8 +353,7 @@ public class AlgoritmoGenetico{
 		Arrays.sort(aptitudes);
 		
 		// Si es una funcion de maximizar
-		if (this.tipo_funcion == 1 || this.tipo_funcion == 3){
-			// MAXIMIZAR
+		if (this.poblacion[0].getMaximizar()) { // MAXIMIZAR
 			for (int i = 0; i < mejores.length; i++) {
 				for (int j = 0; j < this.poblacion.length; j++) {
 					if (aptitudes[aptitudes.length - 1 - i] == this.poblacion[j].getAptitud()) {
@@ -369,8 +363,7 @@ public class AlgoritmoGenetico{
 			}
 		}
 		// Si es una funcion de maximizar
-		else {
-			// MINIMIZAR
+		else { // MINIMIZAR
 			for (int i = 0; i < mejores.length; i++) {
 				for (int j = 0; j < this.poblacion.length; j++) {
 					if (aptitudes[i] == this.poblacion[j].getAptitud()) {
@@ -386,7 +379,7 @@ public class AlgoritmoGenetico{
 	}
 	
 	
-	public void incluirMejores() {
+	private void incluirMejores(Cromosoma[] elite) {
 		
 		// Buscamos los peores
 		double[] aptitudes = new double[this.tam_poblacion];
@@ -400,21 +393,25 @@ public class AlgoritmoGenetico{
 		Arrays.sort(aptitudes);
 
 		// Para las funciones donde se tenga que maximizar el valor
-		if (this.tipo_funcion == 1 || this.tipo_funcion == 3){
-			for (int i = 0; i < this.elite.length; i++) {
+		if (this.poblacion[0].getMaximizar()){
+			for (int i = 0; i < elite.length; i++) {
+				boolean encontrado = false;
 				for (int j = 0; j < this.poblacion.length; j++) {
-					if (aptitudes[i] == this.poblacion[j].getAptitud()) {
-						this.poblacion[j] = this.elite[i];
+					if (!encontrado && aptitudes[i] == this.poblacion[j].getAptitud()) {
+						this.poblacion[j] = elite[i];
+						encontrado = true;
 					}
 				}
 			}
 		}
 		// Para las funciones donde se tenga que minimizar el valor
 		else {
-			for (int i = 0; i < this.elite.length; i++) {
+			for (int i = 0; i < elite.length; i++) {
+				boolean encontrado = false;
 				for (int j = 0; j < this.poblacion.length; j++) {
-					if (aptitudes[aptitudes.length - 1 - i] == this.poblacion[j].getAptitud()) {
-						this.poblacion[j] = this.elite[i];
+					if (!encontrado && aptitudes[aptitudes.length - 1 - i] == this.poblacion[j].getAptitud()) {
+						this.poblacion[j] = elite[i];
+						encontrado = true;
 					}
 				}
 			}
@@ -426,7 +423,7 @@ public class AlgoritmoGenetico{
 	
 	
 	
-	public int calcularTamElite() {
+	private int calcularTamElite() {
 		return (int) Math.ceil(this.tam_poblacion * this.porcentaje_elite / 100);
 	}
 	

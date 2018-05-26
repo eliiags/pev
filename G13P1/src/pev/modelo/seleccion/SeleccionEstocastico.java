@@ -2,18 +2,12 @@ package pev.modelo.seleccion;
 
 import pev.modelo.Cromosoma;
 
-public class SeleccionEstocastico extends Seleccion {
+public class SeleccionEstocastico implements Seleccion {
 
-	
-	public SeleccionEstocastico() {
-
-	}
-
-	
 	@Override
-	public void seleccionar(Cromosoma[] poblacion) {
-
-		this.nueva_poblacion = new Cromosoma[poblacion.length];
+	public Cromosoma[] seleccionar(Cromosoma[] poblacion) {
+		
+		Cromosoma[] nueva_poblacion = new Cromosoma[poblacion.length];
 
 		double[] acumulada = new double[poblacion.length];
 		
@@ -24,17 +18,13 @@ public class SeleccionEstocastico extends Seleccion {
 			   marca = 0.0;
 		
 		
-		
 		if (poblacion[0].getMaximizar()) {
-
 			for (int i = 0; i < poblacion.length; i++) {
 				acumulada[i] = poblacion[i].getPuntuacionAcumulada();
 			}
-			
-
 		} 
 		else {
-		
+
 			double max = 0.0;
 			
 			for (int i = 0; i < poblacion.length; i++) { 
@@ -58,7 +48,7 @@ public class SeleccionEstocastico extends Seleccion {
 		}
 
 		
-		for (int i = 0; i < this.nueva_poblacion.length; i++) {
+		for (int i = 0; i < nueva_poblacion.length; i++) {
 			
 			if (pos_elegida == 0) {
 				i = 0;
@@ -68,22 +58,21 @@ public class SeleccionEstocastico extends Seleccion {
 			pos_elegida = 0;
 			marca += valor_a_sumar;
 
-			while(pos_elegida < this.nueva_poblacion.length 
+			while(pos_elegida < nueva_poblacion.length 
 					&& marca > acumulada[pos_elegida]) {
 				pos_elegida++;
 			}
 		
 			if (pos_elegida < poblacion.length && pos_elegida > 0) {
-				this.nueva_poblacion[i] = poblacion[pos_elegida].hacerCopia();
+				nueva_poblacion[i] = poblacion[pos_elegida].hacerCopia();
 			}
 			else if(pos_elegida == poblacion.length){
-				this.nueva_poblacion[i] = poblacion[pos_elegida-1].hacerCopia();
+				nueva_poblacion[i] = poblacion[pos_elegida-1].hacerCopia();
 			}
 		
-			
 		}
-	
+		
+		return nueva_poblacion;
 	}
-	
-	
+
 }

@@ -2,14 +2,8 @@ package pev.modelo.seleccion;
 
 import pev.modelo.Cromosoma;
 
-public abstract class Seleccion {
+public interface Seleccion {
 
-	protected Cromosoma[] nueva_poblacion;
-	
-	public abstract void seleccionar(Cromosoma[] poblacion);
-	
-	public Cromosoma[] getNuevaPoblacion() {
-		return this.nueva_poblacion;
-	}
-	
+	public abstract Cromosoma[] seleccionar(Cromosoma[] poblacion);
+
 }

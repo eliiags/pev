@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import pev.modelo.Cromosoma;
 
-public class SeleccionTruncamiento extends Seleccion {
+public class SeleccionTruncamiento implements Seleccion {
 
 	private double trun;
 	
@@ -14,9 +14,9 @@ public class SeleccionTruncamiento extends Seleccion {
 	
 	
 	@Override
-	public void seleccionar(Cromosoma[] poblacion) {
+	public Cromosoma[] seleccionar(Cromosoma[] poblacion) {
 		
-		this.nueva_poblacion = new Cromosoma[poblacion.length];
+		Cromosoma[] nueva_poblacion = new Cromosoma[poblacion.length];
 		
 		int proporcion = (int) ((int) 1 / this.trun),
 			tam = (int) poblacion.length / proporcion,
@@ -27,11 +27,11 @@ public class SeleccionTruncamiento extends Seleccion {
 		Cromosoma[] mejores = this.separar(poblacion, tam);
 		
 		
-		while (i < this.nueva_poblacion.length) {
+		while (i < nueva_poblacion.length) {
 			
 			for (int j = 0; j < tam; j++) {
-				if (pos < this.nueva_poblacion.length) {
-					this.nueva_poblacion[pos] = mejores[j];
+				if (pos < nueva_poblacion.length) {
+					nueva_poblacion[pos] = mejores[j].hacerCopia();
 					pos++;
 				}
 			}
@@ -40,6 +40,8 @@ public class SeleccionTruncamiento extends Seleccion {
 		
 		}
 		
+		return nueva_poblacion;
+		
 		
 	}
 	
@@ -47,35 +49,40 @@ public class SeleccionTruncamiento extends Seleccion {
 	
 	private Cromosoma[] separar(Cromosoma[] poblacion, int tam) {
 		
-		Arrays.sort(poblacion);
-		
 		// Mejores cromosomas
 		Cromosoma[] mejores = new Cromosoma[tam];
-
-		// Si es una funcion de maximizar
-		if (poblacion[0].getMaximizar()){
-			for (int i = 0; i < mejores.length; i++) {
-				mejores[i] = poblacion[poblacion.length - 1 - i].hacerCopia();
-			}
-		}
-		// Si es una funcion de maximizar
-		else {
-			for (int i = 0; i < mejores.length; i++) {
-				mejores[i] = poblacion[i].hacerCopia();
-			}
+		
+		// Array donde se almacenaras las aptitudes para ordenarlas posteriormente
+		double[] aptitudes = new double[poblacion.length];
+		
+		// Actualizamos el array de aptitudes con el fitness de cada individuo;
+		for (int i = 0; i < aptitudes.length; i++) {
+			aptitudes[i] = poblacion[i].getAptitud();
 		}
 		
+		// Ordenador de mayor a menor
+		Arrays.sort(aptitudes);
+
+		if (poblacion[0].getMaximizar()) { // MAXIMIZAR
+			for (int i = 0; i < mejores.length; i++) {
+				for (int j = 0; j < poblacion.length; j++) {
+					if (aptitudes[aptitudes.length - 1 - i] == poblacion[j].getAptitud()) {
+						mejores[i] = poblacion[j].hacerCopia();
+					}
+				}
+			}
+		}
+		else { // MINIMIZAR
+			for (int i = 0; i < mejores.length; i++) {
+				for (int j = 0; j < poblacion.length; j++) {
+					if (aptitudes[i] == poblacion[j].getAptitud()) {
+						mejores[i] = poblacion[j].hacerCopia();
+					}
+				}
+			}
+		}
 		
 		return mejores;
 	}
 	
-	
-	
-
 }
-
-//System.out.println("*************************************");
-//for (int i = 0; i < aux_poblacion.length; i++) {
-//	System.out.println(aux_poblacion[i].getAptitud());
-//}
-//System.out.println("*************************************");

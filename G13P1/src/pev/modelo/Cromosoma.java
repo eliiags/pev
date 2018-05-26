@@ -1,15 +1,17 @@
 package pev.modelo;
 
-public abstract class Cromosoma implements Comparable<Cromosoma>{
+public abstract class Cromosoma {
 
 	protected Gen[] genes;
 	protected int[] longitud_gen;
 	
-	protected double[] xmin;
-	protected double[] xmax;
+	protected int num_genes;
 
 	protected double fenotipo[];
 	protected int longitud_fenotipo;
+
+	protected double[] xmin;
+	protected double[] xmax;
 	
 	protected double tolerancia;
 
@@ -19,15 +21,15 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 	
 	protected double punt_acumulada; // Puntuacion acumulada para seleccion 
 										// (suma de todos los fitness)
-	protected int num_genes;
-	
 	protected boolean maximizar;
+	
+	protected boolean modificado;
 	
 	
 	
 	public Cromosoma(int longitud) {
 		this.longitud_gen = new int[longitud];
-		this.fenotipo = new double[longitud];
+		this.fenotipo     = new double[longitud];
 		this.xmin = new double[longitud];
 		this.xmax = new double[longitud];
 	}
@@ -35,28 +37,12 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 
 	/***************************** METODOS *********************************/
 	
-	/**
-	 * Se inicializa el cromosoma
-	 */
 	public abstract void inicializarCromosoma();
 	
-
-	/**
-	 * Funcion de fitness
-	 */
 	public abstract void funcionFitness();
 	
-	
-	/**
-	 * Calcula y establece el fenotipo
-	 */
 	public abstract void calcularFenotipo();
 	
-
-	/**
-	 * Hace una copia del cromosoma
-	 * @return
-	 */
 	public abstract Cromosoma hacerCopia();
 	
 	
@@ -75,7 +61,13 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 	}
 	
 	public double getAptitud() {
-		this.funcionFitness();
+		
+		if (this.modificado) {
+			this.calcularFenotipo();
+			this.funcionFitness();
+			this.modificado = false;
+		}
+		
 		return this.aptitud;
 	}
 	
@@ -87,16 +79,12 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 		return this.punt_acumulada;
 	}
 	
-	public void setAptitud(double aptitud) {
-		this.aptitud = aptitud;
-	}
-	
 	public Gen[] getGenes() {
 		return this.genes;
 	}
 	
 	public void setGen(Gen gen, int pos) {
-		this.genes[pos] = gen;
+		this.genes[pos] = gen.hacerCopia();
 	}
 
 	public boolean getMaximizar() {
@@ -112,6 +100,10 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 		}
 		
 		return longitud;
+	}
+	
+	public void setModificado(boolean modificado) {
+		this.modificado = modificado;
 	}
 
 	/***********************************************************************/
@@ -134,7 +126,9 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 	public void calcularLongitudCromosoma() {
 		
 		for (int i = 0; i < this.num_genes; i++) {
-			this.longitud_gen[i] = (int) Math.ceil((Math.log( 1 + ( (this.xmax[i] - this.xmin[i]) / this.tolerancia))) / Math.log(2));
+			this.longitud_gen[i] = (int) Math.ceil((Math.log( 1 + 
+					( (this.xmax[i] - this.xmin[i]) / this.tolerancia))) 
+					/ Math.log(2));
 		}
 		
 	}
@@ -153,6 +147,16 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 		this.punt_acumulada = this.punt_relativa + relativa;
 	}
 	
+
+
+	public void cambiaGenes(Gen[] genes, int pos_ini, int pos_fin) {
+		
+		for (int i = pos_ini; i < pos_fin; i++) {
+			this.genes[i] = genes[i].hacerCopia();
+		}
+		
+	}
+	
 	
 	/**
 	 * Sobreescribe el metodo toString. 
@@ -169,32 +173,7 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 	}
 	
 	
-	
-	public void cambiaGenes(Gen[] genes, int pos_ini, int pos_fin) {
-		
-		for (int i = pos_ini; i < pos_fin; i++) {
-			this.genes[i] = genes[i].hacerCopia();
-		}
-		
-	}
-	
-	
-	
-	
-	/***********************************************************************/
-
-	@Override
-    public int compareTo(Cromosoma crm) {
-        if (this.aptitud < crm.getAptitud()) {
-            return -1;
-        }
-        if (this.aptitud > crm.getAptitud()) {
-            return 1;
-        }
-        return 0;
-    }
-	
-	
+	/***********************************************************************/	
 		
 }
 
@@ -202,5 +181,4 @@ public abstract class Cromosoma implements Comparable<Cromosoma>{
 /***********************************************************************/
 /***********************************************************************/
 /***************************** METODOS *********************************/
-
 

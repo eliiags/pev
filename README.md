@@ -1,6 +1,6 @@
 # pev
 Práctica de Programación Evolutiva
 
- - P1: Implementar un algoritmo genético clásico para hallar el máximo o mínimo de diferentes funciones.
- - P2:
+ - P1: Algoritmo genético clásico para hallar el máximo o mínimo de diferentes funciones.
+ - P2: Algoritmo evolutivo para descifrar textos encriptados mediante sustitución de letras.
  - P3:

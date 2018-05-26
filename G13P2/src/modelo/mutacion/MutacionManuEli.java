@@ -4,14 +4,9 @@ import java.util.ArrayList;
 
 import modelo.Cromosoma;
 
-public class MutacionManuEli extends Mutacion {
+public class MutacionManuEli implements Mutacion {
 
 	private int N;
-	
-	
-	public MutacionManuEli() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	
 	@Override
@@ -19,9 +14,7 @@ public class MutacionManuEli extends Mutacion {
 
 		ArrayList<Character> aux = new ArrayList<Character>();
 		
-		this.N = poblacion.get(0).getLongitudCromosoma();
-    	
-    	boolean mutado = false;
+		this.N = poblacion.get(0).getGenes().get(0).getLongitud();
     	
     	double probabilidad;
     	
@@ -32,7 +25,6 @@ public class MutacionManuEli extends Mutacion {
     	// Para cada individuo
 		for (int i = 0; i < poblacion.size(); i++) {
 			
-			mutado = false;
 			probabilidad = Math.random();
 				
 			// Comprobamos la probabilidad de mutar
@@ -43,24 +35,17 @@ public class MutacionManuEli extends Mutacion {
 
 				// Sacamos los valores de
 				for (int j = pos; j < this.N; j++) {
-					// guardamos el valor de la posicion
+					// Guardamos el valor de la posicion
 					aux.add((char) poblacion.get(i).getGenes().get(0).getAlelo(j));
 				}
 				
 				for (int j = pos; j < this.N; j++) {
 					rand = ((int) (Math.random() * (aux.size())));
-					
 					poblacion.get(i).getGenes().get(0).setAlelo((char) aux.get(rand), j);
-					
 					aux.remove(rand);
-					
 				}
 				
-				mutado = true;
-			}
-			
-			if (mutado) {
-				poblacion.get(i).funcionFitness();
+				poblacion.get(i).setModificado(true);
 			}
 			
 		}

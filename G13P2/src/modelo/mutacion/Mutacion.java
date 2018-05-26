@@ -4,17 +4,8 @@ import java.util.ArrayList;
 
 import modelo.Cromosoma;
 
-public abstract class Mutacion {
+public interface Mutacion {
 
-//	protected ArrayList<Cromosoma> nueva_poblacion;
-	
-	public abstract void muta(ArrayList<Cromosoma> poblacion, double prob_mutacion);
+	public void muta(ArrayList<Cromosoma> poblacion, double prob_mutacion);
 
-	
-//	public ArrayList<Cromosoma> getNuevaPoblacion() {
-//		return this.nueva_poblacion;
-//	}
-	
-	
-	
 }

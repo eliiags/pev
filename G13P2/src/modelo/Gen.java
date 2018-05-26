@@ -2,93 +2,88 @@ package modelo;
 
 import java.util.ArrayList;
 
-public abstract class Gen {
+public class Gen {
+
+	// Longitud del gen
+	private final static int LONGITUD = 26;
+
+	// Array list de alelos
+	private ArrayList<Character> alelos;
+
 	
-	// Longitud del gen. Longitud del array
-	protected int longitud_gen;
-	
-	
-	/**
-	 * Dada la longitud del gen, actualiza los valores de los
-	 * atributos. 
-	 * @param longitud_gen
-	 */
-	public Gen(int longitud_gen) {
-		this.longitud_gen = longitud_gen;
+	public Gen() {
+		this.alelos = new ArrayList<Character>();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+
 	/**************************** GET & SET ********************************/
 	
-		
-	/**
-	 * Devuelve la longitud del gen.
-	 */
-	public int getLongitudGen() {
-		return this.longitud_gen;
+	public char getAlelo(int pos) {
+		return (char) this.alelos.get(pos);
+	}
+
+	public void setAlelo(char alelo, int pos) {
+		this.alelos.set(pos, alelo);
+	}
+
+	public ArrayList<Character> getAlelos() {
+		return this.alelos;
 	}
 	
+	public int getLongitud() {
+		return LONGITUD;
+	}
+
 	/***********************************************************************/
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	/***************************** METODOS *********************************/
-	
-	
-	/**
-	 * Inicializa un gen. Establece valores 0 y 1
-	 */
-	public abstract void inicializaGen();
-	
-	
-	/**
-	 * Devuelve un String con el valor del gen.
-	 * Convierte el valor en 0 y 1.
-	 */
-	public abstract String toString();
-	
-	
-	/**
-	 * Hace una copia del gen y lo devuelve.
-	 * @return
-	 */
-	public abstract Gen hacerCopia();
+	public void inicializaGen() {
 
+		ArrayList<Character> abc = new ArrayList<Character>();
+		
+		int rand = 0;
+		
+		for (int i = 0; i < LONGITUD; i++) {
+			abc.add((char) (i + 97));
+		}
+		
+		for (int i = 0; i < LONGITUD; i++) {
+			rand = ((int) (Math.random() * (abc.size())));
+			
+			this.alelos.add(abc.get(rand));
+			
+			abc.remove(rand);
+		}
+		
+	}
 
 	
-	/**
-	 * Dado una posicion devuelve el valor
-	 * @param pos
-	 * @return
-	 */
-	public abstract Object getAlelo(int pos);
+	public Gen hacerCopia() {
+		
+		Gen gen = new Gen();
+
+		for (int i = 0; i < LONGITUD; i++) {
+			gen.alelos.add(this.alelos.get(i));
+//			gen.setAlelo(this.alelos.get(i), i);
+		}
+		
+		return gen;
+	}
+
 	
-	
-	/**
-	 * dado una posicion y un valor, lo establece
-	 * @param alelo
-	 * @param pos
-	 */
-	public abstract void setAlelo(Object alelo, int pos);
-	
-	
-	public abstract ArrayList<Character> getAlelos();
-	
-	/***********************************************************************/
-	
+	public String toString() {
+		String dev = "";
+		
+		for (int i = 0; i < this.alelos.size(); i++) {
+			dev += this.alelos.get(i) + " "; 
+		} 
+		
+		return dev;
+	}
+
+
+
 	
 }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import modelo.Cromosoma;
-import modelo.CromosomaDesencripta;
 import modelo.seleccion.Seleccion;
 import modelo.seleccion.SeleccionEstocastico;
 import modelo.seleccion.SeleccionManuEli;
@@ -43,8 +42,6 @@ public class AlgoritmoEvolutivo implements ActionListener {
 	
 	private int cont_generaciones;
 
-	
-	private Cromosoma[] elite;
 	
 	private double elitismo;
 	
@@ -128,7 +125,6 @@ public class AlgoritmoEvolutivo implements ActionListener {
 		this.cambio_mejor = false;
 		
 		this.el_mejor = null;
-		this.elite = null;
 		this.el_mejor_absoluto = null;
 		this.total_fitness = 0.0;
 		this.texto_plano = "";
@@ -161,7 +157,7 @@ public class AlgoritmoEvolutivo implements ActionListener {
 	/***************************** METODOS *********************************/
 	
 
-	public void ejecuta(boolean elite) {
+	public void ejecuta(boolean elitismo) {
     	
 		vista.borrarDatos();
 		
@@ -174,27 +170,28 @@ public class AlgoritmoEvolutivo implements ActionListener {
 
 		for (int i = 0; i < this.num_generaciones; i++) {
 		
-			if (elite) {
-				int tam_elite = calcularTamElite();
-				this.elite = new Cromosoma[tam_elite];
+			int tam_elite = calcularTamElite();
+
+			Cromosoma[] elite = new Cromosoma[tam_elite];
+
+			if (elitismo) {
 				// Extraemos los mejores individuos de la poblacion (hacemos una copia)
-				separarMejores(tam_elite);
+				elite = separarMejores(tam_elite);
 			}
-			
+
 			
 			// Aplicamos el proceso de seleccion/reproduccion/mutacion		
 			// SELECCION
-			this.seleccion.seleccionar(this.poblacion);
-			this.poblacion = this.seleccion.getNuevaPoblacion();
+			this.poblacion = this.seleccion.seleccionar(this.poblacion);
 			// CRUCE
 			this.cruce.reproduccion(this.poblacion, this.prob_cruce);
 			// MUTACION
 			this.mutacion.muta(this.poblacion, this.prob_mutacion);
 			
 			
-			if (elite) {
+			if (elitismo) {
 				//Volvemos a integrar a la elite
-				incluirMejores();
+				incluirMejores(elite);
 			}
 			
 			
@@ -210,7 +207,9 @@ public class AlgoritmoEvolutivo implements ActionListener {
 	
 	
 	
-	public void separarMejores(int tam_elite) {
+	public Cromosoma[] separarMejores(int tam_elite) {
+		
+		Cromosoma[] elite = new Cromosoma[tam_elite];
 		
 		// Array donde se almacenaras las aptitudes para ordenarlas posteriormente
 		double[] aptitudes = new double[this.tam_poblacion];
@@ -227,15 +226,16 @@ public class AlgoritmoEvolutivo implements ActionListener {
 		for (int i = 0; i < tam_elite; i++) {
 			for (int j = 0; j < this.poblacion.size(); j++) {
 				if (aptitudes[i] == this.poblacion.get(j).getAptitud()) {
-					this.elite[i] = this.poblacion.get(j).hacerCopia();
+					elite[i] = this.poblacion.get(j).hacerCopia();
 				}
 			}
 		}
 
+		return elite;
 	}
 	
 	
-	public void incluirMejores() {
+	public void incluirMejores(Cromosoma[] elite) {
 		
 		// Buscamos los peores
 		double[] aptitudes = new double[this.tam_poblacion];
@@ -248,11 +248,10 @@ public class AlgoritmoEvolutivo implements ActionListener {
 		// Ordenador de mayor a menor
 		Arrays.sort(aptitudes);
 
-		
-		for (int i = 0; i < this.elite.length; i++) {
+		for (int i = 0; i < elite.length; i++) {
 			for (int j = 0; j < this.poblacion.size(); j++) {
 				if (aptitudes[aptitudes.length - 1 - i] == this.poblacion.get(j).getAptitud()) {
-					this.poblacion.set(j, this.elite[i]);
+					this.poblacion.set(j, elite[i].hacerCopia());
 				}
 			}
 		}
@@ -272,7 +271,8 @@ public class AlgoritmoEvolutivo implements ActionListener {
 	public void inicializaPoblacion() {
 		
 		for (int i = 0; i < this.tam_poblacion; i++) {
-			this.poblacion.add(new CromosomaDesencripta());
+			this.poblacion.add(new Cromosoma());
+			this.poblacion.get(i).inicializarCromosoma();
 		}
 		
 	}
@@ -304,10 +304,10 @@ public class AlgoritmoEvolutivo implements ActionListener {
 		
 		// Inicializamos los valores del primer cromosoma
 		this.poblacion.get(0).evaluarCromosoma(this.total_fitness, 0.0);
-		this.el_mejor  = this.poblacion.get(0);
+		this.el_mejor  = this.poblacion.get(0).hacerCopia();
 		
 		if(this.cont_generaciones == 0) {
-			this.el_mejor_absoluto = this.el_mejor;
+			this.el_mejor_absoluto = this.el_mejor.hacerCopia();
 		}
 		
 		// Inicializamos los valores del resto de cromosomas
@@ -316,11 +316,11 @@ public class AlgoritmoEvolutivo implements ActionListener {
 					this.poblacion.get(i - 1).getPuntuacionAcumulada());
 			
 			if (this.poblacion.get(i).getAptitud() < this.el_mejor.getAptitud()) {
-				this.el_mejor  = this.poblacion.get(i);
+				this.el_mejor  = this.poblacion.get(i).hacerCopia();
 			}
 
 			if (this.el_mejor.getAptitud() < this.el_mejor_absoluto.getAptitud()) {
-				this.el_mejor_absoluto = this.el_mejor;
+				this.el_mejor_absoluto = this.el_mejor.hacerCopia();
 				this.cambio_mejor = true;
 			}
 		}	

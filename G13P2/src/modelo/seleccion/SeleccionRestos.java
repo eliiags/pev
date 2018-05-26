@@ -4,34 +4,47 @@ import java.util.ArrayList;
 
 import modelo.Cromosoma;
 
-public class SeleccionRestos extends Seleccion{
+public class SeleccionRestos implements Seleccion{
 
 	private int k;
 	
 	private static final double N = 2;
 	
-	public SeleccionRestos() {
 
-	}
-	
-	
 	@Override
-	public void seleccionar(ArrayList<Cromosoma> poblacion) {
+	public ArrayList<Cromosoma> seleccionar(ArrayList<Cromosoma> poblacion) {
+		
+		ArrayList<Cromosoma> nueva_poblacion = new ArrayList<Cromosoma>();
 		
 		double[] acumulada = new double[poblacion.size()];
+		
 		double prob_seleccion;
 		
 		int pos;
-		
-		this.nueva_poblacion = new ArrayList<Cromosoma>();
-		
+
 		this.k = (int) (poblacion.size() / N);
 
-
-		for (int i = 0; i < poblacion.size(); i++) {
-			acumulada[i] = poblacion.get(i).getPuntuacionAcumulada();
+		double total_fitness = 0.0;
+		
+		double max = 0.0;
+		
+		for (int i = 0; i < poblacion.size(); i++) { 
+			if (poblacion.get(i).getAptitud() > max) {
+				max = poblacion.get(i).getAptitud();
+			}
 		}
 			
+		for (int i = 0; i < poblacion.size(); i++) { 
+			total_fitness += max - poblacion.get(i).getAptitud();
+		}
+		
+		acumulada[0] = ( max - poblacion.get(0).getAptitud()) / total_fitness; 
+		
+		for (int i = 1; i < poblacion.size(); i++) {
+			acumulada[i] = acumulada[i-1] + ( max - poblacion.get(i).getAptitud()) / total_fitness;
+		}
+			
+		
 		// Recorremos el array de pobacion
 		for (int i = 0; i < poblacion.size(); i++) {
 			// Seleccionamos una probabilidad aleatoria
@@ -45,10 +58,10 @@ public class SeleccionRestos extends Seleccion{
 			}
 			
 			for (int j = 0; j < (int) (prob_seleccion * this.k); j++) {	
-				this.nueva_poblacion.add(poblacion.get(pos));
+				nueva_poblacion.add(poblacion.get(pos).hacerCopia());
 				
-				if (this.nueva_poblacion.size() == poblacion.size()) {
-					return;
+				if (nueva_poblacion.size() == poblacion.size()) {
+					return nueva_poblacion;
 				}
 			}
 		
@@ -60,19 +73,18 @@ public class SeleccionRestos extends Seleccion{
 		
 		ArrayList<Cromosoma> p = new ArrayList<Cromosoma>();
 		
-		for (int k = this.nueva_poblacion.size(); k < poblacion.size(); k++) {
-			p.add(poblacion.get(k));
+		for (int k = nueva_poblacion.size(); k < poblacion.size(); k++) {
+			p.add(poblacion.get(k).hacerCopia());
 		}
 		
-		s.seleccionar(p);
+		p = s.seleccionar(p);
 		
-		p = s.getNuevaPoblacion();
 		
 		for (int j = 0; j < p.size(); j++) {
-			this.nueva_poblacion.add(p.get(j));
+			nueva_poblacion.add(p.get(j).hacerCopia());
 		}
 		
-		
+		return nueva_poblacion;
 		
 	}
 

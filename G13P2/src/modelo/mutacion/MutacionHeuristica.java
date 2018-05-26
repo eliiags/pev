@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import modelo.Cromosoma;
 
-public class MutacionHeuristica extends Mutacion {
+public class MutacionHeuristica implements Mutacion {
 
 	private ArrayList<String> permutaciones;
 	
@@ -13,15 +13,12 @@ public class MutacionHeuristica extends Mutacion {
 	
 	private static final int PER = 2;
 
-    public MutacionHeuristica() {
-    	
-    }
-    
-    @Override
+
+	@Override
    	public void muta(ArrayList<Cromosoma> poblacion, double prob_mutacion) {
    		
     	
-    	this.N = poblacion.get(0).getLongitudCromosoma();
+    	this.N = poblacion.get(0).getGenes().get(0).getLongitud();
     	
     	boolean mutado = false;
     	
@@ -81,9 +78,6 @@ public class MutacionHeuristica extends Mutacion {
 							setAlelo((char)this.permutaciones.get(j).charAt(k), pos.get(k));
 					}
 					
-					// calcula el fitness
-					cromosoma_prueba.funcionFitness();
-					
 					if (cromosoma_prueba.getAptitud() < fitness) {
 						fitness  = cromosoma_prueba.getAptitud();
 						// el mas alto es el que se queda.
@@ -100,17 +94,13 @@ public class MutacionHeuristica extends Mutacion {
 			
 		}
 		
-
-		
    	}
-    
     
     
     private void obtenerPermutaciones(char[] valores, String act, int n) {
     	
     	if (n == 0) {
             this.permutaciones.add(act);
-    		// System.out.println(act);
         } else {
             for (int i = 0; i < valores.length; i++) {
                 if (!act.contains(valores[i] + "")) { // Controla que no haya repeticiones
@@ -119,88 +109,5 @@ public class MutacionHeuristica extends Mutacion {
             }
         }
     }    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    private static ArrayList<ArrayList<Integer>> getPermutaciones(ArrayList<Integer> lista) {
-//        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
-//        
-//        if (lista.size() == 1) {
-//            list.add(lista);
-//        } else {
-//            for (Integer elem : lista) {
-//                ArrayList<Integer> subLista = new ArrayList<>(lista);
-//                subLista.remove(elem);
-//                // Llamada recursiva
-//                ArrayList<ArrayList<Integer>> subListaNueva = getPermutaciones(subLista);
-//                // Añado las permutaciones anteriores e itero sobre esa lista de listas
-//                for(ArrayList<Integer> lista2: subListaNueva) {
-//                    ArrayList<Integer> local = new ArrayList<>();
-//                    local.add(elem);
-//                    local.addAll(lista2);
-//                    list.add(local);
-//                }
-//            }
-//        }
-//        
-//        return list;
-//    }
-    
-
-
-    
-//    protected void mutar(Cromosoma[] poblacion, int i, double probabilidad) {
-//        HashSet<Integer> posibles = new HashSet();
-//
-//        // Seleccionamos que elemenos vamos a permutar
-//        while(posibles.size() < N)
-//            posibles.add(this.rand.nextInt(poblacion[i].getSize()));
-//
-//        // Añadimos los elemntos al ArrayList
-//        ArrayList<Integer> seleccionados = new ArrayList(Arrays.asList(posibles.toArray()));
-//        // Generamos todas las permutaciones del ArrayList
-//        // Nos da un ArrayList con ArrayList de cada una de las permutaciones
-//        // 1 2 3
-//        // 1 3 2
-//        // 2 1 3
-//        // 3 1 2
-//        // 3 2 1
-//        ArrayList<ArrayList<Integer>> permutaciones = getPermutaciones(seleccionados);
-//        //permutaciones.remove(0);
-//        double fitnessMejor = Double.MIN_VALUE;
-//        Cromosoma mejor = null;
-//        // Recorremos toda la lista de posibles permutaciones
-//        for (int j = 0; j < permutaciones.size(); j++) {
-//            Cromosoma c = poblacion[i].copy();
-//
-//            // Para cada posible permutacion recorro toda la permutacion
-//            for (int k = 0; k < permutaciones.get(j).size(); k++) {
-//
-//                int posicion_anterior = seleccionados.get(k);
-//                int posicion_nueva = permutaciones.get(j).get(k);
-//                c.getGen(0).setImplementacion(posicion_nueva, poblacion[i].getGen(0).getImplementacion(posicion_anterior));
-//            }
-//
-//            if (c.getFitness() > fitnessMejor) {
-//                fitnessMejor = c.getFitness();
-//                mejor = c;
-//            }
-//        }
-//        if(mejor != null)
-//            poblacion[i] = mejor;
-//    }
-
-	
-   
+       
 }

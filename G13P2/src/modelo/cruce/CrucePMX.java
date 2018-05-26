@@ -3,22 +3,16 @@ package modelo.cruce;
 import java.util.ArrayList;
 
 import modelo.Cromosoma;
-import modelo.CromosomaDesencripta;
 
-public class CrucePMX extends Cruce{
+public class CrucePMX implements Cruce{
 
-	
-	
-	
-	public CrucePMX() {
-
-	}
+	private int N;
 	
 	@Override
 	public void reproduccion(ArrayList<Cromosoma> poblacion, double prob_cruce) {
 		
 		/***/
-		this.N = poblacion.get(0).getLongitudCromosoma();
+		this.N = poblacion.get(0).getGenes().get(0).getLongitud();
 		/***/
 
 		// Seleccionados para reproducir
@@ -140,17 +134,13 @@ public class CrucePMX extends Cruce{
 				Cromosoma hijo1 = this.integrarCromosoma(cod_hijo1);
 				Cromosoma hijo2 = this.integrarCromosoma(cod_hijo2);
 				
-			
-				
-				
 				// Los nuevos individuos sustituyen a sus progenitores
 				poblacion.set(seleccionado_cruce[i], hijo1);
 				poblacion.set(seleccionado_cruce[i+1], hijo2);
-
-				poblacion.get(seleccionado_cruce[i]).funcionFitness();
-
-				poblacion.get(seleccionado_cruce[i+1]).funcionFitness();
 				
+				poblacion.get(seleccionado_cruce[i]).setModificado(true);
+				poblacion.get(seleccionado_cruce[i+1]).setModificado(true);
+
 			}
 		
 		}
@@ -164,7 +154,7 @@ public class CrucePMX extends Cruce{
 		
 		ArrayList<Character> genes = new ArrayList<Character>();
 		
-		for (int i = 0; i < hijo.getLongitudCromosoma(); i++) {
+		for (int i = 0; i < this.N; i++) {
 			if (!igual) {
 				if (i >= pos1 && i <= pos2) {
 					genes.add((char) hijo.getGenes().get(0).getAlelo(i));
@@ -198,11 +188,11 @@ public class CrucePMX extends Cruce{
 		
 		// Creamos una copia de un individuo de la poblacion
 		// Al final del algoritmo este será el cromosoma decodificado,
-		Cromosoma crm = new CromosomaDesencripta();
+		Cromosoma crm = new Cromosoma();
 				
 		for (int i = 0; i < this.N; i++){
 			// Actualizamos el cromosoma
-			crm.getGenes().get(0).setAlelo(hijo.get(i), i);
+			crm.getGenes().get(0).getAlelos().add(hijo.get(i));
 			
 		}
 		

@@ -3,18 +3,15 @@ package modelo.cruce;
 import java.util.ArrayList;
 
 import modelo.Cromosoma;
-import modelo.CromosomaDesencripta;
 
-public class CruceCodificacionOrdinal extends Cruce {
+public class CruceCodificacionOrdinal implements Cruce {
 
+	private int N;
 	
 	@Override
 	public void reproduccion(ArrayList<Cromosoma> poblacion, double prob_cruce) {
 		
-		/***/
-		this.N = poblacion.get(0).getLongitudCromosoma();
-		/***/
-
+		N = poblacion.get(0).getGenes().get(0).getLongitud();
 		
 		// Seleccionados para reproducir
 		int[] seleccionado_cruce = new int[poblacion.size()];
@@ -46,7 +43,7 @@ public class CruceCodificacionOrdinal extends Cruce {
 		// Se cruzan
 		for (int i = 0; i < cont_seleccionado; i+=2) {
 			// Se cruzan los individuos elegidos en un punto al azar (numero de genes)
-			punto_cruce = ((int) (Math.random() * (this.N)));
+			punto_cruce = ((int) (Math.random() * (N)));
 			
 			// Codificamos los cromosomas
 			ArrayList<Integer> cod_padre1 = this.codificarfCromosoma(poblacion.get(seleccionado_cruce[i]));
@@ -59,6 +56,7 @@ public class CruceCodificacionOrdinal extends Cruce {
 			cod_hijo1.addAll(cod_padre1);
 			cod_hijo2.addAll(cod_padre2);
 			
+			
 			// Cruzamos los arrays
 			for (int j = punto_cruce; j < cod_hijo1.size(); j++) {
 				cod_hijo1.set(j, cod_padre2.get(j));
@@ -69,8 +67,6 @@ public class CruceCodificacionOrdinal extends Cruce {
 			// Descodificamos los cromosomas
 			Cromosoma hijo1 = this.decodificarCromosoma(cod_hijo1);
 			Cromosoma hijo2 = this.decodificarCromosoma(cod_hijo2);
-			
-			
 			
 //			System.out.println("------------");
 //			
@@ -83,13 +79,12 @@ public class CruceCodificacionOrdinal extends Cruce {
 			
 			
 			// Los nuevos individuos sustituyen a sus progenitores
-			poblacion.set(seleccionado_cruce[i], hijo1);
-			poblacion.set(seleccionado_cruce[i+1], hijo2);
+			poblacion.set(seleccionado_cruce[i], hijo1.hacerCopia());
+			poblacion.set(seleccionado_cruce[i+1], hijo2.hacerCopia());
+			
+			poblacion.get(seleccionado_cruce[i]).setModificado(true);
+			poblacion.get(seleccionado_cruce[i+1]).setModificado(true);
 
-			poblacion.get(seleccionado_cruce[i]).funcionFitness();
-
-			poblacion.get(seleccionado_cruce[i+1]).funcionFitness();
-		
 		}
 		
 	}
@@ -108,36 +103,32 @@ public class CruceCodificacionOrdinal extends Cruce {
 			abc.add((char) (i + 97));
 		}
 		
-		// ArrayList que tendrá el cromosoma codificado
+		// ArrayList que tendra el cromosoma codificado
 		ArrayList<Integer> cromosoma_codificado = new ArrayList<Integer>();
 
+		
 		for (int j = 0; j < this.N; j++){
 			// Buscamos la posicion que ocupa cada alelo del cromosoma en abc
-			char c = (char)crm.getGenes().get(0).getAlelo(j);
-//			System.out.println("char:     " +  c);
-			// pos = abc.indexOf((char) crm.getGenes().get(0).getAlelo(j));
+			char c = (char) crm.getGenes().get(0).getAlelo(j);
 			pos = abc.indexOf((char) c);
-//			System.out.println("elemento: " + pos);
 			// Annadimos la posicion al array
 			cromosoma_codificado.add(pos);
 			// Eliminamos la letra de abc
 			abc.remove(pos);
 		}
 		
-//		System.out.println("---------------------------------------------");
 		return cromosoma_codificado;
 		
 	}
 	
-	
-	
+
 	public Cromosoma decodificarCromosoma(ArrayList<Integer> cromosoma_codificado){
 		
 		char elemento;
 		
 		// Creamos una copia de un individuo de la poblacion
 		// Al final del algoritmo este será el cromosoma decodificado,
-		Cromosoma crm = new CromosomaDesencripta();
+		Cromosoma crm = new Cromosoma();
 		
 		// Creamos la lista dinamica abc
 		ArrayList<Character> abc = new ArrayList<Character>();
@@ -151,10 +142,9 @@ public class CruceCodificacionOrdinal extends Cruce {
 			// Buscamos cual es el elemento que ocupa la pos i del arraylist
 			elemento = abc.get(cromosoma_codificado.get(i));
 			// Actualizamos el cromosoma
-			crm.getGenes().get(0).setAlelo(elemento, i);
+			crm.getGenes().get(0).getAlelos().add(elemento);
 			// Vamos borrando los elementos de abc
 			abc.remove((int) cromosoma_codificado.get(i));
-			
 		}
 
 		return crm;

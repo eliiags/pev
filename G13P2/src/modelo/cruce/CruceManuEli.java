@@ -5,22 +5,18 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import modelo.Cromosoma;
-import modelo.CromosomaDesencripta;
 
-public class CruceManuEli extends Cruce{
+public class CruceManuEli implements Cruce{
 
 	private static final int NUM = 10;
 	
-	
-	public CruceManuEli() {
-
-	}
+	private int N;
 	
 	@Override
 	public void reproduccion(ArrayList<Cromosoma> poblacion, double prob_cruce) {
 		
 		/***/
-		this.N = poblacion.get(0).getLongitudCromosoma();
+		this.N = poblacion.get(0).getGenes().get(0).getLongitud();
 		/***/
 
 		// Seleccionados para reproducir
@@ -48,9 +44,6 @@ public class CruceManuEli extends Cruce{
 			cont_seleccionado--;
 		}
 		
-//		for (int i = 0; i < seleccionado_cruce.length; i++) {
-//			System.out.println("Individuo: " + seleccionado_cruce[i]);
-//		}
 		
 		ArrayList<Integer> pos;
 		HashSet<Integer> posibles;
@@ -70,11 +63,7 @@ public class CruceManuEli extends Cruce{
 	        // Metemos en un arraylist las posiciones posibles
 	        pos = new ArrayList<Integer>(posibles);
 	        
-//	        System.out.println("Puntos: " + pos);
-	        
 	        Collections.sort(pos);
-	        
-//	        System.out.println("he codigo las posiciones: " + pos.toString());
 	        
 			ArrayList<Character> cod_padre1 = getCromosoma(poblacion.get(seleccionado_cruce[i]), pos, true);
 			ArrayList<Character> cod_padre2 = getCromosoma(poblacion.get(seleccionado_cruce[i+1]), pos, true);
@@ -97,8 +86,7 @@ public class CruceManuEli extends Cruce{
 //			System.out.println("hijo2: " + cod_hijo2.toString());
 //			System.out.println("**************************************************");
 				
-				
-				
+
 			// Para hijo1
 			for (int j = 0; j < cod_hijo1.size(); j++) {
 				if (cod_hijo1.get(j).charValue() == 'X') {
@@ -125,7 +113,6 @@ public class CruceManuEli extends Cruce{
 			// Para hijo2
 			for (int j = 0; j < cod_hijo2.size(); j++) {
 				if (cod_hijo2.get(j).charValue() == 'X') {
-//						System.out.println("entra");
 					if(!cod_hijo2.contains(cod_padre2.get(j))) {
 						cod_hijo2.set(j, cod_padre2.get(j));
 					}
@@ -153,17 +140,15 @@ public class CruceManuEli extends Cruce{
 			Cromosoma hijo1 = this.integrarCromosoma(cod_hijo1);
 			Cromosoma hijo2 = this.integrarCromosoma(cod_hijo2);
 			
-		
-			
 			
 			// Los nuevos individuos sustituyen a sus progenitores
 			poblacion.set(seleccionado_cruce[i], hijo1);
 			poblacion.set(seleccionado_cruce[i+1], hijo2);
-
-			poblacion.get(seleccionado_cruce[i]).funcionFitness();
-
-			poblacion.get(seleccionado_cruce[i+1]).funcionFitness();
 			
+			poblacion.get(seleccionado_cruce[i]).setModificado(true);
+			poblacion.get(seleccionado_cruce[i+1]).setModificado(true);
+			
+
 		}
 		
 	}
@@ -172,10 +157,9 @@ public class CruceManuEli extends Cruce{
 	public ArrayList<Character> getCromosoma(Cromosoma hijo, ArrayList<Integer> pos, boolean igual) {
 		
 		ArrayList<Character> genes = new ArrayList<Character>();
-		
 		ArrayList<Integer> posiciones = new ArrayList<Integer>(pos);
 		
-		for (int i = 0; i < hijo.getLongitudCromosoma(); i++) {
+		for (int i = 0; i < this.N; i++) {
 			if (!igual) {
 				if (!posiciones.isEmpty() && i == posiciones.get(0)) {
 					genes.add((char) hijo.getGenes().get(0).getAlelo(i));
@@ -189,9 +173,9 @@ public class CruceManuEli extends Cruce{
 			}
 		}
 		
-		
 		return genes;
 	}
+	
 	
 	public ArrayList<Character> getIntervalo(Cromosoma hijo, ArrayList<Integer> pos) {
 		
@@ -210,11 +194,11 @@ public class CruceManuEli extends Cruce{
 		
 		// Creamos una copia de un individuo de la poblacion
 		// Al final del algoritmo este será el cromosoma decodificado,
-		Cromosoma crm = new CromosomaDesencripta();
+		Cromosoma crm = new Cromosoma();
 				
 		for (int i = 0; i < this.N; i++){
 			// Actualizamos el cromosoma
-			crm.getGenes().get(0).setAlelo(hijo.get(i), i);
+			crm.getGenes().get(0).getAlelos().add(new Character(hijo.get(i)));
 			
 		}
 		

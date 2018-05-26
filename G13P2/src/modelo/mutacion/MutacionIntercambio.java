@@ -5,18 +5,15 @@ import java.util.HashSet;
 
 import modelo.Cromosoma;
 
-public class MutacionIntercambio extends Mutacion {
+public class MutacionIntercambio implements Mutacion {
 
 	private int N;
 	
-	public MutacionIntercambio() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public void muta(ArrayList<Cromosoma> poblacion, double prob_mutacion) {
 
-		this.N = poblacion.get(0).getLongitudCromosoma();
+		this.N = poblacion.get(0).getGenes().get(0).getLongitud();
 		
 		double probabilidad = 0.0;
 
@@ -27,11 +24,8 @@ public class MutacionIntercambio extends Mutacion {
     	ArrayList<Integer> pos;
 
 		
-		boolean mutado;
-		
 		// Para cada individuo
 		for (int i = 0; i < poblacion.size(); i++) {
-			mutado = false;
 			probabilidad = Math.random();
 			
 			if (probabilidad < prob_mutacion) {
@@ -65,12 +59,9 @@ public class MutacionIntercambio extends Mutacion {
 					getGenes().get(0).
 					setAlelo(aux, pos2);
 //				System.out.println("Segundo cambio: " + poblacion.get(i).toString());
-				mutado = true;
+				
+				poblacion.get(i).setModificado(true);
 
-			}
-
-			if (mutado) {
-				poblacion.get(i).funcionFitness();
 			}
 
 		}

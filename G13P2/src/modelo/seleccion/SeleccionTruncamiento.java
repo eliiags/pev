@@ -5,10 +5,9 @@ import java.util.Arrays;
 
 import modelo.Cromosoma;
 
-public class SeleccionTruncamiento extends Seleccion {
+public class SeleccionTruncamiento implements Seleccion {
 
 	private double trun;
-	
 	
 	public SeleccionTruncamiento(double trun) {
 		this.trun = trun;
@@ -16,28 +15,23 @@ public class SeleccionTruncamiento extends Seleccion {
 	
 	
 	@Override
-	public void seleccionar(ArrayList<Cromosoma> poblacion) {
+	public ArrayList<Cromosoma> seleccionar(ArrayList<Cromosoma> poblacion) {
+		
+		ArrayList<Cromosoma> nueva_poblacion = new ArrayList<Cromosoma>();
+		
+		int proporcion = (int) ((int) 1 / this.trun),
+			tam = (int) poblacion.size() / proporcion,
+			pos = 0,
+			i   = 0;
+		
+		Cromosoma[] mejores = separar(poblacion, tam);
 		
 		
-		this.nueva_poblacion = new ArrayList<Cromosoma>();
-		
-		ArrayList<Cromosoma> mejores = new ArrayList<Cromosoma>();
-		
-		int proporcion = (int) ((int) 1 / this.trun);
-		
-		int tam = (int) poblacion.size() / proporcion;
-		
-		mejores = this.separar(poblacion, tam);
-		
-		int i = 0,
-			pos = 0;
-		
-		
-		while (i < poblacion.size()) {
+		while (tam > 0 && i < poblacion.size()) {
 			
 			for (int j = 0; j < tam; j++) {
 				if (pos < poblacion.size()) {
-					this.nueva_poblacion.add(pos, mejores.get(j));
+					nueva_poblacion.add(mejores[j].hacerCopia());
 					pos++;
 				}
 			}
@@ -46,25 +40,29 @@ public class SeleccionTruncamiento extends Seleccion {
 		
 		}
 		
+		return nueva_poblacion;
 		
 	}
 	
 	
 	
-	private ArrayList<Cromosoma> separar(ArrayList<Cromosoma> poblacion, int tam) {
+	private Cromosoma[] separar(ArrayList<Cromosoma> poblacion, int tam) {
 		// Mejores cromosomas
-		ArrayList<Cromosoma> mejores = new ArrayList<Cromosoma>();// Cromosoma[tam];
+		Cromosoma[] mejores = new Cromosoma[tam];
 
 		// Array donde se almacenaras las aptitudes para ordenarlas posteriormente
 		double[] aptitudes = new double[poblacion.size()];
+		
 		
 		// Actualizamos el array de aptitudes con el fitness de cada individuo;
 		for (int i = 0; i < aptitudes.length; i++) {
 			aptitudes[i] = poblacion.get(i).getAptitud();
 		}
 		
+		
 		// Ordenador de mayor a menor
 		Arrays.sort(aptitudes);
+		
 		
 		int j;
 		boolean encontrado;
@@ -74,7 +72,7 @@ public class SeleccionTruncamiento extends Seleccion {
 			j = 0;
 			while (!encontrado && j < poblacion.size()) {
 				if (aptitudes[i] == poblacion.get(j).getAptitud()) {
-					mejores.add(poblacion.get(j));
+					mejores[i] = poblacion.get(j);
 					encontrado = true;
 				}
 				j++;
@@ -89,9 +87,3 @@ public class SeleccionTruncamiento extends Seleccion {
 	
 
 }
-
-//System.out.println("*************************************");
-//for (int i = 0; i < aux_poblacion.length; i++) {
-//	System.out.println(aux_poblacion[i].getAptitud());
-//}
-//System.out.println("*************************************");

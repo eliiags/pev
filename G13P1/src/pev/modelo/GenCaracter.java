@@ -1,8 +1,7 @@
 package pev.modelo;
 
-public class GenCaracter extends Gen{
+public class GenCaracter extends Gen {
 
-	
 	public GenCaracter(int longitud_gen) {
 		super(longitud_gen);
 		// TODO Auto-generated constructor stub
@@ -13,7 +12,6 @@ public class GenCaracter extends Gen{
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public Gen hacerCopia() {
@@ -32,4 +30,5 @@ public class GenCaracter extends Gen{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }
